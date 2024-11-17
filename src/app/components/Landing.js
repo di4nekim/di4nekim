@@ -4,11 +4,10 @@ import { useRef } from "react";
 import Header from "./Header.js";
 import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion' // importing properly
 
-export const SmoothScroll = () => {
+export const Landing = () => {
 
   return(
-    <div className="h-[500vh] bg-[var(--main-red)]">
-      <Header />
+    <div className="h-[275vh] bg-[var(--main-red)]">
       <Hero />
     </div>
   );
@@ -90,6 +89,10 @@ const Cloud = ({className, src, start, end}) => {
   )
 }
 
+const ABOUT_HOOK = "I’ve always had my head up in the clouds.";
+const ABOUT_P1 = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident";
+const ABOUT_P2 = "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit.";
+
 const About = () => {
   return(
     <section 
@@ -102,10 +105,39 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="mb-20 text-[100px] font-medium"
+        className="mb-20 text-title font-medium"
       >
         about me
       </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ease: "easeInOut", duration: 1}}
+        className="mb-10 text-subtitle font-medium"
+      >
+        {ABOUT_HOOK}
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ease: "easeInOut", duration: 1}}
+        className="mb-5 text-paragraph font-normal"
+      >
+        {ABOUT_P1}   
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ease: "easeInOut", duration: 1}}
+        className="mb-5 text-paragraph font-normal"
+      >
+        {ABOUT_P2}
+      </motion.p>
+
+
     </section>
   )
 }

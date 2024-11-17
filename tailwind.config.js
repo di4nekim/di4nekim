@@ -13,6 +13,11 @@ module.exports = {
         mainRed: "var(--main-red)",
         mainBeige: "var(--main-beige)",
       },
+      fontSize: {
+        title: "var(--font-title-size)",
+        subtitle: "var(--font-subtitle-size)",
+        paragraph: "var(--font-paragraph-size)",
+      }
     },
   },
   plugins: [],

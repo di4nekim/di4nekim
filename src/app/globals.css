@@ -13,7 +13,9 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  --font-title-size: 128px;
+  --font-title-size: 100px;
+  --font-subtitle-size: 40px;
+  --font-paragraph-size: 25px;
   --font-navbar-size: 20px;
 }
 
@@ -22,10 +24,4 @@
     /* --background: #0a0a0a;
     --foreground: #ededed; */
   }
-}
-
-body {
-  /* color: var(--foreground);
-  background: var(--background); */
-  /* font-family: Arial, Helvetica, sans-serif; */
 }
