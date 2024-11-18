@@ -5,7 +5,7 @@ const Footer = () => {
     <footer
       className='flex justify-center items-center h-16 bg-mainRed text-mainBeige'
     >
-      <p>&copy; {new Date().getFullYear()} Diane Kim. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} Diane Kim. Website designed + developed by me. </p>
     </footer>
   );
 };

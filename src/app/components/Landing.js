@@ -89,14 +89,15 @@ const Cloud = ({className, src, start, end}) => {
   )
 }
 
-const ABOUT_HOOK = "I’ve always had my head up in the clouds.";
-const ABOUT_P1 = "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident";
-const ABOUT_P2 = "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit.";
+const ABOUT_HOOK = "I’ve always had my head up in the clouds";
+const ABOUT_P1 = "—dreaming of ways to connect ideas, solve problems, and build something meaningful. As an aspiring Software Engineer and Product Manager, I channel that imagination into designing and developing solutions that blend creativity with functionality.";
+const ABOUT_P2 = "Whether designing clustering algorithms or crafting dynamic user experiences, my goal is to create tools that are not only functional but also delightful to use.";
+const ABOUT_P3 = "When I’m not at my keyboard, I’m on a constant hunt for unprecedented challenges." // Get to know me better by checking out some of the oddball pieces of my lore here [insert link to page]."
 
 const About = () => {
   return(
     <section 
-      className="absolute ml-[20vh] h-[100vh] w-full z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
+      className="absolute mx-[20vh] h-[80vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
       style={{
         marginTop: `calc(${SECTION_HEIGHT}px + 100vh)`,
       }}
@@ -114,7 +115,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="mb-10 text-subtitle font-medium"
+        className="mb-3 text-subtitle font-medium"
       >
         {ABOUT_HOOK}
       </motion.p>
@@ -135,6 +136,15 @@ const About = () => {
         className="mb-5 text-paragraph font-normal"
       >
         {ABOUT_P2}
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ease: "easeInOut", duration: 1}}
+        className="mb-5 text-paragraph font-normal"
+      >
+        {ABOUT_P3}
       </motion.p>
 
 
