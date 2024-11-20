@@ -5,7 +5,7 @@ const Footer = () => {
     <footer
       className='flex justify-center items-center h-16 bg-mainRed text-mainBeige'
     >
-      <p>&copy; {new Date().getFullYear()} Diane Kim. Website designed + developed by me. </p>
+      <p>&copy; {new Date().getFullYear()} All Rights Reserved. Built + designed by Diane Kim. </p>
     </footer>
   );
 };
