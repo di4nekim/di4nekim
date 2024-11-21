@@ -9,7 +9,7 @@ export const Landing = () => {
 
   return(
     <div className="relative grid grid-cols-[15%_85%] h-[280vh] bg-[var(--main-red)] overflow-visible">
-      <Sidebar className='sticky z-[2000] top-[40vh]'/>
+      <Sidebar className='sticky z-[20] top-[40vh]'/>
       <Hero />
     </div>
   );
@@ -24,14 +24,14 @@ const Hero = () => {
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
-      <div className="absolute right-0 pt-[35vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
+      <div className="absolute right-0 mt-[38vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
         <motion.h1
           className="text-[var(--main-beige)]"
         >hey, it's diane.
         </motion.h1>
 
       </div>
-      <div className="absolute right-0 mt-[53vh] mr-[10vh] flex z-1000 text-3xl font-medium">
+      <div className="absolute right-0 mt-[56vh] mr-[3vh] align-right flex z-1000 text-3xl font-medium">
         <motion.h2
           className="text-[var(--main-beige)]"
         > 
@@ -89,7 +89,7 @@ const ABOUT_P3 = "When I’m not at my keyboard, I’m on a constant hunt for my
 const About = () => {
   return(
     <section 
-      className="absolute h-[80vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
+      className="absolute w-[45vw] h-[80vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
       style={{
         marginTop: `calc(${SECTION_HEIGHT}px + 100vh)`,
       }}
@@ -107,7 +107,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-3 mx-[5vh] text-paragraph font-semibold"
+        className="mb-3 mx-[5vh] text-paragraph font-semibold"
       >
         {ABOUT_HOOK}
       </motion.p>
@@ -116,7 +116,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-5 mx-[5vh] text-paragraph font-normal"
+        className="mb-5 mx-[5vh] text-paragraph font-normal"
       >
         {ABOUT_P1}   
       </motion.p>
@@ -125,7 +125,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-5 mx-[5vh] text-paragraph font-normal"
+        className="mb-5 mx-[5vh] text-paragraph font-normal"
       >
         {ABOUT_P2}
       </motion.p>

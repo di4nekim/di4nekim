@@ -15,9 +15,13 @@ const Sidebar = () => {
           <li className="opacity-60">GET IN TOUCH</li>
         </ul>
 
-        <div className="absolute top-[123vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full"></div>
-        <div className="absolute top-[124vh] left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-beige)] rounded-full"></div>
+        {/* About Section Marker */}
+        <div className="absolute top-[127vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full"></div>
+        <div className="absolute top-[128vh] left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-beige)] rounded-full"></div>
 
+
+        {/* Final Marker */}
+        <div className="absolute bottom-[0vh] left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-beige)] rounded-full"></div>
       </div>
 
     </div>
