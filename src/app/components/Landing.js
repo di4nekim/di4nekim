@@ -1,26 +1,52 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
-import Header from "./Header.js";
+import Experience from "./Experience.js";
 import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion' // importing properly
-import Sidebar from "./Sidebar.js";
+// import Sidebar from "./Sidebar.js";
 
 export const Landing = () => {
 
   return(
-    <div className="relative grid grid-cols-[15%_85%] h-[280vh] bg-[var(--main-red)] overflow-visible">
-      <Sidebar className='sticky z-[2000] top-[40vh]'/>
-      <Hero />
+    <div className="relative grid grid-cols-[15%_85%] h-[260vh] bg-[var(--main-red)] overflow-visible">
+      <Sidebar className='sticky h-full z-[10] top-[40vh]'/>
+      <div className="w-full flex flex-col">
+        <Hero />
+        <About />
+      </div>
     </div>
   );
 }
+
+const Sidebar = () => {
+  return (
+    <div className="relative w-[15vw] h-full z-10 min-h-screen bg-[var(--main-red)]">
+      <div className="relative z-0 mt-[70vh] ml-[10vw] h-full w-[4px] bg-[var(--main-beige)]">
+        <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2 z-10 w-5 h-5 bg-[var(--main-beige)] rounded-full"></div>
+        <div className="absolute -top-[10px] left-1/2 transform -translate-x-1/2 z-10 w-5 h-5 bg-[var(--main-beige)] rounded-full"></div>
+        
+        <ul className='w-[15vw] ml-[30px] mt-[60px] text-[20px] text-[var(--main-beige)] font-semibold'>
+          <li>HELLO</li>
+          <li className="opacity-60">ABOUT</li>
+          <li className="opacity-60">EXPERIENCE</li>
+          <li className="opacity-60">GET IN TOUCH</li>
+        </ul>
+
+        <div className="absolute top-[123vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full"></div>
+        <div className="absolute top-[124vh] left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-beige)] rounded-full"></div>
+
+      </div>
+
+    </div>
+  );
+};
 
 const SECTION_HEIGHT = 800;
 
 const Hero = () => {
   return(
     <div 
-    style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
+    style={{ height: `calc(${SECTION_HEIGHT}px + 50vh)` }}
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
@@ -39,7 +65,6 @@ const Hero = () => {
         </motion.h2>
       </div>
 
-    <About />
   </div>
 
   )
@@ -89,7 +114,7 @@ const ABOUT_P3 = "When I’m not at my keyboard, I’m on a constant hunt for my
 const About = () => {
   return(
     <section 
-      className="absolute h-[80vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
+      className="absolute h-[60vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
       style={{
         marginTop: `calc(${SECTION_HEIGHT}px + 100vh)`,
       }}
