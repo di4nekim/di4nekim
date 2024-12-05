@@ -1,48 +1,17 @@
 'use client'
 import React, { useRef, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion, useMotionValue, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import Lenis from "@studio-freight/lenis";
-import { Cambay } from 'next/font/google';
+import { EXP_OVERVIEW } from '../data/ExperienceData';
+import Button from './Button';
+import ExperienceCloud2 from '../../../public/experience-cloud-2.png';
 
-// TO DO : insert link to gap year page later
-const EDUCATION_BLURB = {
-  title: "Computer Science B.Sc. & Cognitive Science Minor",
-  company: "Georgetown University",
-  p1: "Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minor in Cognitive Science.",
-  p2: "There, I’ve honed my skills in advanced programming, data structures, and user-focused product development. From redesigning scalable React applications to leading high-impact projects for clients through Georgetown’s premier software development club, I thrive at the intersection of technology, design, and collaboration.",
-  impact_1: "",
-}
-
-const EXP_OVERVIEW = {
-  p1: "Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minor in Cognitive Science. There, I’ve honed my skills in advanced programming, data structures, and user-focused product development. From redesigning scalable React applications to leading high-impact projects for clients through Georgetown’s premier software development club, I thrive at the intersection of technology, design, and collaboration.",
-  p2: "Outside the classroom, I’ve built full-stack applications, led cross-functional teams, and shaped product strategies to bring innovative ideas to life. Whether it’s crafting scalable platforms with React and Firebase or designing intuitive interfaces and data-driven models, I thrive on solving complex problems where technology and design meet."
-}
-
-const EXP_1_BLURB = {
-  title: "Software Engineering Intern",
-  company: "KeepUp Technologies",
-  date: "May ‘24 - current",
-  p1: "",
-  p2: "",
-  impact_1: "",
-}
-
-const EXP_2_BLURB = {
-  title: "Software Engineering Intern",
-  company: "KeepUp Technologies",
-  date: "May ‘24 - current",
-  p1: "",
-  p2: "",
-  impact_1: "",
-}
-
+import ExpSection from './ExpSection';
 
 const Experience = () => {
   const parentRef = useRef(null);
   const { scrollY } = useScroll();
-
-  // const y = useTransform(scrollY, [2150, 2500], [300, 600]);
-
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -60,15 +29,18 @@ const Experience = () => {
 
   return (
     <div ref={parentRef} className='h-[250vh] grid grid-cols-[30%_70%]'>
-      <Sidebar parentRef={parentRef} className='sticky z-[20] top-[40vh]'/>
 
-      {/* overview */}
+      {/* Menu + Sidebar */}
+      {/* <section className='relative'> */}
+        <Sidebar parentRef={parentRef} className='absolute z-[20] top-[40vh]'/>
+      {/* </section> */}
+
       <div className='relative flex flex-col bg-[var(--main-beige)] text-[var(--main-red)] '>
+        {/* overview */}
         <AnimatePresence>
           {isVisible && (
             <motion.section 
             className='sticky top-[50vh] z-[10] h-[10vh] mr-[20vw]'
-            // className='relative mt-[50vh] z-[10] h-[10vh] mr-[20vw]'
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -77,16 +49,14 @@ const Experience = () => {
             viewport={{ once: true }}
           >
             <p className='mb-[10px]'>{EXP_OVERVIEW.p1}</p>
-            <p>{EXP_OVERVIEW.p2}</p>
+            <p className='mb-[10px]'>{EXP_OVERVIEW.p2}</p>
+            <p className='font-semibold italic'>{EXP_OVERVIEW.p3}</p>
           </motion.section>
           )}
         </AnimatePresence>
 
         {/* experience section */}
-        <section className='absolute w-full h-[100vh] mt-[140vh] text-[var(--main-red)] bg-[var(--main-beige)]'>
-          <Role />
-          <Blurb />
-        </section>
+        <ExpSection />
 
       </div>
 
@@ -132,7 +102,7 @@ const Sidebar = ({parentRef}) => {
 
   const scrollValue = useMotionValue(scrollY);
   const topPos = useTransform(scrollValue, [2000, 2150, 2500, 3000], [100, 300, 600, 1100]);
-  const scaleValue = useTransform(scrollValue, [2000, 2150, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
+  const scaleValue = useTransform(scrollValue, [2000, 2150, 2500, 2700, 4000], [1, 2.5, 2.5, 1, 1]);
   const translateX = useTransform(scrollValue, [2000, 2150, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
 
   useEffect(() => {
@@ -141,8 +111,9 @@ const Sidebar = ({parentRef}) => {
   }, [scrollY, scrollValue]);
 
   return(
-    <div className="relative h-full z-10 bg-[var(--main-beige)]">
-      <div className="absolute z-0 ml-[10vw] h-full w-[4px] bg-[var(--main-red)] text-[var(--main-red)]">
+    <div className="relative h-full z-20 bg-[var(--main-beige)] overflow-visible">
+
+      <div className="absolute z-10 ml-[10vw] h-full w-[4px] bg-[var(--main-red)] text-[var(--main-red)]">
 
         {/* <motion.div 
           style={{ y: yTranslate }} 
@@ -156,7 +127,7 @@ const Sidebar = ({parentRef}) => {
           }}  
         />
         <motion.h1 
-          className='absolute text-[20px] font-bold'
+          className='absolute text-[20px] font-bold text-[#cb0000]'
           style={{
             top: topPos,
             scale: scaleValue,
@@ -168,50 +139,31 @@ const Sidebar = ({parentRef}) => {
         </motion.h1>
 
       </div>
+      
+      {/* experience section menu */}
+      <Menu className='' />
+
 
     </div>
   )
 }
 
-const Role = ({title, company}) => {
-  return (
-    <div className='relative w-full text-[30px] '>
-      <div className='flex flex-row font-semibold'>
-        <h1>
-          {/* {title}  */}
-          EXAMPLE ROLE
-        </h1>
-        <h1 className='ml-[5px] text-[var(--main-blue)]'>
-          {/* @ {company} */}
-          @ EXAMPLE COMPANY
-        </h1>
+const Menu = () => {
+  return(
+    <div className='absolute bottom-[0vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2}/>
+      <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2021 ––– </p>
+        <Button text={"KEEPUP"} />
+        <Button text={"HOYALYTICS"} />
+        <Button text={"HOYA DEVELOPERS"} />
+        <Button text={"THE HOYA"} />
+        <Button text={"HM ON TECH"} />
+
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> 2024 –––</p>
       </div>
-
-      <p className='text-[20px] italic text-[var(--main-blue)]'>
-        (MAY 'XX - JUN 'XX)
-      </p>
-
     </div>
   )
-}
-
-const Blurb = () => {
-  return (
-    <div className='mt-[5vh] mr-[25vw]'>
-      {/* insert arrow icon */}
-      <p className='leading-tight'>
-        Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minor in Cognitive Science.
-      </p>
-    </div>
-  )
-}
-
-const Impact = () => {
-
-}
-
-const Projects = () => {
-
 }
 
 

@@ -1,14 +1,12 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
-import Experience from "./Experience.js";
 import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion' // importing properly
-// import Sidebar from "./Sidebar.js";
 
 export const Landing = () => {
 
   return(
-    <div className="relative grid grid-cols-[15%_85%] h-[260vh] bg-[var(--main-red)] overflow-visible">
+    <div className="relative grid grid-cols-[15%_85%] h-[270vh] bg-[var(--main-red)] overflow-visible">
       <Sidebar className='sticky h-full z-[10] top-[40vh]'/>
       <div className="w-full flex flex-col">
         <Hero />
@@ -29,6 +27,7 @@ const Sidebar = () => {
           <li>HELLO</li>
           <li className="opacity-60">ABOUT</li>
           <li className="opacity-60">EXPERIENCE</li>
+          {/* <li className="opacity-60">IN THE OFF HOURS</li> */}
           <li className="opacity-60">GET IN TOUCH</li>
         </ul>
 
