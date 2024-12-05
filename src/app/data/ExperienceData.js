@@ -66,3 +66,17 @@ export const EXP_IMPACTS = {
   4: {p1: "",
       p2: "",},
 }
+
+export const EXP_LINKS = {
+  1: {site: "",
+      github: "",},
+
+  2: {site: "",
+      github: "",},
+
+  3: {site: "",
+      github: "",},
+
+  4: {p1: "",
+      github: "",},
+}

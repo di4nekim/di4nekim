@@ -15,7 +15,7 @@ const ExpSection = ({experience}) => {
       <Role experience={experience} />
       <Blurb experience={experience} />
       <Impact experience={experience} />
-      <Tidbits experience={experience} />
+      {/* <Projects /> */}
     </section>
   );
 };
@@ -70,10 +70,67 @@ const Blurb = ({experience}) => {
 
 const Impact = ({experience}) => {
   return(
-    <div className=''>
+    <div>
       <div className='flex flex-row items-center gap-x-3 mt-[5vh]'>
         <h1 className='font-semibold text-[20px]'>IMPACT</h1>
-        <div className='w-[10vw] h-[3px] bg-[var(--main-red)]'/>
+        <div className='w-full h-[2px] bg-[var(--main-red)]'/>
+      </div>
+
+      {/* map */}
+      <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[15px]'>
+        <li>Conducted in-depth user research to identify usability challenges and prioritized features that increased user satisfaction and engagement.</li>
+        <li>Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.</li>
+        <li>Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.</li>
+        <li>Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints.</li>
+      </ul>
+
+      {/* tidbits – links, techstack */}
+
+      <div className='mt-[3vh] w-full h-[5vh] '>
+      <div className='mb-[5vh] h-[2px] rounded-[5px] bg-[var(--main-red)] '/>
+
+      <div className='flex flex-row justify-start '>
+        <div className='flex flex-row gap-x-[10px]'>
+          <Button 
+            text={"SITE"} 
+            style={{
+              borderColor: 'var(--main-blue)',
+              borderWidth: '2px',
+              color: 'var(--main-blue)',
+              opacity: '100%',
+              fontSize: '18px'
+            }}
+          />
+          <Button 
+            text={"GITHUB"}
+            style={{
+              borderColor: 'var(--main-blue)',
+              borderWidth: '2px',
+              color: 'var(--main-blue)',
+              opacity: '100%',
+              fontSize: '18px'
+            }}
+          />
+        </div>
+
+        <div className='ml-auto flex flex-row justify-end gap-x-[15px] text-[var(--main-blue)] text-[18px] font-semibold italic underline'>
+          <p>REACT.JS</p>
+          <p>NEXT.JS</p>
+          <p>TAILWIND CSS</p>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  )
+}
+
+const Projects = ({experience}) => {
+  return(
+    <div>
+      <div className='flex flex-row items-center gap-x-3 mt-[5vh]'>
+        <h1 className='font-semibold text-[20px]'>PROJECTS</h1>
+        <div className='w-full h-[3px] bg-[var(--main-red)]'/>
       </div>
 
       {/* map */}
@@ -86,46 +143,5 @@ const Impact = ({experience}) => {
     </div>
   )
 }
-
-const Projects = ({experience}) => {
-
-}
-
-const Tidbits = ({experience}) => {
-  return(
-    <div className='mt-[80px] w-full h-[5vh] '>
-      <div className='mb-[10px] h-[2px] rounded-[5px] bg-[var(--main-blue)] '/>
-
-      <div className='flex flex-row justify-start '>
-        <div className='flex flex-row gap-x-[10px]'>
-          <Button 
-            text={"SITE"} 
-            style={{
-              borderColor: 'var(--main-blue)',
-              color: 'var(--main-blue)',
-              opacity: '100%',
-              fontSize: '18px'
-            }}
-          />
-          <Button 
-            text={"GITHUB"}
-            style={{
-              borderColor: 'var(--main-blue)',
-              color: 'var(--main-blue)',
-              opacity: '100%',
-              fontSize: '18px'
-            }}
-          />
-        </div>
-
-        <div className='ml-auto flex flex-row justify-end gap-x-[15px] text-[var(--main-blue)] text-[15px] font-semibold italic underline'>
-          <p>REACT.JS</p>
-          <p>NEXT.JS</p>
-          <p>TAILWIND CSS</p>
-        </div>
-      </div>
-    </div>
-  )
-} 
 
 export default ExpSection;
