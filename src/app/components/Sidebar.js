@@ -1,6 +1,8 @@
 'use client'
 import React from 'react';
 
+// DEPRECATED
+
 const Sidebar = () => {
   return (
     <div className="relative w-[15vw] z-10 min-h-screen bg-[var(--main-red)]">
