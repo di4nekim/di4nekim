@@ -7,7 +7,7 @@ import '@/app/globals.css';
 export default function Home() {
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       <Landing />
       <Experience />
       <Footer />
