@@ -26,13 +26,19 @@ const Experience = () => {
       }
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => unsubscribe(); // cleanup
   }, [scrollY]);
 
+  let totalHeight = "";
+  if (experience === "HOYA DEVELOPERS") totalHeight = "275vh";
+  else totalHeight = "230vh";
 
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
-      <div ref={parentRef} className='h-[275vh] grid grid-cols-[30%_70%]'>
+      <div ref={parentRef} 
+          className='grid grid-cols-[30%_70%]'
+          style={{height : totalHeight }}
+      >
 
         {/* Sidebar (incl. Experience Menu) */}
         <Sidebar parentRef={parentRef} className='absolute z-[20] top-[40vh]'/>
@@ -159,7 +165,7 @@ const Menu = () => {
   }, [experience]);
 
   return(
-    <div className='absolute top-[135vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
+    <div className='absolute top-[130vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
       <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
       <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
         <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2024 ––– </p>

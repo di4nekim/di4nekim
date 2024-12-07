@@ -1,11 +1,11 @@
 import React from 'react';
 
-const ContactInfo = () => {
+const PersonalProjects = () => {
   return (
     <div className='relative h-screen w-full bg-[var(--main-beige)]'>
-
+      
     </div>
   );
 };
 
-export default ContactInfo;
+export default PersonalProjects;

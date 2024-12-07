@@ -12,24 +12,24 @@ export const EXP_ROLES = {
     date: "MAY ‘24 - DEC '24",
   },
   "HOYALYTICS": {
-    title: "SWE Intern",
-    company: "Internship 2",
-    date: "MAY ‘24 - PRESENT",
+    title: "Data Analyst",
+    company: "Hoyalytics",
+    date: "JAN ‘24 - MAY '24",
   },
  "HOYA DEVELOPERS":{
-    title: "Intern",
-    company: "Intership 3",
-    date: "MAY ‘24 - PRESENT",
+    title: "Founding Member & Senior Project Manager",
+    company: "Hoya Developers",
+    date: "JUL ‘23 - MAY '24",
   },
  "THE HOYA" : {
-    title: "Intern Intern",
-    company: "Internship 4",
-    date: "MAY ‘24 - PRESENT",
+    title: "Columnist",
+    company: "The Hoya",
+    date: "JAN ‘24 - MAY '24",
   },
  "HM ON TECH" : {
-    title: "Intern Intern INTERN",
-    company: "Internship 5",
-    date: "MAY ‘24 - PRESENT",
+    title: "Founder & Project Manager",
+    company: "HM on Tech",
+    date: "OCT ‘21 - FEB '22",
   }
 };
 
