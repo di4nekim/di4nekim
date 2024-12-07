@@ -48,11 +48,11 @@ const Experience = () => {
           <AnimatePresence>
             {isVisible && (
               <motion.section 
-              className='sticky top-[50vh] z-[10] h-[10vh] mr-[20vw]'
+              className='sticky top-[45vh] z-[10] h-[10vh] mr-[20vw]'
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ease: "easeInOut", duration: 0.3}}
+              exit={{ opacity: 0, y: -80 }}
+              transition={{ease: "easeInOut", duration: 0.2}}
               animate={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
@@ -110,9 +110,9 @@ const Sidebar = ({parentRef}) => {
   }, []);
 
   const scrollValue = useMotionValue(scrollY);
-  const topPos = useTransform(scrollValue, [2000, 2150, 2500, 3000], [100, 300, 600, 1100]);
-  const scaleValue = useTransform(scrollValue, [2000, 2150, 2500, 2700, 4000], [1, 2.5, 2.5, 1, 1]);
-  const translateX = useTransform(scrollValue, [2000, 2150, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
+  const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3050], [100, 120, 450, 1150]);
+  const scaleValue = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
+  const translateX = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
 
   useEffect(() => {
     scrollValue.set(scrollY); // Update Framer Motion's MotionValue on scroll
@@ -122,21 +122,15 @@ const Sidebar = ({parentRef}) => {
   return(
     <div className="relative h-full z-20 bg-[var(--main-beige)] overflow-visible">
 
-      <div className="absolute z-10 ml-[10vw] h-full w-[4px] bg-[var(--main-red)] text-[var(--main-red)]">
-
-        {/* <motion.div 
-          style={{ y: yTranslate }} 
-          className="absolute top-[10vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-beige)] rounded-full">
-        </motion.div> */}
-
+      <div className="absolute z-10 ml-[10vw] h-[160vh] w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
         <motion.div 
-          className="absolute left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-red)] rounded-full"
+          className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
           style={{ 
             top: topPos,
           }}  
         />
         <motion.h1 
-          className='absolute text-[20px] font-bold text-[#cb0000]'
+          className='absolute text-[20px] font-bold text-[var(--main-red)]'
           style={{
             top: topPos,
             scale: scaleValue,
@@ -165,10 +159,10 @@ const Menu = () => {
   }, [experience]);
 
   return(
-    <div className='absolute top-[130vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
-      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
-      <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2024 ––– </p>
+    <div className='relative z-0 h-full w-full pr-[100px] bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0px] top-[10%] pt-[120vh]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[100px] top-[250px] pt-[130vh] flex flex-col gap-y-[20px] items-end'>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
         <Button 
           text={"KEEPUP"}
           onClick={() => {
@@ -192,8 +186,9 @@ const Menu = () => {
           onClick={() => setExperience("HM ON TECH")}
          />
 
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> 2021 –––</p>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
       </div>
+      <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" />
     </div>
   )
 }

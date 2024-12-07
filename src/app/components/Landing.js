@@ -49,18 +49,18 @@ const Hero = () => {
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
-      <div className="absolute right-0 pt-[35vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
+      <div className="absolute right-0 pt-[40vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
         <motion.h1
           className="text-[var(--main-beige)]"
         >hey, it's diane.
         </motion.h1>
 
       </div>
-      <div className="absolute right-0 mt-[53vh] mr-[10vh] flex z-1000 text-3xl font-medium">
+      <div className="absolute right-0 mt-[57vh] mr-[23vh] flex z-1000 text-3xl font-medium">
         <motion.h2
           className="text-[var(--main-beige)]"
         > 
-          an aspiring product manager who thinks in code.
+          I build things to keep myself happy.
         </motion.h2>
       </div>
 

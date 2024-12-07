@@ -15,7 +15,7 @@ const Header = () => {
                 </ul>
             </nav> */}
 
-            <p className={styles.name}>DIANE KIM</p>
+            <a className={styles.name} href="/">DIANE KIM</a>
             <nav className='pr-[20px]'>
                 <ul className={styles.navList}>
                     <li className={styles.navItem}><a className={styles.navLink} href="/resume.pdf" download="Diane Kim, Resume.pdf">RESUME</a></li>
