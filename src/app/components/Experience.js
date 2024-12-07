@@ -32,8 +32,7 @@ const Experience = () => {
 
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
-
-      <div ref={parentRef} className='h-[250vh] grid grid-cols-[30%_70%]'>
+      <div ref={parentRef} className='h-[275vh] grid grid-cols-[30%_70%]'>
 
         {/* Sidebar (incl. Experience Menu) */}
         <Sidebar parentRef={parentRef} className='absolute z-[20] top-[40vh]'/>
@@ -160,8 +159,8 @@ const Menu = () => {
   }, [experience]);
 
   return(
-    <div className='absolute bottom-[0vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
-      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2}/>
+    <div className='absolute top-[135vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
       <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
         <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2024 ––– </p>
         <Button 

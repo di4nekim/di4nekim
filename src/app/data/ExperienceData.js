@@ -56,40 +56,82 @@ export const EXP_BLURBS =
   ]
 }
 
-export const EXP_TECHS = {
- "KEEPUP": ["", ""],
+export const EXP_IMPACTS = {
+  "KEEPUP": [
+    "Conducted in-depth user research to identify usability challenges and prioritized features that increased user satisfaction and engagement.",
+    "Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.",
+    "Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.",
+    "Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints."
+  ],
+ 
+  "HOYALYTICS": [
+    "Developed the program's most innovative and impactful model by leveraging advanced techniques such as density-based clustering, dimensionality reduction, and NLP feature engineering with NLTK word embeddings. Complemented these efforts with robust data preprocessing and visualization to ensure accuracy and actionable insights.",
+    "Conducted in-depth data analysis to uncover actionable insights, contributing to the success of high-impact projects evaluated by program leaders.",
+    "Achieved the highest scores in a cohort of over 75 participants during the program’s final evaluations, showcasing the effectiveness and scalability of the solutions developed.",
+    "Presented findings and recommendations to stakeholders, aligning technical deliverables with business objectives and ensuring practical implementation of data-driven solutions."
+  ],
 
-  "HOYALYTICS": ["", ""],
+  "THE HOYA" : [
+    "Crafted heartfelt and actionable advice columns that resonated with readers, fostering engagement through relatable storytelling.",
+    "Partnered closely with editorial teams to refine content, thoughtfully incorporating reader feedback to create meaningful, impactful pieces that addressed their needs and challenges.",
+  ],
 
- "HOYA DEVELOPERS":["", ""],
+  "HM ON TECH":[
+    "Created a React-based platform to centralize event and publication discovery, enhancing accessibility for students.",
+    "Built a robust backend infrastructure using MySQL to enable seamless data storage and retrieval, supporting dynamic user interactions.",
+  ],
+ }
 
- "THE HOYA" : ["", ""],
+export const EXP_PROJECTS = {
+  "HOYA DEVELOPERS":{
+    "Meander" : {
+      paragraphs: [
+        "Spearheaded the development of a mobile matchmaking platform for students studying abroad, aligning product vision with user needs and technical feasibility through market research and client collaboration.",
+        "Directed an Agile development team to deliver core features, including a chat system, matchmaking directory, and community forum, fostering connection and engagement among users.",
+        "Defined and executed the product roadmap, prioritizing features based on user pain points and personas, ensuring a seamless and intuitive user journey.",
+        "Designed high-fidelity mockups and user journey maps in Figma to guide UX/UI design, creating a cohesive and user-centered product experience."
+      ],
+    },
+    "Hilltop Microfinance Initiative" : {
+      paragraphs : [
+      "Led a user-focused redesign of the website, partnering with stakeholders to align functionality with business goals such as marketing, donations, and user education.",
+      "Designed and iterated high-fidelity Figma mockups, refining UX/UI based on stakeholder feedback to create an intuitive and visually appealing user experience.",
+      "Directed the development and deployment of a Next.js and React web app, significantly enhancing platform performance and usability to support the organization’s mission.",
+      "Streamlined information architecture to effectively serve diverse audiences, including clients, students, and users seeking educational resources.",
+      "Integrated Stripe and Airtable to enable seamless donations, directly supporting organizational growth and impact."
+      ],
+      site : "https://www.hilltopmfi.org/"
+    }
+  }
 }
 
-export const EXP_IMPACTS = {
- "KEEPUP": {p1: "",
-      p2: "",},
+export const EXP_TECHS = {
+ "KEEPUP": ["REACT", "POSTGRESQL", "AWS", "FIGMA"],
 
-  "HOYALYTICS": {p1: "",
-      p2: "",},
+ "HOYALYTICS": ["PYTHON", "SCIKIT-LEARN", "NLTK", "PANDAS", "NUMPY"],
 
- "HOYA DEVELOPERS":{p1: "",
-      p2: "",},
+ "HOYA DEVELOPERS":["REACT", "REACT NATIVE", "FIREBASE", "FIGMA"],
 
- "THE HOYA" : {p1: "",
-      p2: "",},
+//  "HM ON TECH" : ["React", "MySQL"],
+ "HM ON TECH" : ["REACT", "MYSQL"],
 }
 
 export const EXP_LINKS = {
- "KEEPUP": {site: "",
-      github: "",},
+ "KEEPUP": {
+    "SITE": "https://www.keep-up.online/",
+  },
 
-  "HOYALYTICS": {site: "",
-      github: "",},
+  "HOYALYTICS": {
+    "SITE": "https://www.hoyalytics.com/",
+    "GITHUB": "https://github.com/Hoyalytics",
+  },
 
- "HOYA DEVELOPERS":{site: "",
-      github: "",},
+ "HOYA DEVELOPERS":{
+    "SITE": "https://www.hoyadevelopers.com/",
+    "GITHUB": "https://github.com/hoya-developers",
+  },
 
- "THE HOYA" : {p1: "",
-      github: "",},
+ "THE HOYA" : {
+    "SITE": "https://thehoya.com/",
+  },
 }

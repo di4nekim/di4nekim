@@ -1,5 +1,5 @@
 import React from 'react';
-import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_TECHS } from '../data/ExperienceData';
+import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
 import Arrow from '../../../public/Arrow.svg'
@@ -7,16 +7,19 @@ import Arrow from '../../../public/Arrow.svg'
 const ExpSection = ({experience}) => {
 
   // console.log("EXPSECTION", experience)
-  
-  const EXPERIENCE = "dummy_experience"
-  // if X button is clicked, EXPERIENCE = ___________, render Y
 
   return (
     <section className='absolute w-[75%] h-[75vh] mt-[140vh] pl-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
       <Role experience={experience} />
       <Blurb experience={experience} />
-      {/* <Impact experience={experience} /> */}
-      <Projects />
+      {(experience === "KEEPUP" || 
+        experience === "HOYALYTICS" || 
+        experience === "THE HOYA" ||
+        experience === "HM ON TECH") 
+        && <Impact experience={experience} />}
+      
+      {(experience === "HOYA DEVELOPERS") 
+        && <Projects experience={experience} />}
     </section>
   );
 };
@@ -43,8 +46,8 @@ const Role = ({experience}) => {
 const Blurb = ({experience}) => {
   return (
     <div className='flex flex-col justify-center gap-y-3 mt-[5vh]'>
-      {EXP_BLURBS[experience].map((paragraph) => (
-        <div className='flex flex-row gap-x-5' >
+      {EXP_BLURBS[experience].map((paragraph, index) => (
+        <div className='flex flex-row gap-x-5' key={index}>
           <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
           <p className='leading-tight'>
             {paragraph}
@@ -73,15 +76,14 @@ const Impact = ({experience}) => {
       </div>
 
       {/* map */}
-      <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[15px]'>
-        <li>Conducted in-depth user research to identify usability challenges and prioritized features that increased user satisfaction and engagement.</li>
-        <li>Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.</li>
-        <li>Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.</li>
-        <li>Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints.</li>
-      </ul>
+      {EXP_IMPACTS[experience].map((paragraph, index) => (
+        <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[15px]' key={index}>
+          <li>{paragraph}</li>
+        </ul>
+      ))}
 
       {/* tidbits – links, techstack */}
-      <TidBits />
+      <TidBits experience={experience}/>
     </div>
   )
 }
@@ -92,58 +94,44 @@ const Projects = ({experience}) => {
       <h1 className='font-bold text-[20px] mt-[5vh]'>PROJECTS</h1>
 
       {/* map */}
-      <section className='mb-[30px]'>
-        <div className='flex flex-row items-center justify-start gap-x-[5px] text-[var(--main-blue)] text-[25px]'>
-          <h1 className='font-semibold'>Meander</h1>
-          <p className='italic font-light whitespace-nowrap'>(S/S 24)</p>
-          <div className='ml-[10px] w-full h-[2px] bg-[var(--main-red)] rounded-[5px]' />
-        </div>
-        <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[10px]'>
-          <li>Conducted in-depth user research to identify usability challenges and prioritized features that increased user satisfaction and engagement.</li>
-          <li>Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.</li>
-          <li>Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.</li>
-          <li>Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints.</li>
-        </ul>
-      </section>
+      {/* <p className='italic font-light whitespace-nowrap'>(S/S 24)</p> */}
 
-      <section className='mb-[30px]'>
-        <div className='flex flex-row items-center gap-x-[5px] text-[var(--main-blue)] text-[25px]'>
-          <h1 className='w-[600px] font-semibold whitespace-nowrap'>Hilltop Microfinance Initiative</h1>
-          <p className='italic font-light whitespace-nowrap'>(F/W 23)</p>
-          <div className='ml-[10px] flex-shrink w-full h-[2px] bg-[var(--main-red)] rounded-[5px]' />
-          {/* include site link if relevant */}
-          <Button 
-            text={"SITE"}
-            style={{
-              // borderColor: 'var(--main-blue)',
-              borderWidth: '2px',
-              // color: 'var(--main-blue)',
-              opacity: '100%',
-              fontSize: '15px',
-              padding: '7px',
-              paddingLeft: '10px',
-              paddingRight: '10px',
-              marginLeft: '10px'
-            }}
-          />
-        </div>
-        <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[10px]'>
-          <li>Conducted in-depth user research to identify usability challenges and prioritized features that increased user satisfaction and engagement.</li>
-          <li>Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.</li>
-          <li>Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.</li>
-          <li>Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints.</li>
-        </ul>
-      </section>
+      {Object.entries(EXP_PROJECTS[experience]).map(([project, details], index) => (
+        <section className='mb-[30px]' key={index}>
+          <div className='flex flex-row items-center justify-start gap-x-[5px] text-[var(--main-blue)] text-[25px]'>
+            <h1 className='font-semibold whitespace-nowrap'>{project}</h1>
+            <div className='ml-[10px] w-full h-[2px] bg-[var(--main-red)] rounded-[5px]' />
+            {details.site && <Button 
+              text={"SITE"}
+              style={{
+                borderWidth: '2px',
+                opacity: '100%',
+                fontSize: '15px',
+                padding: '7px',
+                paddingLeft: '10px',
+                paddingRight: '10px',
+                marginLeft: '10px'
+              }}
+              link={details.site}
+            />}
+          </div>
+          <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[10px]'>
+          {details.paragraphs.map((paragraph, paragraphIndex) => (
+            <li key={paragraphIndex}>{paragraph}</li>
+          ))}
+          </ul>
+
+        </section>
+      ))}
             
       {/* tidbits -- links, tech stack */}
-      <TidBits className="relative" />
+      <TidBits experience={experience} className="relative" />
       
     </div>
   )
 }
 
 {/* <div className='absolute bottom-[10px] w-full h-[5vh] '> */}
-
 const TidBits = ({experience}) => {
   return(
     <div 
@@ -154,8 +142,10 @@ const TidBits = ({experience}) => {
 
         <div className='flex flex-row justify-start '>
           <div className='flex flex-row gap-x-[10px]'>
-            <Button 
-              text={"SITE"} 
+            {EXP_LINKS[experience] && Object.entries(EXP_LINKS[experience]).map(([name, link], index) => (
+              <Button 
+              key={index}
+              text={name} 
               style={{
                 borderColor: 'var(--main-blue)',
                 borderWidth: '2px',
@@ -163,22 +153,15 @@ const TidBits = ({experience}) => {
                 opacity: '100%',
                 fontSize: '18px'
               }}
+              link={link}
             />
-            <Button 
-              text={"GITHUB"}
-              style={{
-                borderColor: 'var(--main-blue)',
-                borderWidth: '2px',
-                color: 'var(--main-blue)',
-                opacity: '100%',
-                fontSize: '18px'
-              }}
-            />
+            ))}
           </div>
 
           <div className='ml-auto flex flex-row justify-end gap-x-[15px] text-[var(--main-blue)] text-[18px] font-semibold italic underline'>
-            <p>REACT.JS</p>
-            <p>POSTGRE SQL</p>
+            {EXP_TECHS[experience] && EXP_TECHS[experience].map((tech, index) => (
+              <p key={index}>{tech}</p>
+            ))}
           </div>
       </div>
   </div>
