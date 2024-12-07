@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Arrow from '../../../public/Arrow.svg'
 
 const ExpSection = ({experience}) => {
+
+  // console.log("EXPSECTION", experience)
   
   const EXPERIENCE = "dummy_experience"
   // if X button is clicked, EXPERIENCE = ___________, render Y
@@ -22,19 +24,16 @@ const ExpSection = ({experience}) => {
 const Role = ({experience}) => {
   return (
     <div className='relative w-full text-[30px] whitespace-nowrap'>
-      <div className='flex flex-row font-semibold h-[30px] mb-[5px]'>
+      <div className="flex flex-row font-semibold h-[30px] mb-[5px]">
         <h1>
-          {/* {title}  */}
-          INTERN
+          {EXP_ROLES[experience].title}
         </h1>
-        <h1 className='ml-[5px] text-[var(--main-blue)]'>
-          {/* @ {company} */}
-          @ KEEPUP TECHNOLOGIES
+        <h1 className="ml-[5px] text-[var(--main-blue)]">
+          @ {EXP_ROLES[experience].company}
         </h1>
       </div>
       <p className='text-[15px] italic font-semibold text-[var(--main-blue)]'>
-        {/* {date} */}
-        (MAY '24 - DEC '24)
+        ({EXP_ROLES[experience].date})
       </p>
 
     </div>
@@ -44,17 +43,15 @@ const Role = ({experience}) => {
 const Blurb = ({experience}) => {
   return (
     <div className='flex flex-col justify-center gap-y-3 mt-[5vh]'>
-      {/* map each paragraph to: */}
+      {EXP_BLURBS[experience].map((paragraph) => (
+        <div className='flex flex-row gap-x-5' >
+          <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
+          <p className='leading-tight'>
+            {paragraph}
+          </p>
+        </div>
+      ))}
 
-      {/* p1 */}
-      <div className='flex flex-row gap-x-5'>
-        <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
-        <p className='leading-tight'>
-          As a <span className='font-bold'>Product Management</span> and <span className='font-bold'>Software Engineering</span> Intern at KeepUp, I redesigned and helped refactor the company’s React-based MVP.
-        </p>
-      </div>
-      
-      
       {/* p2 */}
       {/* <div className='flex flex-row gap-x-5 mr-[25vw]'>
         <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
@@ -92,16 +89,13 @@ const Impact = ({experience}) => {
 const Projects = ({experience}) => {
   return(
     <div>
-      <div className='flex flex-row items-center gap-x-3 mt-[5vh]'>
-        <h1 className='font-bold text-[20px]'>PROJECTS</h1>
-        {/* <div className='w-full h-[3px] bg-[var(--main-red)]'/> */}
-      </div>
+      <h1 className='font-bold text-[20px] mt-[5vh]'>PROJECTS</h1>
 
       {/* map */}
       <section className='mb-[30px]'>
-        <div className='flex flex-row items-center justify-start gap-x-[5px] text-[var(--main-blue)] text-[20px]'>
+        <div className='flex flex-row items-center justify-start gap-x-[5px] text-[var(--main-blue)] text-[25px]'>
           <h1 className='font-semibold'>Meander</h1>
-          <p className='italic font-light'>(F'23)</p>
+          <p className='italic font-light whitespace-nowrap'>(S/S 24)</p>
           <div className='ml-[10px] w-full h-[2px] bg-[var(--main-red)] rounded-[5px]' />
         </div>
         <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[10px]'>
@@ -113,9 +107,9 @@ const Projects = ({experience}) => {
       </section>
 
       <section className='mb-[30px]'>
-        <div className='flex flex-row items-center gap-x-[5px] text-[var(--main-blue)] text-[20px]'>
+        <div className='flex flex-row items-center gap-x-[5px] text-[var(--main-blue)] text-[25px]'>
           <h1 className='w-[600px] font-semibold whitespace-nowrap'>Hilltop Microfinance Initiative</h1>
-          <p className='italic font-light'>(S'24)</p>
+          <p className='italic font-light whitespace-nowrap'>(F/W 23)</p>
           <div className='ml-[10px] flex-shrink w-full h-[2px] bg-[var(--main-red)] rounded-[5px]' />
           {/* include site link if relevant */}
           <Button 
