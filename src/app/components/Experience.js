@@ -9,10 +9,13 @@ import ExperienceCloud2 from '../../../public/experience-cloud-2.png';
 
 import ExpSection from './ExpSection';
 
+const ExperienceContext = React.createContext();
+
 const Experience = () => {
   const parentRef = useRef(null);
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
+  const [experience, setExperience] = useState("KEEPUP");
 
   useEffect(() => {
     const unsubscribe = scrollY.onChange((value) => {
@@ -23,44 +26,50 @@ const Experience = () => {
       }
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => unsubscribe(); // cleanup
   }, [scrollY]);
 
+  let totalHeight = "";
+  if (experience === "HOYA DEVELOPERS") totalHeight = "275vh";
+  else totalHeight = "230vh";
 
   return (
-    <div ref={parentRef} className='h-[250vh] grid grid-cols-[30%_70%]'>
+    <ExperienceContext.Provider value={{ experience, setExperience }}>
+      <div ref={parentRef} 
+          className='grid grid-cols-[30%_70%]'
+          style={{height : totalHeight }}
+      >
 
-      {/* Menu + Sidebar */}
-      {/* <section className='relative'> */}
+        {/* Sidebar (incl. Experience Menu) */}
         <Sidebar parentRef={parentRef} className='absolute z-[20] top-[40vh]'/>
-      {/* </section> */}
 
-      <div className='relative flex flex-col bg-[var(--main-beige)] text-[var(--main-red)] '>
-        {/* overview */}
-        <AnimatePresence>
-          {isVisible && (
-            <motion.section 
-            className='sticky top-[50vh] z-[10] h-[10vh] mr-[20vw]'
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ease: "easeInOut", duration: 0.3}}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className='mb-[10px]'>{EXP_OVERVIEW.p1}</p>
-            <p className='mb-[10px]'>{EXP_OVERVIEW.p2}</p>
-            <p className='font-semibold italic'>{EXP_OVERVIEW.p3}</p>
-          </motion.section>
-          )}
-        </AnimatePresence>
+        <div className='relative flex flex-col bg-[var(--main-beige)] text-[var(--main-red)] '>
+          {/* overview */}
+          <AnimatePresence>
+            {isVisible && (
+              <motion.section 
+              className='sticky top-[50vh] z-[10] h-[10vh] mr-[20vw]'
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ease: "easeInOut", duration: 0.3}}
+              animate={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className='mb-[10px]'>{EXP_OVERVIEW.p1}</p>
+              <p className='mb-[10px]'>{EXP_OVERVIEW.p2}</p>
+              <p className='font-semibold italic'>{EXP_OVERVIEW.p3}</p>
+            </motion.section>
+            )}
+          </AnimatePresence>
 
-        {/* experience section */}
-        <ExpSection />
+          {/* experience section */}
+          <ExpSection experience={experience}/>
+
+        </div>
 
       </div>
-
-    </div>
+    </ExperienceContext.Provider>
   );
 };
 
@@ -141,7 +150,7 @@ const Sidebar = ({parentRef}) => {
       </div>
       
       {/* experience section menu */}
-      <Menu className='' />
+      <Menu />
 
 
     </div>
@@ -149,18 +158,41 @@ const Sidebar = ({parentRef}) => {
 }
 
 const Menu = () => {
-  return(
-    <div className='absolute bottom-[0vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
-      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2}/>
-      <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2021 ––– </p>
-        <Button text={"KEEPUP"} />
-        <Button text={"HOYALYTICS"} />
-        <Button text={"HOYA DEVELOPERS"} />
-        <Button text={"THE HOYA"} />
-        <Button text={"HM ON TECH"} />
+  const { experience, setExperience } = React.useContext(ExperienceContext);
 
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> 2024 –––</p>
+  useEffect(() => {
+    console.log(experience)
+  }, [experience]);
+
+  return(
+    <div className='absolute top-[130vh] z-0 h-[120vh] w-full bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0] top-[10%]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[65px] top-[250px] flex flex-col gap-y-[20px] items-end'>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>2024 ––– </p>
+        <Button 
+          text={"KEEPUP"}
+          onClick={() => {
+              setExperience("KEEPUP")
+            }}
+         />
+        <Button 
+          text={"HOYALYTICS"}
+          onClick={() => setExperience("HOYALYTICS")}
+         />
+        <Button 
+          text={"HOYA DEVELOPERS"}
+          onClick={() => setExperience("HOYA DEVELOPERS")}
+         />
+        <Button 
+          text={"THE HOYA"}
+          onClick={() => setExperience("THE HOYA")}
+         />
+        <Button 
+          text={"HM ON TECH"}
+          onClick={() => setExperience("HM ON TECH")}
+         />
+
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> 2021 –––</p>
       </div>
     </div>
   )
