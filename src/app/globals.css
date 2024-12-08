@@ -5,11 +5,11 @@
 :root {
   /* --background: #ffffff;
   --foreground: #171717; */
-  /* --main-red: #CB0000; */
-  --main-red: #9C0D0F;
+  --main-red: #CB0000;
+  /* --main-red: #9C0D0F; */
   --secondary-red: #f39191;
   --main-beige: #F5EFE8;
-  --main-blue: #00BCFF;
+  --main-blue: #308edb;
   --font-family-primary: var(--font-inter);
   --font-weight-medium: 500;
   --font-weight-semibold: 600;

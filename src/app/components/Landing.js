@@ -20,8 +20,8 @@ const Sidebar = () => {
   return (
     <div className="relative w-[15vw] h-full z-10 min-h-screen bg-[var(--main-red)]">
       <div className="relative z-0 mt-[70vh] ml-[10vw] h-full w-[4px] bg-[var(--main-beige)]">
-        <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2 z-10 w-5 h-5 bg-[var(--main-beige)] rounded-full"></div>
-        <div className="absolute -top-[10px] left-1/2 transform -translate-x-1/2 z-10 w-5 h-5 bg-[var(--main-beige)] rounded-full"></div>
+        <div className="absolute -top-[40px] left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-beige)] rounded-full"></div>
+        <div className="absolute -top-[10px] left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-beige)] rounded-full"></div>
         
         <ul className='w-[15vw] ml-[30px] mt-[60px] text-[20px] text-[var(--main-beige)] font-semibold'>
           <li>HELLO</li>
@@ -31,8 +31,8 @@ const Sidebar = () => {
           <li className="opacity-60">GET IN TOUCH</li>
         </ul>
 
-        <div className="absolute top-[123vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full"></div>
-        <div className="absolute top-[124vh] left-1/2 transform -translate-x-1/2 z-10 w-6 h-6 bg-[var(--main-beige)] rounded-full"></div>
+        {/* <div className="absolute top-[123vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full" /> */}
+        <div className="absolute top-[128vh] left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-beige)] rounded-full" />
 
       </div>
 
@@ -49,20 +49,20 @@ const Hero = () => {
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
-      <div className="absolute right-0 pt-[40vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
+      <div className="absolute right-0 pt-[39vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
         <motion.h1
           className="text-[var(--main-beige)]"
         >hey, it's diane.
         </motion.h1>
 
       </div>
-      <div className="absolute right-0 mt-[57vh] mr-[23vh] flex z-1000 text-3xl font-medium">
+      {/* <div className="absolute right-0 mt-[55vh] mr-[23vh] flex z-1000 text-3xl font-medium">
         <motion.h2
           className="text-[var(--main-beige)]"
         > 
-          I build things to keep myself happy.
+          I build things to make myself happy.
         </motion.h2>
-      </div>
+      </div> */}
 
   </div>
 
@@ -105,10 +105,9 @@ const Cloud = ({className, src, start, end}) => {
 }
 
 const ABOUT_HOOK = "I’ve always had my head up in the clouds";
-const ABOUT_P1 = "—dreaming of ways to connect ideas, solve problems, and build something meaningful. As an aspiring Software Engineer and Product Manager, I channel that imagination into designing and developing solutions that blend creativity with functionality.";
-const ABOUT_P2 = "Whether designing clustering algorithms or crafting dynamic user experiences, my goal is to create tools that are not only functional but also delightful to use.";
-// const ABOUT_P3 = "When I’m not at my keyboard, I’m on a constant hunt for unprecedented challenges." // Get to know me better by checking out some of the oddball pieces of my lore here [insert link to page]."
-const ABOUT_P3 = "When I’m not at my keyboard, I’m on a constant hunt for my next fixation." // Get to know me better by checking out some of the oddball pieces of my lore here [insert link to page]."
+const ABOUT_P1 = "I wear all the hats I can, and love to go all the way. In my work, that translates to creative technical solutions and a flexibility that makes me well suited for both interpersonal and technical work. I love being involved with products at both the high and granular level, and there’s nothing more fulfilling than being on a team that strives to make it—whatever ‘it’ is—happen.";
+const ABOUT_P2 = "When I’m not at my keyboard, I have a penchant for being an amateur and working with my hands :)";
+// const ABOUT_P3 = "Get to know me better by checking out some of the things I do for fun." // underline 'for fun', link to 'in the off hours'
 
 const About = () => {
   return(
@@ -122,7 +121,8 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="mb-[35px] mx-[5vh] text-title font-bold"
+        // className="mb-[35px] mx-[5vh] text-title font-bold"
+        className="mb-[20px] mx-[5vh] text-[20px] font-semibold"
       >
         ABOUT ME
       </motion.h1>
@@ -131,7 +131,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-3 mx-[5vh] text-paragraph font-semibold"
+        className="w-[50vw] mb-3 mx-[5vh] text-paragraph font-semibold"
       >
         {ABOUT_HOOK}
       </motion.p>
@@ -140,7 +140,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-5 mx-[5vh] text-paragraph font-normal"
+        className="w-[50vw] mb-5 mx-[5vh] text-paragraph font-normal"
       >
         {ABOUT_P1}   
       </motion.p>
@@ -149,11 +149,12 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[40vw] mb-5 mx-[5vh] text-paragraph font-normal"
+        className="w-[50vw] mb-5 mx-[5vh] text-paragraph font-normal"
       >
         {ABOUT_P2}
       </motion.p>
 
+      {/*   
       <motion.p
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -161,7 +162,7 @@ const About = () => {
         className="mb-5 mx-[5vh] text-paragraph font-normal"
       >
         {ABOUT_P3}
-      </motion.p>
+      </motion.p> */}
 
 
     </section>

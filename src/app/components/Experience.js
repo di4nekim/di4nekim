@@ -19,7 +19,7 @@ const Experience = () => {
 
   useEffect(() => {
     const unsubscribe = scrollY.onChange((value) => {
-      if (value > 2150 && value < 2400){
+      if (value > 2300 && value < 2450){
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -48,8 +48,8 @@ const Experience = () => {
           <AnimatePresence>
             {isVisible && (
               <motion.section 
-              className='sticky top-[45vh] z-[10] h-[10vh] mr-[20vw]'
-              initial={{ opacity: 0, y: 20 }}
+              className='sticky top-[38vh] z-[10] h-[10vh] mr-[20vw]'
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -80 }}
               transition={{ease: "easeInOut", duration: 0.2}}
@@ -110,7 +110,8 @@ const Sidebar = ({parentRef}) => {
   }, []);
 
   const scrollValue = useMotionValue(scrollY);
-  const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3050], [100, 120, 450, 1150]);
+  // const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 450, 1100]);
+  const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 520, 1100]);
   const scaleValue = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
   const translateX = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
 
