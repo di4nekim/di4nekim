@@ -16,6 +16,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/sparkles.svg"></link>
+      </head>
       <SpeedInsights />
       <body
         className={inter.variable}
