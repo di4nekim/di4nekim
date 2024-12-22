@@ -1,10 +1,13 @@
 'use client'
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, useMotionValue, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
 import Arrow from '../../../public/Arrow.svg'
+import ExperienceCloud2 from '../../../public/experience-cloud-2.png';
+
 
 const ExperienceContext = React.createContext();
 
@@ -20,7 +23,8 @@ const ExpSection = () => {
             // style={{height : totalHeight }}
         >
         {/* <Sidebar /> */}
-        <div />
+        {/* <div /> */}
+        <Menu />
         <section className='relative h-[100vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
           <Role experience={experience} />
           <Blurb experience={experience} />
@@ -69,14 +73,6 @@ const Blurb = ({experience}) => {
           </p>
         </div>
       ))}
-
-      {/* p2 */}
-      {/* <div className='flex flex-row gap-x-5 mr-[25vw]'>
-        <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
-        <p className='leading-tight'>
-          Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minor in Cognitive Science.
-        </p>
-      </div> */}
     
     </div>
   )
@@ -107,7 +103,6 @@ const Projects = ({experience}) => {
     <div>
       <h1 className='font-bold text-[20px] mt-[5vh]'>PROJECTS</h1>
 
-      {/* map */}
       {/* <p className='italic font-light whitespace-nowrap'>(S/S 24)</p> */}
 
       {Object.entries(EXP_PROJECTS[experience]).map(([project, details], index) => (
@@ -145,7 +140,6 @@ const Projects = ({experience}) => {
   )
 }
 
-{/* <div className='absolute bottom-[10px] w-full h-[5vh] '> */}
 const TidBits = ({experience}) => {
   return(
     <div 
@@ -273,8 +267,10 @@ const Menu = () => {
 
   return(
     <div className='relative z-0 h-full w-full pr-[100px] bg-[var(--main-beige)]'> 
-      <Image className='absolute right-[0px] top-[10%] pt-[120vh]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
-      <div className='absolute right-[100px] top-[250px] pt-[130vh] flex flex-col gap-y-[20px] items-end'>
+      {/* <Image className='absolute right-[0px] top-[10%] pt-[120vh]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[100px] top-[250px] pt-[130vh] flex flex-col gap-y-[20px] items-end'> */}
+      <Image className='absolute right-[0px] ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[100px] top-[130px] flex flex-col gap-y-[20px] items-end'>
         <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
         <Button 
           text={"KEEPUP"}

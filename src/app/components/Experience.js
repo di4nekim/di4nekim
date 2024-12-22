@@ -26,10 +26,8 @@ const Experience = () => {
 
   const translateY = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.7, 1], // works, but is too high on the page
+    [0, 0.2, 0.7, 1], // works @ h-[1500px], but is too high on the page
     [800, 500, 800, 0]
-    // [0, 0.2, 0.7, 1],
-    // [800, 500, 800, 0]
   );
 
   return (
@@ -89,7 +87,7 @@ const Sidebar = ({scrollYProgress}) => {
   const topPos = useTransform(
     scrollYProgress, 
     [0, 0.2, 0.7, 1],
-    [0, 600, 1000, 1500]
+    [0, 600, 1000, 1425]
   );
   const scaleValue = useTransform(
     scrollYProgress, 
