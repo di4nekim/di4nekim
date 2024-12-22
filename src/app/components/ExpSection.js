@@ -1,26 +1,41 @@
+'use client'
 import React from 'react';
+import { useState } from 'react';
 import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
 import Arrow from '../../../public/Arrow.svg'
 
-const ExpSection = ({experience}) => {
+const ExperienceContext = React.createContext();
 
-  // console.log("EXPSECTION", experience)
+const ExpSection = () => {
+  const [experience, setExperience] = useState("KEEPUP");
+  let totalHeight = "";
+  if (experience === "HOYA DEVELOPERS") totalHeight = "200vh";
+  else totalHeight = "100vh";
 
   return (
-    <section className='absolute w-[75%] h-[75vh] mt-[140vh] pl-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
-      <Role experience={experience} />
-      <Blurb experience={experience} />
-      {(experience === "KEEPUP" || 
-        experience === "HOYALYTICS" || 
-        experience === "THE HOYA" ||
-        experience === "HM ON TECH") 
-        && <Impact experience={experience} />}
-      
-      {(experience === "HOYA DEVELOPERS") 
-        && <Projects experience={experience} />}
-    </section>
+    <ExperienceContext.Provider value={{ experience, setExperience }}>
+      <div className='grid grid-cols-[30%_70%]'
+            // style={{height : totalHeight }}
+        >
+        {/* <Sidebar /> */}
+        <div />
+        <section className='relative h-[100vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
+          <Role experience={experience} />
+          <Blurb experience={experience} />
+          {(experience === "KEEPUP" || 
+            experience === "HOYALYTICS" || 
+            experience === "THE HOYA" ||
+            experience === "HM ON TECH") 
+            && <Impact experience={experience} />}
+          
+          {(experience === "HOYA DEVELOPERS") 
+            && <Projects experience={experience} />}
+        </section>
+      </div>
+    </ExperienceContext.Provider>
+
   );
 };
 
@@ -75,7 +90,6 @@ const Impact = ({experience}) => {
         <div className='w-full h-[3px] bg-[var(--main-red)]'/>
       </div>
 
-      {/* map */}
       {EXP_IMPACTS[experience].map((paragraph, index) => (
         <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[15px]' key={index}>
           <li>{paragraph}</li>
@@ -165,6 +179,130 @@ const TidBits = ({experience}) => {
           </div>
       </div>
   </div>
+  )
+}
+
+const Sidebar = ({scrollY}) => {
+
+  // const [scrollY, setScrollY] = useState(0);
+  // const scrollValue = useMotionValue(scrollY);
+  // // const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 450, 1100]);
+  // const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 520, 1100]);
+  // const scaleValue = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
+  // const translateX = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
+
+  // useEffect(() => {
+  //   scrollValue.set(scrollY); // Update Framer Motion's MotionValue on scroll
+  //   console.log(scrollY);
+  // }, [scrollY, scrollValue]);
+  
+  useEffect(() => {
+    const unsubscribe = scrollY.on("change", (value) => {
+      console.log("Scroll position updated in sidebar:", value); // For debugging
+      // No logic applied here yet
+    });
+
+    return () => unsubscribe(); // Cleanup
+  }, [scrollY]);
+
+  const [inputRange, setInputRange] = useState([0, 0, 0, 0]); // Dynamically set input range
+
+  // Update inputRange based on viewport size
+  useEffect(() => {
+    const updateRanges = () => {
+      const vh = window.innerHeight;
+      console.log('vh:', vh);
+      setInputRange([1 * vh, 1.2 * vh, 1.5 * vh, 2 * vh]); // Adjust ranges relative to viewport height
+      // console.log('inputRange:', inputRange);
+    };
+
+    updateRanges(); // Initial call
+    window.addEventListener("resize", updateRanges); // Recalculate on resize
+    return () => window.removeEventListener("resize", updateRanges);
+  }, []);
+
+  useEffect(() => {
+    console.log('Updated inputRange:', inputRange);
+  }, [inputRange]);
+
+  // Use dynamically calculated input range
+  const topPos = useTransform(scrollY, inputRange, [100, 120, 520, 1100]);
+
+  // const topPos = useTransform(scrollY, [1800, 2000, 2500, 3000], [100, 120, 520, 1100]);
+  const scaleValue = useTransform(scrollY, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
+  const translateX = useTransform(scrollY, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
+
+  return(
+    <div className="relative h-full z-20 bg-[var(--main-beige)] overflow-visible">
+
+      <div className="absolute z-10 ml-[10vw] h-[160vh] w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
+        <motion.div 
+          className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
+          style={{ 
+            top: topPos,
+          }}  
+        />
+        <motion.h1 
+          className='absolute text-[20px] font-bold text-[var(--main-red)]'
+          style={{
+            top: topPos,
+            scale: scaleValue,
+            translateX: translateX,
+            transformOrigin: "left center", // anchors scaling to the left
+          }}
+        >
+          EXPERIENCE
+        </motion.h1>
+
+      </div>
+      
+      {/* experience section menu */}
+      <Menu />
+
+
+    </div>
+  )
+}
+
+const Menu = () => {
+  const { experience, setExperience } = React.useContext(ExperienceContext);
+
+  useEffect(() => {
+    console.log(experience)
+  }, [experience]);
+
+  return(
+    <div className='relative z-0 h-full w-full pr-[100px] bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0px] top-[10%] pt-[120vh]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[100px] top-[250px] pt-[130vh] flex flex-col gap-y-[20px] items-end'>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
+        <Button 
+          text={"KEEPUP"}
+          onClick={() => {
+              setExperience("KEEPUP")
+            }}
+         />
+        <Button 
+          text={"HOYALYTICS"}
+          onClick={() => setExperience("HOYALYTICS")}
+         />
+        <Button 
+          text={"HOYA DEVELOPERS"}
+          onClick={() => setExperience("HOYA DEVELOPERS")}
+         />
+        <Button 
+          text={"THE HOYA"}
+          onClick={() => setExperience("THE HOYA")}
+         />
+        <Button 
+          text={"HM ON TECH"}
+          onClick={() => setExperience("HM ON TECH")}
+         />
+
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
+      </div>
+      <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" />
+    </div>
   )
 }
 

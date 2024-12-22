@@ -1,9 +1,11 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
-import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion' // importing properly
+import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion'
+import useLenis from '../hooks/useLenis';
 
 export const Landing = () => {
+  useLenis();
 
   return(
     <div className="relative grid grid-cols-[15%_85%] h-[270vh] bg-[var(--main-red)] overflow-visible">
@@ -28,10 +30,9 @@ const Sidebar = () => {
           <li className="opacity-60">ABOUT</li>
           <li className="opacity-60">EXPERIENCE</li>
           {/* <li className="opacity-60">IN THE OFF HOURS</li> */}
-          <li className="opacity-60">GET IN TOUCH</li>
+          {/* <li className="opacity-60">GET IN TOUCH</li> */}
         </ul>
 
-        {/* <div className="absolute top-[123vh] left-1/2 transform -translate-x-1/2 z-10 w-9 h-10 bg-[var(--main-red)] rounded-full" /> */}
         <div className="absolute top-[128vh] left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-beige)] rounded-full" />
 
       </div>
@@ -105,7 +106,7 @@ const Cloud = ({className, src, start, end}) => {
 }
 
 const ABOUT_HOOK = "I’ve always had my head up in the clouds";
-const ABOUT_P1 = "I wear all the hats I can, and love to go all the way. In my work, that translates to creative technical solutions and a flexibility that makes me well suited for both interpersonal and technical work. I love being involved with products at both the high and granular level, and there’s nothing more fulfilling than being on a team that strives to make it—whatever ‘it’ is—happen.";
+const ABOUT_P1 = "I wear all the hats I can, and strive to go all the way in anything I commit myself to. In my work, that translates to creative technical solutions and a flexibility that makes me well suited for both interpersonal and technical work. I love being involved with products at both a high and granular level, and there’s nothing more fulfilling than being on a team that makes it—whatever ‘it’ is—happen.";
 const ABOUT_P2 = "When I’m not at my keyboard, I have a penchant for being an amateur and working with my hands :)";
 // const ABOUT_P3 = "Get to know me better by checking out some of the things I do for fun." // underline 'for fun', link to 'in the off hours'
 
