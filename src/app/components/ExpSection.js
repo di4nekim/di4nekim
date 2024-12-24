@@ -1,26 +1,39 @@
+'use client'
 import React from 'react';
+import { useState, useEffect } from 'react';
+import { motion, useTransform } from "framer-motion";
 import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
 import Arrow from '../../../public/Arrow.svg'
+import ExperienceCloud2 from '../../../public/experience-cloud-2.png';
 
-const ExpSection = ({experience}) => {
 
-  // console.log("EXPSECTION", experience)
+const ExperienceContext = React.createContext();
+
+const ExpSection = () => {
+  const [experience, setExperience] = useState("KEEPUP");
 
   return (
-    <section className='absolute w-[75%] h-[75vh] mt-[140vh] pl-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
-      <Role experience={experience} />
-      <Blurb experience={experience} />
-      {(experience === "KEEPUP" || 
-        experience === "HOYALYTICS" || 
-        experience === "THE HOYA" ||
-        experience === "HM ON TECH") 
-        && <Impact experience={experience} />}
-      
-      {(experience === "HOYA DEVELOPERS") 
-        && <Projects experience={experience} />}
-    </section>
+    <ExperienceContext.Provider value={{ experience, setExperience }}>
+      <div className='relative h-full grid grid-cols-[30%_70%] '
+        >
+        <Menu />
+        <section className='relative h-full mb-[10vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
+          <Role experience={experience} />
+          <Blurb experience={experience} />
+          {(experience === "KEEPUP" || 
+            experience === "HOYALYTICS" || 
+            experience === "THE HOYA" ||
+            experience === "HM ON TECH") 
+            && <Impact experience={experience} />}
+          
+          {(experience === "HOYA DEVELOPERS") 
+            && <Projects experience={experience} />}
+        </section>
+      </div>
+    </ExperienceContext.Provider>
+
   );
 };
 
@@ -54,14 +67,6 @@ const Blurb = ({experience}) => {
           </p>
         </div>
       ))}
-
-      {/* p2 */}
-      {/* <div className='flex flex-row gap-x-5 mr-[25vw]'>
-        <Image src={Arrow} alt='arrow' className='w-[16px] h-[16px] mt-[2px]'/>
-        <p className='leading-tight'>
-          Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minor in Cognitive Science.
-        </p>
-      </div> */}
     
     </div>
   )
@@ -75,7 +80,6 @@ const Impact = ({experience}) => {
         <div className='w-full h-[3px] bg-[var(--main-red)]'/>
       </div>
 
-      {/* map */}
       {EXP_IMPACTS[experience].map((paragraph, index) => (
         <ul className='list-disc mt-[10px] ml-4 leading-tight space-y-[15px]' key={index}>
           <li>{paragraph}</li>
@@ -91,9 +95,8 @@ const Impact = ({experience}) => {
 const Projects = ({experience}) => {
   return(
     <div>
-      <h1 className='font-bold text-[20px] mt-[5vh]'>PROJECTS</h1>
+      <h1 className='font-bold italic text-[15px] mt-[5vh]'>PROJECTS</h1>
 
-      {/* map */}
       {/* <p className='italic font-light whitespace-nowrap'>(S/S 24)</p> */}
 
       {Object.entries(EXP_PROJECTS[experience]).map(([project, details], index) => (
@@ -131,7 +134,6 @@ const Projects = ({experience}) => {
   )
 }
 
-{/* <div className='absolute bottom-[10px] w-full h-[5vh] '> */}
 const TidBits = ({experience}) => {
   return(
     <div 
@@ -165,6 +167,48 @@ const TidBits = ({experience}) => {
           </div>
       </div>
   </div>
+  )
+}
+
+const Menu = () => {
+  const { experience, setExperience } = React.useContext(ExperienceContext);
+
+  useEffect(() => {
+    console.log(experience)
+  }, [experience]);
+
+  return(
+    <div className='relative z-0 h-full w-full pr-[100px] bg-[var(--main-beige)]'> 
+      <Image className='absolute right-[0px] ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+      <div className='absolute right-[100px] top-[130px] flex flex-col gap-y-[20px] items-end'>
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
+        <Button 
+          text={"KEEPUP"}
+          onClick={() => {
+              setExperience("KEEPUP")
+            }}
+         />
+        <Button 
+          text={"HOYALYTICS"}
+          onClick={() => setExperience("HOYALYTICS")}
+         />
+        <Button 
+          text={"HOYA DEVELOPERS"}
+          onClick={() => setExperience("HOYA DEVELOPERS")}
+         />
+        <Button 
+          text={"THE HOYA"}
+          onClick={() => setExperience("THE HOYA")}
+         />
+        <Button 
+          text={"HM ON TECH"}
+          onClick={() => setExperience("HM ON TECH")}
+         />
+
+        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
+      </div>
+      <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" />
+    </div>
   )
 }
 
