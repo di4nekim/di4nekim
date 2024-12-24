@@ -16,10 +16,9 @@ const ExpSection = () => {
 
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
-      <div className='relative h-full grid grid-cols-[30%_70%] '
-        >
+      <div className='relative h-full pb-[30vh] grid grid-cols-[30%_70%] bg-[var(--main-beige)]'>
         <Menu />
-        <section className='relative h-full mb-[10vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
+        <section className='relative h-full px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
           <Role experience={experience} />
           <Blurb experience={experience} />
           {(experience === "KEEPUP" || 
@@ -31,6 +30,7 @@ const ExpSection = () => {
           {(experience === "HOYA DEVELOPERS") 
             && <Projects experience={experience} />}
         </section>
+        {/* <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" /> */}
       </div>
     </ExperienceContext.Provider>
 
@@ -207,7 +207,6 @@ const Menu = () => {
 
         <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
       </div>
-      <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" />
     </div>
   )
 }
