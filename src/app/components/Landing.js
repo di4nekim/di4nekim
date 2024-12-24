@@ -1,7 +1,7 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
-import { motion, useTransform, useMotionValueEvent, useScroll } from 'framer-motion'
+import { motion, useTransform, useScroll } from 'framer-motion'
 import useLenis from '../hooks/useLenis';
 
 export const Landing = () => {
@@ -122,7 +122,6 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        // className="mb-[35px] mx-[5vh] text-title font-bold"
         className="mb-[20px] mx-[5vh] text-[20px] font-semibold"
       >
         ABOUT ME
@@ -154,16 +153,6 @@ const About = () => {
       >
         {ABOUT_P2}
       </motion.p>
-
-      {/*   
-      <motion.p
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ease: "easeInOut", duration: 1}}
-        className="mb-5 mx-[5vh] text-paragraph font-normal"
-      >
-        {ABOUT_P3}
-      </motion.p> */}
 
 
     </section>

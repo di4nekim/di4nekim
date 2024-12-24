@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { motion, useMotionValue, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
@@ -13,19 +13,13 @@ const ExperienceContext = React.createContext();
 
 const ExpSection = () => {
   const [experience, setExperience] = useState("KEEPUP");
-  let totalHeight = "";
-  if (experience === "HOYA DEVELOPERS") totalHeight = "200vh";
-  else totalHeight = "100vh";
 
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
-      <div className='grid grid-cols-[30%_70%]'
-            // style={{height : totalHeight }}
+      <div className='relative h-full grid grid-cols-[30%_70%] '
         >
-        {/* <Sidebar /> */}
-        {/* <div /> */}
         <Menu />
-        <section className='relative h-[100vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
+        <section className='relative h-full mb-[10vh] px-[10vw] text-[var(--main-red)] bg-[var(--main-beige)]'>
           <Role experience={experience} />
           <Blurb experience={experience} />
           {(experience === "KEEPUP" || 
@@ -101,7 +95,7 @@ const Impact = ({experience}) => {
 const Projects = ({experience}) => {
   return(
     <div>
-      <h1 className='font-bold text-[20px] mt-[5vh]'>PROJECTS</h1>
+      <h1 className='font-bold italic text-[15px] mt-[5vh]'>PROJECTS</h1>
 
       {/* <p className='italic font-light whitespace-nowrap'>(S/S 24)</p> */}
 
@@ -176,88 +170,6 @@ const TidBits = ({experience}) => {
   )
 }
 
-const Sidebar = ({scrollY}) => {
-
-  // const [scrollY, setScrollY] = useState(0);
-  // const scrollValue = useMotionValue(scrollY);
-  // // const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 450, 1100]);
-  // const topPos = useTransform(scrollValue, [1800, 2000, 2500, 3000], [100, 120, 520, 1100]);
-  // const scaleValue = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
-  // const translateX = useTransform(scrollValue, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
-
-  // useEffect(() => {
-  //   scrollValue.set(scrollY); // Update Framer Motion's MotionValue on scroll
-  //   console.log(scrollY);
-  // }, [scrollY, scrollValue]);
-  
-  useEffect(() => {
-    const unsubscribe = scrollY.on("change", (value) => {
-      console.log("Scroll position updated in sidebar:", value); // For debugging
-      // No logic applied here yet
-    });
-
-    return () => unsubscribe(); // Cleanup
-  }, [scrollY]);
-
-  const [inputRange, setInputRange] = useState([0, 0, 0, 0]); // Dynamically set input range
-
-  // Update inputRange based on viewport size
-  useEffect(() => {
-    const updateRanges = () => {
-      const vh = window.innerHeight;
-      console.log('vh:', vh);
-      setInputRange([1 * vh, 1.2 * vh, 1.5 * vh, 2 * vh]); // Adjust ranges relative to viewport height
-      // console.log('inputRange:', inputRange);
-    };
-
-    updateRanges(); // Initial call
-    window.addEventListener("resize", updateRanges); // Recalculate on resize
-    return () => window.removeEventListener("resize", updateRanges);
-  }, []);
-
-  useEffect(() => {
-    console.log('Updated inputRange:', inputRange);
-  }, [inputRange]);
-
-  // Use dynamically calculated input range
-  const topPos = useTransform(scrollY, inputRange, [100, 120, 520, 1100]);
-
-  // const topPos = useTransform(scrollY, [1800, 2000, 2500, 3000], [100, 120, 520, 1100]);
-  const scaleValue = useTransform(scrollY, [1800, 2000, 2500, 2700, 4000], [1, 2, 2, 1, 1]);
-  const translateX = useTransform(scrollY, [1800, 2000, 2500, 2700, 4000], ["5vw", "20vw", "20vw", "5vw", "5vw"]);
-
-  return(
-    <div className="relative h-full z-20 bg-[var(--main-beige)] overflow-visible">
-
-      <div className="absolute z-10 ml-[10vw] h-[160vh] w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
-        <motion.div 
-          className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
-          style={{ 
-            top: topPos,
-          }}  
-        />
-        <motion.h1 
-          className='absolute text-[20px] font-bold text-[var(--main-red)]'
-          style={{
-            top: topPos,
-            scale: scaleValue,
-            translateX: translateX,
-            transformOrigin: "left center", // anchors scaling to the left
-          }}
-        >
-          EXPERIENCE
-        </motion.h1>
-
-      </div>
-      
-      {/* experience section menu */}
-      <Menu />
-
-
-    </div>
-  )
-}
-
 const Menu = () => {
   const { experience, setExperience } = React.useContext(ExperienceContext);
 
@@ -267,8 +179,6 @@ const Menu = () => {
 
   return(
     <div className='relative z-0 h-full w-full pr-[100px] bg-[var(--main-beige)]'> 
-      {/* <Image className='absolute right-[0px] top-[10%] pt-[120vh]' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
-      <div className='absolute right-[100px] top-[250px] pt-[130vh] flex flex-col gap-y-[20px] items-end'> */}
       <Image className='absolute right-[0px] ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
       <div className='absolute right-[100px] top-[130px] flex flex-col gap-y-[20px] items-end'>
         <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
