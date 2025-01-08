@@ -17,7 +17,7 @@ export const EXP_ROLES = {
     date: "JAN ‘24 - MAY '24",
   },
  "HOYA DEVELOPERS":{
-    title: "Founding Member & Senior Project Manager",
+    title: "Senior Project Manager",
     company: "Hoya Developers",
     date: "JUL ‘23 - MAY '24",
   },
