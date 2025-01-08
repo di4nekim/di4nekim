@@ -16,11 +16,13 @@ const ExpSection = () => {
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
       <div className='relative h-full pb-[30vh] grid grid-cols-[30%_70%] bg-[var(--main-beige)]
+                      md:grid-cols-[35%_65%]
                       lg:grid-cols-[40%_60%]
                       xl:grid-cols-[30%_70%]
                       '>
         <Menu />
         <section className='relative h-full text-[var(--main-red)] bg-[var(--main-beige)]
+                            md:pr-[5vw]
                             lg:pr-[5vw]
                             xl:px-[10vw]
                             '>
@@ -45,29 +47,33 @@ const ExpSection = () => {
 const Role = ({experience}) => {
   return (
     <div className='relative w-full 
+                    md:text-[25px]
                     lg:text-[28px]
                     xl:text-[30px]
                     '>
       {/* <div className="flex flex-col xl:flex-row font-semibold h-[30px] mb-[5px]"> */}
       <div className="flex font-semibold h-[30px] mb-[5px]
+                      md:flex-col
                       lg:flex-col
                       xl:flex-row 
                       ">
         <h1 className='
+                      md:-my-[13px]
                       lg:-my-[13px]
                       xl:my-0  xl:whitespace-nowrap
                       '>
           {EXP_ROLES[experience].title}
         </h1>
-        <h1 className="ml-[5px] text-[var(--main-blue)] 
-                      lg:ml-0 lg:text-[25px]
+        <h1 className="text-[var(--main-blue)] 
+                      md:text-[22px]
+                      lg:text-[25px]
                       xl:whitespace-nowrap xl:ml-[10px] xl:text-[30px]
                       ">
           @ {EXP_ROLES[experience].company}
         </h1>
       </div>
       <p className='italic font-semibold text-[var(--main-blue)]
-                    lg:absolute lg:-top-[25px] lg:left-0 lg:opacity-70 lg:text-[13px]
+                    md:absolute md:-top-[25px] md:left-0 md:opacity-70 md:text-[13px]
                     xl:text-[15px]  xl:opacity-100 xl:relative xl:mt-[30px]
                     '>
         ({EXP_ROLES[experience].date})
@@ -183,6 +189,7 @@ const TidBits = ({experience}) => {
           </div>
 
           <div className='flex flex-row flex-wrap justify-end gap-x-[15px] text-[var(--main-blue)] font-semibold italic underline 
+                          md:text-[16px] md:ml-[3vw] 
                           lg:text-[15px] lg:ml-[5vw] 
                           xl:text-[18px] 
                           '>
@@ -203,10 +210,12 @@ const Menu = () => {
                     xl:pr-[100px] 
                     '> 
       <Image className='absolute right-[0px] 
+                        md:relative md:w-[18vw] md:ml-[11vw] md:mt-[5vh] 
                         lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw]
                         xl:w-[20vw]
                         ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
       <div className='absolute right-[100px] top-[130px]
+                      md:right-[11vw] md:top-[20vh]
                       lg:right-[15vw] lg:top-[20vh]
                       xl:right-[8vw]
                       flex flex-col gap-y-[20px] items-end'>
