@@ -50,10 +50,11 @@ const Hero = () => {
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
-      <div className="absolute right-0 pt-[39vh] mr-[20vh] flex z-1000 text-[120px] font-medium">
-        <motion.h1
-          className="text-[var(--main-beige)]"
-        >hey, it's diane.
+      <div className="absolute flex right-0 pt-[39vh] mr-[20vh] z-1000 text-[120px] font-medium
+                      lg:pt-[35vh] lg:mr-[5vh] 
+                      xl:pt-[40vh] xl:mr-[5vh] ">
+        <motion.h1 className="text-[var(--main-beige)]">
+          hey, it's diane.
         </motion.h1>
 
       </div>
@@ -77,7 +78,7 @@ const ParallaxImages = () => {
     >
       <Cloud 
         src={'/landing-cloud.png'}
-        className={'h-[700px]'}
+        className={"h-[700px] lg:pl-[20vh] xl:h-[700px] "}
         start={-600}
         end={800}
       />
