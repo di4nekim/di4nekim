@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { EXP_OVERVIEW } from '../data/ExperienceData';
 
@@ -36,7 +36,10 @@ const Experience = () => {
           {/* overview */}
           <AnimatePresence>
               <motion.section 
-              className='sticky top-[0vh] z-[10] h-[10vh] mr-[20vw] ml-[5vw]'
+              className='sticky top-[0vh] z-[10] h-[10vh] mr-[20vw] ml-[5vw]
+                          md:mr-[10vw] md:ml-[12vw]
+                          lg:sticky lg:top-[0vh] lg:z-[10] lg:h-[10vh] lg:mr-[20vw] lg:ml-[5vw]
+                          '
               style={{
                 y: translateY,
               }}
@@ -58,6 +61,16 @@ const Experience = () => {
 
 const Sidebar = ({scrollYProgress}) => {
 
+  const [isMd, setIsMd] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 640) and (max-width: 768)");
+    const handleResize = () => setIsMd(mediaQuery.matches);
+    handleResize();
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
   const topPos = useTransform(
     scrollYProgress, 
     [0, 0.2, 0.7, 1],
@@ -67,6 +80,12 @@ const Sidebar = ({scrollYProgress}) => {
     scrollYProgress, 
     [0, 0.2, 0.7, 1],
     [1, 1.5, 1.5, 1]
+  );
+
+  const scaleValueMobile = useTransform(
+    scrollYProgress, 
+    [0, 1],
+    [1, 1]
   );
 
   const opacityTransform = useTransform(
@@ -90,7 +109,9 @@ const Sidebar = ({scrollYProgress}) => {
           className='absolute text-[20px] ml-[5vw] font-bold text-[var(--main-red)]'
           style={{
             top: topPos,
-            scale: scaleValue,
+            // scale: scaleValue,
+            // scale: isMd ? scaleValue : scaleValueMobile,
+            scale: isMd ? scaleValueMobile : scaleValue,
             opacity: opacityTransform,
             transformOrigin: "left center", // anchors scaling to the left
           }}

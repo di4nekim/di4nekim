@@ -8,7 +8,10 @@ export const Landing = () => {
   useLenis();
 
   return(
-    <div className="relative grid grid-cols-[15%_85%] h-[270vh] bg-[var(--main-red)] overflow-visible">
+    <div className="relative grid grid-cols-[15%_85%] h-[290vh] bg-[var(--main-red)] overflow-visible
+                    md:h-[290vh]
+                    lg:h-[270vh]
+                    ">
       <Sidebar className='sticky h-full z-[10] top-[40vh]'/>
       <div className="w-full flex flex-col">
         <Hero />
@@ -50,8 +53,9 @@ const Hero = () => {
       className="relative z-0 w-full bg-[var(--main-red)]"
     >
       <ParallaxImages />
-      <div className="absolute flex right-0 pt-[39vh] mr-[20vh] z-1000 text-[120px] font-medium
-                      lg:pt-[35vh] lg:mr-[5vh] 
+      <div className="absolute flex right-0 pt-[39vh] mr-[20vh] z-1000 text-[100px] font-medium
+                      md:text-[100px] md:mr-[3vw]
+                      lg:text-[120px] lg:pt-[35vh] lg:mr-[5vh] 
                       xl:pt-[40vh] xl:mr-[5vh] ">
         <motion.h1 className="text-[var(--main-beige)]">
           hey, it's diane.
@@ -114,7 +118,9 @@ const ABOUT_P2 = "When I’m not at my keyboard, I have a penchant for being an 
 const About = () => {
   return(
     <section 
-      className="absolute h-[60vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]"
+      className="absolute h-[60vh] z-1000 mx-auto max-w-5xl text-[var(--main-beige)]
+                lg:absolute lg:h-[60vh] lg:z-1000 lg:mx-auto lg:max-w-5xl lg:text-[var(--main-beige)]
+                  "
       style={{
         marginTop: `calc(${SECTION_HEIGHT}px + 100vh)`,
       }}
