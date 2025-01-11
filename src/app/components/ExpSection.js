@@ -1,6 +1,7 @@
 'use client'
 import React from 'react';
 import { useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Button from './Button';
 import Image from 'next/image';
@@ -15,8 +16,9 @@ const ExpSection = () => {
 
   return (
     <ExperienceContext.Provider value={{ experience, setExperience }}>
-      <div className='relative h-full pb-[30vh] grid grid-cols-[30%_70%] bg-[var(--main-beige)]
-                      md:grid-cols-[35%_65%]
+      <div className='relative h-full pb-[30vh] bg-[var(--main-beige)] pt-[5vh] px-[10vw]
+                      sm:pt-[8vh]
+                      md:grid md:grid-cols-[35%_65%] md:pt-0 md:px-0
                       lg:grid-cols-[40%_60%]
                       xl:grid-cols-[30%_70%]
                       '>
@@ -46,18 +48,18 @@ const ExpSection = () => {
 
 const Role = ({experience}) => {
   return (
-    <div className='relative w-full 
+    <div className='relative w-full text-[23px]
+                    sm:text-[28px]
                     md:text-[25px]
                     lg:text-[28px]
                     xl:text-[30px]
                     '>
-      {/* <div className="flex flex-col xl:flex-row font-semibold h-[30px] mb-[5px]"> */}
-      <div className="flex font-semibold h-[30px] mb-[5px]
+      <div className="flex font-semibold h-[30px] mb-[5px] flex-col
                       md:flex-col
                       lg:flex-col
                       xl:flex-row 
                       ">
-        <h1 className='
+        <h1 className='-my-[13px]
                       md:-my-[13px]
                       lg:-my-[13px]
                       xl:my-0  xl:whitespace-nowrap
@@ -72,7 +74,7 @@ const Role = ({experience}) => {
           @ {EXP_ROLES[experience].company}
         </h1>
       </div>
-      <p className='italic font-semibold text-[var(--main-blue)]
+      <p className='absolute italic font-semibold text-[var(--main-blue)] -top-[25px] left-0 opacity-70 text-[13px]
                     md:absolute md:-top-[25px] md:left-0 md:opacity-70 md:text-[13px]
                     xl:text-[15px]  xl:opacity-100 xl:relative xl:mt-[30px]
                     '>
@@ -189,6 +191,7 @@ const TidBits = ({experience}) => {
           </div>
 
           <div className='flex flex-row flex-wrap justify-end gap-x-[15px] text-[var(--main-blue)] font-semibold italic underline 
+                          text-[15px] ml-[5vw] 
                           md:text-[16px] md:ml-[3vw] 
                           lg:text-[15px] lg:ml-[5vw] 
                           xl:text-[18px] 
@@ -204,47 +207,51 @@ const TidBits = ({experience}) => {
 
 const Menu = () => {
   const { experience, setExperience } = React.useContext(ExperienceContext);
+  const isMdOrLarger = useMediaQuery({ minWidth: 768 });
 
   return(
     <div className='relative z-0 h-full w-full bg-[var(--main-beige)]
                     xl:pr-[100px] 
                     '> 
-      <Image className='absolute right-[0px] 
-                        md:relative md:w-[18vw] md:ml-[11vw] md:mt-[5vh] 
-                        lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw]
-                        xl:w-[20vw]
-                        ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
-      <div className='absolute right-[100px] top-[130px]
-                      md:right-[11vw] md:top-[20vh]
-                      lg:right-[15vw] lg:top-[20vh]
-                      xl:right-[8vw]
-                      flex flex-col gap-y-[20px] items-end'>
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
-        <Button 
-          text={"KEEPUP"}
-          onClick={() => {
-              setExperience("KEEPUP")
-            }}
-         />
-        <Button 
-          text={"HOYALYTICS"}
-          onClick={() => setExperience("HOYALYTICS")}
-         />
-        <Button 
-          text={"HOYA DEVELOPERS"}
-          onClick={() => setExperience("HOYA DEVELOPERS")}
-         />
-        <Button 
-          text={"THE HOYA"}
-          onClick={() => setExperience("THE HOYA")}
-         />
-        <Button 
-          text={"HM ON TECH"}
-          onClick={() => setExperience("HM ON TECH")}
-         />
+      {isMdOrLarger && (
+        <>
+          <Image className='md:relative md:w-[18vw] md:ml-[11vw] md:mt-[5vh] 
+                            lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw]
+                            xl:w-[200px] 
+                            ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+          <div className='absolute right-[100px] top-[130px]
+                          md:right-[11vw] md:top-[20vh]
+                          lg:right-[15vw] lg:top-[20vh]
+                          xl:right-[8vw]
+                          flex flex-col gap-y-[20px] items-end'>
+            <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
+            <Button 
+              text={"KEEPUP"}
+              onClick={() => {
+                  setExperience("KEEPUP")
+                }}
+            />
+            <Button 
+              text={"HOYALYTICS"}
+              onClick={() => setExperience("HOYALYTICS")}
+            />
+            <Button 
+              text={"HOYA DEVELOPERS"}
+              onClick={() => setExperience("HOYA DEVELOPERS")}
+            />
+            <Button 
+              text={"THE HOYA"}
+              onClick={() => setExperience("THE HOYA")}
+            />
+            <Button 
+              text={"HM ON TECH"}
+              onClick={() => setExperience("HM ON TECH")}
+            />
 
-        <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
-      </div>
+            <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
+          </div>  
+        </>
+      )}
     </div>
   )
 }
