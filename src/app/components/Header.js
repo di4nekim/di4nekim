@@ -7,7 +7,7 @@ const Header = () => {
         <header className={styles.header}>
 
             <a className={styles.name} href="/">DIANE KIM</a>
-            <nav className='pr-[20px]'>
+            <nav className='sm:pr-[20px]'>
                 <ul className={styles.navList}>
                     <li className={styles.navItem}><a className={styles.navLink} href="/resume.pdf" download="Diane Kim, Resume.pdf">RESUME</a></li>
                     {/* <li className={styles.navItem}><a className={styles.navLink} href="/projects">PROJECTS</a></li> */}

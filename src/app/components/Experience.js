@@ -9,19 +9,21 @@ const Experience = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({target: ref});
 
-  useEffect(() => {
-    scrollYProgress.onChange((value) => console.log("scrollYProgress:", value));
-  }, [scrollYProgress]);
+  // useEffect(() => {
+  //   scrollYProgress.onChange((value) => console.log("scrollYProgress:", value));
+  // }, [scrollYProgress]);
 
   const translateY = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.7, 1], // works @ h-[1500px], but is too high on the page
+    [0, 0.2, 0.7, 1],
     [800, 500, 800, 0]
   );
 
   return (
       <div 
-        className='grid grid-cols-[30%_70%] h-[1500px]' 
+        className='grid grid-cols-[20%_80%] h-[1500px]
+                  md:grid-cols-[30%_70%]
+                  ' 
       >
         {/* Sidebar (incl. Experience Menu) */}
         <Sidebar 
@@ -36,7 +38,8 @@ const Experience = () => {
           {/* overview */}
           <AnimatePresence>
               <motion.section 
-              className='sticky top-[0vh] z-[10] h-[10vh] mr-[20vw] ml-[5vw]
+              className='sticky top-[0vh] z-[10] h-[10vh] mr-[5vw] text-[14px] leading-tight
+                          sm:text-[16px] sm:leading-snug sm:mr-[10vw]
                           md:mr-[10vw] md:ml-[12vw]
                           lg:sticky lg:top-[0vh] lg:z-[10] lg:h-[10vh] lg:mr-[20vw] lg:ml-[5vw]
                           '
@@ -61,14 +64,18 @@ const Experience = () => {
 
 const Sidebar = ({scrollYProgress}) => {
 
-  const [isMd, setIsMd] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 640) and (max-width: 768)");
-    const handleResize = () => setIsMd(mediaQuery.matches);
-    handleResize();
-    mediaQuery.addEventListener("change", handleResize);
-    return () => mediaQuery.removeEventListener("change", handleResize);
+    const mediaQueryMobile = window.matchMedia("(max-width: 767px)");
+    const handleMobileResize = () => setIsMobile(mediaQueryMobile.matches);
+
+    handleMobileResize();
+    mediaQueryMobile.addEventListener("change", handleMobileResize);
+
+    return () => {
+      mediaQueryMobile.removeEventListener("change", handleMobileResize);
+    };
   }, []);
 
   const topPos = useTransform(
@@ -76,16 +83,17 @@ const Sidebar = ({scrollYProgress}) => {
     [0, 0.2, 0.7, 1],
     [0, 450, 1000, 1425]
   );
+
+  const topPosMobileSmall = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.7, 1],
+    [740, 440, 740, 0]
+  );
+
   const scaleValue = useTransform(
     scrollYProgress, 
     [0, 0.2, 0.7, 1],
     [1, 1.5, 1.5, 1]
-  );
-
-  const scaleValueMobile = useTransform(
-    scrollYProgress, 
-    [0, 1],
-    [1, 1]
   );
 
   const opacityTransform = useTransform(
@@ -96,30 +104,52 @@ const Sidebar = ({scrollYProgress}) => {
 
   return(
     <div className="relative h-full z-20 bg-[var(--main-beige)] overflow-visible">
+        {isMobile ? (
+          <div className="absolute z-10 ml-[10vw] h-full w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
+            <motion.div 
+              className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
+              style={{ 
+                top: topPosMobileSmall,
+                opacity: opacityTransform,
+              }}  
+            />
+            <motion.h1 
+              className='absolute text-[25px] sm:text-[30px] ml-[10vw] font-bold text-[var(--main-red)]                        '
+              style={{ 
+                top: topPosMobileSmall,
+                opacity: opacityTransform,
+              }}
+            >
+              EXPERIENCE
+            </motion.h1>
+          </div>    
+        ) : (
+          <div className="absolute z-10 ml-[10vw] h-full w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
+            <motion.div 
+              className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
+              style={{ 
+                top: topPos,
+                opacity: opacityTransform,
+              }}  
+            />
+            <motion.h1 
+              className='absolute text-[20px] ml-[5vw] font-bold text-[var(--main-red)]
+                        md:text-[18px]
+                        lg:text-[20px]
+                        '
+              style={{
+                top: topPos,
+                scale: scaleValue,
+                opacity: opacityTransform,
+                transformOrigin: "left center", // anchors scaling to the left
+              }}
+            >
+              EXPERIENCE
+            </motion.h1>
+          </div>    
+        )
+        }
 
-      <div className="absolute z-10 ml-[10vw] h-full w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
-        <motion.div 
-          className="absolute left-1/2 transform -translate-x-1/2 z-10 w-4 h-4 bg-[var(--main-red)] rounded-full"
-          style={{ 
-            top: topPos,
-            opacity: opacityTransform,
-          }}  
-        />
-        <motion.h1 
-          className='absolute text-[20px] ml-[5vw] font-bold text-[var(--main-red)]'
-          style={{
-            top: topPos,
-            // scale: scaleValue,
-            // scale: isMd ? scaleValue : scaleValueMobile,
-            scale: isMd ? scaleValueMobile : scaleValue,
-            opacity: opacityTransform,
-            transformOrigin: "left center", // anchors scaling to the left
-          }}
-        >
-          EXPERIENCE
-        </motion.h1>
-
-      </div>
 
 
     </div>
