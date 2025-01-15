@@ -1,11 +1,14 @@
 'use client'
-import React from 'react';
-import { useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
-import { EXP_BLURBS, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
-import Button from './Button';
+import React, {useState} from 'react';
 import Image from 'next/image';
+import { useMediaQuery } from 'react-responsive';
+import Button from './Button';
+
+import { EXP_BLURBS, EXPERIENCES, EXP_IMPACTS, EXP_ROLES, EXP_PROJECTS, EXP_LINKS, EXP_TECHS } from '../data/ExperienceData';
 import Arrow from '../../../public/Arrow.svg'
+// import Chevron from '../../../public/chevron.png';
+import Chevron_red from '../../../public/chevron_red.png';
+import Chevron_beige from '../../../public/chevron_beige.png';
 import ExperienceCloud2 from '../../../public/experience-cloud-2.png';
 
 
@@ -28,6 +31,7 @@ const ExpSection = () => {
                             lg:pr-[5vw]
                             xl:px-[10vw]
                             '>
+          <Dropdown />
           <Role experience={experience} />
           <Blurb experience={experience} />
           {(experience === "KEEPUP" || 
@@ -225,7 +229,14 @@ const Menu = () => {
                           xl:right-[8vw]
                           flex flex-col gap-y-[20px] items-end'>
             <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
-            <Button 
+            {EXPERIENCES.map((experience, key) => (
+              <Button 
+                key={key}
+                text={experience}
+                onClick={() => setExperience(experience)}
+              />
+            ))}
+            {/* <Button 
               text={"KEEPUP"}
               onClick={() => {
                   setExperience("KEEPUP")
@@ -246,13 +257,74 @@ const Menu = () => {
             <Button 
               text={"HM ON TECH"}
               onClick={() => setExperience("HM ON TECH")}
-            />
+            /> */}
 
             <p className='text-[var(--main-red)] text-[10px] font-semibold italic'> ––– 2021 </p>
           </div>  
         </>
       )}
     </div>
+  )
+}
+
+const Dropdown = () => {
+  const { experience, setExperience } = React.useContext(ExperienceContext);
+  const [ dropped, setDropped ] = useState(false); 
+  const isSmOrSmaller = useMediaQuery({ maxWidth: 640 });
+
+  return(
+    <>
+    {isSmOrSmaller && (
+      <div 
+        className='flex w-full justify-start mb-[5vh]'
+        onClick={() => {
+          setDropped(!dropped)
+        }}
+      >
+        <div className='flex flex-col'>
+          {dropped ? (
+            <div className='mb-[15px]'>
+              <button
+              onClick={() => {
+                setDropped(!dropped)
+              }}
+              className={`flex items-center justify-between h-[30px] px-[15px] py-[5px] w-full
+                          font-semibold  border-[var(--main-red)] rounded-[10px] border-2 text-[15px]
+                          bg-[var(--main-red)] text-[var(--main-beige)]`}
+              >
+                <Image src={Chevron_beige} alt='chevron_beige' className='w-[16px] h-[10px] mt-[2px] mr-[3vw]'/>
+                {experience}
+              </button>
+              {EXPERIENCES.map((exp, key) => (
+                exp !== experience && (
+                  <div
+                    key={key}
+                    className='flex flex-col items-center justify-center px-[15px] h-[30px] font-semibold mt-[8px] rounded-[5px]
+                              border-[2px] border-[var(--main-blue)] text-[var(--main-blue)] opacity-100 bg-[var(--main-beige)]'
+                    onClick={() => setExperience(exp)}
+                  >
+                    {exp}
+                  </div>
+              )))}
+            </div>
+          ) : (
+            <button
+              onClick={() => {
+                setDropped(!dropped)
+              }}
+              className={`flex items-center justify-center h-[30px] px-[15px] py-[5px]
+                          font-semibold  border-[var(--main-red)] rounded-[10px] text-[var(--main-red)] bg-[var(--main-beige)] opacity-100 border-2 text-[15px]
+                          focus:bg-[var(--main-red)] focus:text-[var(--main-beige)]`}
+              >
+                <Image src={Chevron_red} alt='chevron_red' className='w-[16px] h-[10px] mt-[2px] mr-[3vw]'/>
+                {experience}
+              </button>
+          )}
+          
+        </div>
+      </div>
+    )}
+    </>
   )
 }
 
