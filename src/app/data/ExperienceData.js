@@ -5,6 +5,8 @@ export const EXP_OVERVIEW = {
   p3: "There’s still so much to learn, but here’s a little of how far I’ve come since I’ve started:"
 };
 
+export const EXPERIENCES = ["KEEPUP", 'HOYALYTICS', 'HOYA DEVELOPERS', 'THE HOYA', 'HM ON TECH']
+
 export const EXP_ROLES = {
  "KEEPUP": {
     title: "Software Engineering Intern",
