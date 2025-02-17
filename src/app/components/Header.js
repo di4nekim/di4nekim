@@ -11,8 +11,8 @@ const Header = () => {
                 <ul className={styles.navList}>
                     <li className={styles.navItem}><a className={styles.navLink} href="/resume.pdf" download="Diane Kim, Resume.pdf">RESUME</a></li>
                     {/* <li className={styles.navItem}><a className={styles.navLink} href="/projects">PROJECTS</a></li> */}
-                    <li className={styles.navItem}><a className={styles.navLink} href="https://github.com/deadsweetpotato">GITHUB</a></li>
-                    <li className={styles.navItem}><a className={styles.navLink} href="https://www.linkedin.com/in/dianeekim/">LINKEDIN</a></li>
+                    <li className={styles.navItem}><a className={styles.navLink} href="https://github.com/di4nekim">GITHUB</a></li>
+                    <li className={styles.navItem}><a className={styles.navLink} href="https://www.linkedin.com/in/di4nekim/">LINKEDIN</a></li>
                 </ul>
             </nav>
         </header>
