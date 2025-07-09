@@ -22,12 +22,15 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
   const projects = propProjects && propProjects.length > 0 ? propProjects : defaultProjects
 
   const itemHeight = typeof window !== 'undefined' ? window.innerHeight * 0.33 : 300
-  const itemSpacing = typeof window !== 'undefined' ? window.innerHeight * 0.25 : 200 // Tighter spacing
+  const itemSpacing = typeof window !== 'undefined' ? window.innerHeight * 0.4 : 320
   const headerHeight = typeof window !== 'undefined' ? (window.innerWidth >= 640 ? 65 : 50) : 50
+
+  // Calculate diagonal movement - for 45 degrees, x and y move equally
+  const diagonalSpacing = itemSpacing / Math.sqrt(2) // Convert vertical spacing to diagonal distance
 
   // Calculate current active project based on scroll position
   const currentProject = useTransform(smoothScrollY, (y) => {
-    const index = Math.round(-y / itemSpacing)
+    const index = Math.round(y / itemSpacing)
     return Math.max(0, Math.min(projects.length - 1, index))
   })
 
@@ -41,8 +44,8 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
     const newY = currentY - delta
     
     // Allow some overflow but with resistance
-    const maxY = 0
-    const minY = -(projects.length - 1) * itemSpacing
+    const maxY = (projects.length - 1) * itemSpacing 
+    const minY = 0 // Starting position is 0
     
     let constrainedY = newY
     if (newY > maxY) {
@@ -61,9 +64,9 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
       clearTimeout(timeout)
       timeout = setTimeout(() => {
         const currentY = scrollY.get()
-        const targetIndex = Math.round(-currentY / itemSpacing)
+        const targetIndex = Math.round(currentY / itemSpacing)
         const clampedIndex = Math.max(0, Math.min(projects.length - 1, targetIndex))
-        const targetY = -clampedIndex * itemSpacing
+        const targetY = clampedIndex * itemSpacing
         
         // Smooth snap to nearest item
         scrollY.set(targetY)
@@ -92,67 +95,84 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
     <div className="relative w-full h-screen bg-[var(--main-beige)] overflow-hidden">
       <div 
         ref={containerRef}
-        className="absolute left-1/2 top-0 transform -translate-x-1/2 w-[50vw] h-full max-w-2xl"
+        className="absolute left-0 top-0 w-full h-full"
       >
         <div className="relative w-full h-full">
           {projects.map((project, index) => {
-            // Calculate position relative to smooth scroll
-            const y = useTransform(
+            // Calculate diagonal position (45-degree angle from top-left to bottom-right)
+            const diagonalPosition = useTransform(
               smoothScrollY,
-              (scrollValue) => {
-                const baseY = headerHeight + (window.innerHeight - headerHeight) / 2 - itemHeight / 2
-                return baseY + scrollValue + (index * itemSpacing)
+              (scrollValue) => scrollValue - (index * itemSpacing)
+            )
+
+            // Define consistent center points for both positioning and effects
+            const centerX = window.innerWidth * 0.3 // Affects left-right position
+            const centerY = headerHeight + (window.innerHeight - headerHeight) / 3.5 // Affects top-bottom position
+
+            // Calculate X and Y positions for 45-degree diagonal
+            const x = useTransform(
+              diagonalPosition,
+              (pos) => {
+                const diagonalOffset = pos * Math.cos(Math.PI / 4) * 0.8
+                return centerX + diagonalOffset
               }
             )
 
-            // Calculate opacity and scale based on distance from center
-            const centerY = headerHeight + (window.innerHeight - headerHeight) / 2 - itemHeight / 2
-            
+            const y = useTransform(
+              diagonalPosition,
+              (pos) => {
+                const diagonalOffset = pos * Math.sin(Math.PI / 4) * 0.8
+                return centerY + diagonalOffset
+              }
+            )
+
+            // Distance from center for effects calculation
+            const distanceFromCenter = useTransform(
+              diagonalPosition,
+              (pos) => Math.abs(pos) // Use absolute value to ensure symmetric behavior
+            )
+
+            // Calculate z-index based on distance from center (closer items on top)
+            const zIndex = useTransform(
+              distanceFromCenter,
+              (distance) => Math.max(1, 100 - Math.round(distance / 10))
+            )
+
+            // Calculate opacity based on distance from center
             const opacity = useTransform(
-              y,
-              [
-                centerY - itemSpacing * 2,
-                centerY - itemSpacing * 0.5,
-                centerY + itemSpacing * 0.5,
-                centerY + itemSpacing * 2
-              ],
-              [0, 1, 1, 0]
+              distanceFromCenter,
+              [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
+              [1, 0.9, 0.4, 0]
             )
 
+            // Calculate scale based on distance from center
             const scale = useTransform(
-              y,
-              [
-                centerY - itemSpacing * 2,
-                centerY - itemSpacing * 0.5,
-                centerY + itemSpacing * 0.5,
-                centerY + itemSpacing * 2
-              ],
-              [0.8, 1, 1, 0.8]
+              distanceFromCenter,
+              [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
+              [1, 0.95, 0.8, 0.6]
             )
 
-            // Symmetric blur - same blur for items at same distance above/below center
+            // Calculate blur based on distance from center
             const blur = useTransform(
-              y,
-              [
-                centerY - itemSpacing * 2,     // Far above center
-                centerY - itemSpacing,         // One item above center
-                centerY,                       // Perfect center
-                centerY + itemSpacing,         // One item below center  
-                centerY + itemSpacing * 2      // Far below center
-              ],
-              [6, 3, 0, 3, 6] // Symmetric blur values
+              distanceFromCenter,
+              [0, itemSpacing * 0.6, itemSpacing * 1.2, itemSpacing * 2.0],
+              [0, 0.5, 3, 6]
             )
 
             return (
               <motion.div
                 key={project.id || index}
-                className="absolute w-full flex items-center justify-center"
+                className="absolute flex items-center justify-center"
                 style={{
+                  x,
                   y,
                   opacity,
                   scale,
                   filter: useTransform(blur, (b) => `blur(${b}px)`),
+                  zIndex,
+                  width: '50vw',
                   height: `${itemHeight}px`,
+                  transformOrigin: 'center center',
                 }}
               >
                 <ProjectItem 
