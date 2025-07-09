@@ -120,7 +120,7 @@ const Cloud = ({className, src, start, end}) => {
 }
 
 const ABOUT_HOOK = "I’ve always had my head up in the clouds";
-const ABOUT_P1 = "I wear all the hats I can, from emergency medical technician to culinary student, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.";
+const ABOUT_P1 = "I wear all the hats I can, from emergency medical technician to culinary school graduate, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.";
 const ABOUT_P2 = "When I’m not at my keyboard, I love to be a shameless amateur in my ever-changing interests and to work with my hands :)";
 // const ABOUT_P3 = "Get to know me better by checking out some of the things I do for fun." // underline 'for fun', link to 'in the off hours'
 
