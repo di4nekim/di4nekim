@@ -2,12 +2,17 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import ProjectItem from './ProjectItem'
+import clickToSee from '../../assets/click_to_see.svg'
 
 export default function PortfolioMenu({ projects: propProjects = null }) {
   const containerRef = useRef(null)
   const scrollY = useMotionValue(0)
   const smoothScrollY = useSpring(scrollY, { damping: 20, stiffness: 100 })
+  const router = useRouter()
+  const [isNavigating, setIsNavigating] = useState(false)
 
   // Default projects as fallback
   const defaultProjects = [
@@ -21,18 +26,17 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
   // Use provided projects or fall back to defaults
   const projects = propProjects && propProjects.length > 0 ? propProjects : defaultProjects
 
+  const handleProjectClick = (project) => {
+    setIsNavigating(true)
+    // Short delay to let slide-out animation be visible, but not long enough for blank screen
+    setTimeout(() => {
+      router.push(`/portfolio/project/${project.id || project.title.toLowerCase().replace(/\s+/g, '-')}`)
+    }, 300) // Enough time to see the slide-out start, but quick enough to avoid gaps
+  }
+
   const itemHeight = typeof window !== 'undefined' ? window.innerHeight * 0.33 : 300
   const itemSpacing = typeof window !== 'undefined' ? window.innerHeight * 0.4 : 320
   const headerHeight = typeof window !== 'undefined' ? (window.innerWidth >= 640 ? 65 : 50) : 50
-
-  // Calculate diagonal movement - for 45 degrees, x and y move equally
-  const diagonalSpacing = itemSpacing / Math.sqrt(2) // Convert vertical spacing to diagonal distance
-
-  // Calculate current active project based on scroll position
-  const currentProject = useTransform(smoothScrollY, (y) => {
-    const index = Math.round(y / itemSpacing)
-    return Math.max(0, Math.min(projects.length - 1, index))
-  })
 
   const handleWheel = (e) => {
     e.preventDefault()
@@ -92,7 +96,8 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
   }, [projects.length])
 
   return (
-    <div className="relative w-full h-screen bg-[var(--main-beige)] overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
+
       <div 
         ref={containerRef}
         className="absolute left-0 top-0 w-full h-full"
@@ -174,17 +179,37 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
                   height: `${itemHeight}px`,
                   transformOrigin: 'center center',
                 }}
+                animate={isNavigating ? { x: -1200, opacity: 0 } : {}}
+                transition={{ duration: 0.8, ease: "easeInOut" }} // Slightly longer for smoother overlap
               >
                 <ProjectItem 
                   title={project.title}
                   year={project.year}
                   description={project.description}
+                  id={project.id}
+                  onProjectClick={() => handleProjectClick(project)}
+                  isNavigating={isNavigating}
                 />
               </motion.div>
             )
           })}
         </div>
       </div>
+
+      <motion.div
+        className="absolute bottom-10 left-10 z-50"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isNavigating ? { x: -1200, opacity: 0 } : { opacity: 1, y: 0 }}
+        transition={isNavigating ? { duration: 0.8, ease: "easeInOut" } : { delay: 0.5, duration: 0.6 }}
+      >
+        <Image
+          src={clickToSee}
+          alt="Click to see the full visual story"
+          width={350}
+          // height={304}
+          className="max-w-[350px] w-auto h-auto opacity-100 transition-opacity duration-300"
+        />
+      </motion.div>
     </div>
   )
 }

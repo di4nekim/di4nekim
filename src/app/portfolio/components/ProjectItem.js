@@ -2,10 +2,20 @@
 
 import { motion } from 'framer-motion'
 
-export default function ProjectItem({ title, description, image, technologies = [], link, year }) {
+export default function ProjectItem({ title, description, image, technologies = [], link, year, id, onProjectClick, isNavigating }) {
+  const handleClick = () => {
+    if (onProjectClick) {
+      onProjectClick()
+    }
+  }
+
   return (
-    // <div className="flex items-start gap-8 py-8 border-b border-[#CB0000] last:border-b-0 w-[50vw] justify-center items-center" >
-    <div className="flex items-start gap-8 py-8 w-[50vw] justify-center items-center" >
+    <motion.div 
+      className="flex items-start gap-8 py-8 w-[50vw] justify-center items-center cursor-pointer hover:opacity-80 transition-opacity"
+      onClick={handleClick}
+      animate={isNavigating ? { x: -1200, opacity: 0 } : { x: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+    >
       {/* Left side - Project name and year */}
       <div className="flex-shrink-0 w-60 flex flex-row">
         {/* Year container - takes up left portion */}
@@ -62,6 +72,6 @@ export default function ProjectItem({ title, description, image, technologies = 
           </a>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
