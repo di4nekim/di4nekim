@@ -111,8 +111,8 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
             )
 
             // Define consistent center points for both positioning and effects
-            const centerX = window.innerWidth * 0.3 // Affects left-right position
-            const centerY = headerHeight + (window.innerHeight - headerHeight) / 3.5 // Affects top-bottom position
+            const centerX = typeof window !== 'undefined' ? window.innerWidth * 0.3 : 400 // Affects left-right position
+            const centerY = headerHeight + (typeof window !== 'undefined' ? (window.innerHeight - headerHeight) / 3.5 : 200) // Affects top-bottom position
 
             // Calculate X and Y positions for 45-degree diagonal
             const x = useTransform(
