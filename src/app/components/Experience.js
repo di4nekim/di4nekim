@@ -16,7 +16,13 @@ const Experience = () => {
   const translateY = useTransform(
     scrollYProgress,
     [0, 0.2, 0.7, 1],
-    [800, 500, 800, 0]
+    [700, 500, 700, 0]
+  );
+
+  const opacityContent = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.25],
+    [0, 0, 1]
   );
 
   return (
@@ -45,11 +51,33 @@ const Experience = () => {
                           '
               style={{
                 y: translateY,
+                opacity: opacityContent,
               }}
               >
-                <p className='mb-[10px]'>{EXP_OVERVIEW.p1}</p>
-                <p className='mb-[10px]'>{EXP_OVERVIEW.p2}</p>
-                <p className='font-semibold italic'>{EXP_OVERVIEW.p3}</p>
+                <p className='text-[18px] font-semibold leading-tight'>{EXP_OVERVIEW.hook}</p>
+                <p className='mb-[20px] leading-tight'>{EXP_OVERVIEW.hook2}</p>
+                
+                <p className='font-semibold leading-tight'>{EXP_OVERVIEW.currently}</p>
+                <ul className='mb-[10px]'>
+                  {EXP_OVERVIEW.currentlyBullets.map((bullet, index) => (
+                    <li key={index} className="flex">
+                      <span className="mr-2 flex-shrink-0">–</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className='font-semibold leading-tight'>{EXP_OVERVIEW.previously}</p>
+                <ul className='mb-[15px]'>
+                  {EXP_OVERVIEW.previouslyBullets.map((bullet, index) => (
+                    <li key={index} className="flex ">
+                      <span className="mr-2 flex-shrink-0">–</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className='font-semibold text-[18px]'>{EXP_OVERVIEW.closing}</p>
             </motion.section>
             {/* )} */}
           </AnimatePresence>
@@ -67,15 +95,17 @@ const Sidebar = ({scrollYProgress}) => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQueryMobile = window.matchMedia("(max-width: 767px)");
-    const handleMobileResize = () => setIsMobile(mediaQueryMobile.matches);
+    if (typeof window !== 'undefined') {
+      const mediaQueryMobile = window.matchMedia("(max-width: 767px)");
+      const handleMobileResize = () => setIsMobile(mediaQueryMobile.matches);
 
-    handleMobileResize();
-    mediaQueryMobile.addEventListener("change", handleMobileResize);
+      handleMobileResize();
+      mediaQueryMobile.addEventListener("change", handleMobileResize);
 
-    return () => {
-      mediaQueryMobile.removeEventListener("change", handleMobileResize);
-    };
+      return () => {
+        mediaQueryMobile.removeEventListener("change", handleMobileResize);
+      };
+    }
   }, []);
 
   const topPos = useTransform(

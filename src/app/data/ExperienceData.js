@@ -1,27 +1,40 @@
-// TO DO : insert link to gap year page later
 export const EXP_OVERVIEW = {
-  p1: "Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minors in Cognitive Science and Science, Technology, and International Affairs (STIA). There, I’ve honed my skills in advanced programming, data structures, and user-focused product development. From redesigning scalable React applications to leading high-impact projects for clients through Georgetown’s premier software development club, I thrive at the intersection of technology, design, and collaboration.",
-  p2: "Outside the classroom, I’ve built full-stack applications, led cross-functional teams, and shaped product strategies to bring innovative ideas to life. Whether it’s crafting scalable platforms with React and Firebase or designing intuitive interfaces and data-driven models, I thrive on solving complex problems where technology and design meet.",
-  p3: "There’s still so much to learn, but here’s a little of how far I’ve come since I’ve started:"
+  hook: "Some PMs draw boxes and arrows. I write the code inside them too.",
+  hook2: "I'm equal parts builder and strategist–architecting AWS microservices one day, leading product discovery the next. I thrive in the overlap between code and product.",
+  currently: "Currently, I'm:",
+  currentlyBullets: [
+    "A junior (class of '27) @ Georgetown University, working on my B.Sc. in Computer Science and minor in Science, Technology, and International Affairs (STIA)",
+    "President of Hoya Developers",
+    "Director of Product @ Product Space"
+  ],
+  previously: "Previously, I've:",
+  previouslyBullets: [
+    "Led product discovery and roadmapping for a B2B CRM, conducting user research with 50+ users while managing backlogs for 3-4 engineers",
+    "Improved engineering delivery velocity by 30% by implementing Scrumban workflows and facilitating critical architecture decisions",
+    "Architected serverless AWS infrastructure with 9 Lambda microservices and advanced DynamoDB patterns, achieving sub-100ms WebSocket latency",
+    "Bridged technical and business stakeholders, translating client needs into specs while evaluating trade-offs in performance, scalability, and maintainability",
+    "Coordinated 8+ client projects for 100+ students, guiding teams through user research, technical scope definition, and agile delivery"
+  ],
+  closing: "There's still so much to learn, but here's a little of how far I've come since I've started:"
 };
 
-export const EXPERIENCES = ["KEEPUP", 'HOYALYTICS', 'HOYA DEVELOPERS', 'THE HOYA', 'HM ON TECH']
+export const EXPERIENCES = ['HOYA DEVELOPERS', "KEEPUP", 'HOYALYTICS', 'THE HOYA', 'HM ON TECH']
 
 export const EXP_ROLES = {
- "KEEPUP": {
-    title: "Software Engineering Intern",
+ "HOYA DEVELOPERS":{
+    title: "Co-founder & President",
+    company: "Hoya Developers",
+    date: "JUL ‘23 - PRESENT",
+  },
+  "KEEPUP": {
+    title: "Product Management Intern",
     company: "KeepUp Technologies",
-    date: "MAY ‘24 - DEC '24",
+    date: "MAY ‘24 - NOV '24",
   },
   "HOYALYTICS": {
     title: "Data Analyst",
     company: "Hoyalytics",
     date: "JAN ‘24 - MAY '24",
-  },
- "HOYA DEVELOPERS":{
-    title: "Senior Project Manager",
-    company: "Hoya Developers",
-    date: "JUL ‘23 - MAY '24",
   },
  "THE HOYA" : {
     title: "Columnist",
@@ -38,7 +51,7 @@ export const EXP_ROLES = {
 export const EXP_BLURBS = 
  {
   "KEEPUP": [
-    "As a Product Management and Software Engineering Intern at KeepUp, I redesigned and scaled the company’s React-based MVP, making impactful contributions in a fast-paced startup environment where I shaped key technical and product decisions.",
+    "As a Product Management and Engineering Intern at KeepUp, I redesigned and scaled the company’s React-based MVP, making impactful contributions in a fast-paced startup environment where I shaped key technical and product decisions.",
     "In collaboration with stakeholders, I developed user-focused prototypes and delivered features that emphasized usability, performance, and maintainability."
   ],
   "HOYALYTICS": [
@@ -93,6 +106,7 @@ export const EXP_PROJECTS = {
         "Defined and executed the product roadmap, prioritizing features based on user pain points and personas, ensuring a seamless and intuitive user journey.",
         "Designed high-fidelity mockups and user journey maps in Figma to guide UX/UI design, creating a cohesive and user-centered product experience."
       ],
+      site: "https://github.com/di4nekim/meander"
     },
     "Hilltop Microfinance Initiative" : {
       paragraphs : [
@@ -114,7 +128,6 @@ export const EXP_TECHS = {
 
  "HOYA DEVELOPERS":["REACT", "REACT NATIVE", "FIREBASE", "FIGMA"],
 
-//  "HM ON TECH" : ["React", "MySQL"],
  "HM ON TECH" : ["REACT", "MYSQL"],
 }
 
