@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from '../../../styles/Header.module.css';
 // import Resume from '../../../public/Diane\ Kim,\ Software\ Engineering.pdf';
 // import Resume from '../../../public/resume.pdf';
@@ -6,7 +7,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
 
-            <a className={styles.name} href="/">DIANE KIM</a>
+            <Link className={styles.name} href="/">DIANE KIM</Link>
             <nav className='sm:pr-[20px]'>
                 <ul className={styles.navList}>
                     <li className={styles.navItem}><a className={styles.navLink} href="/resume.pdf" download="Diane Kim, Resume.pdf">RESUME</a></li>

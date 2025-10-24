@@ -1,11 +1,93 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import ProjectItem from './ProjectItem'
 import clickToSee from '../../assets/click_to_see.svg'
+
+function AnimatedProjectItem({ project, index, smoothScrollY, itemSpacing, itemHeight, centerX, centerY, isNavigating, onProjectClick }) {
+  const diagonalPosition = useTransform(
+    smoothScrollY,
+    (scrollValue) => scrollValue - (index * itemSpacing)
+  )
+
+  const x = useTransform(
+    diagonalPosition,
+    (pos) => {
+      const diagonalOffset = pos * Math.cos(Math.PI / 4) * 0.8
+      return centerX + diagonalOffset
+    }
+  )
+
+  const y = useTransform(
+    diagonalPosition,
+    (pos) => {
+      const diagonalOffset = pos * Math.sin(Math.PI / 4) * 0.8
+      return centerY + diagonalOffset
+    }
+  )
+
+  const distanceFromCenter = useTransform(
+    diagonalPosition,
+    (pos) => Math.abs(pos)
+  )
+
+  const zIndex = useTransform(
+    distanceFromCenter,
+    (distance) => Math.max(1, 100 - Math.round(distance / 10))
+  )
+
+  const opacity = useTransform(
+    distanceFromCenter,
+    [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
+    [1, 0.9, 0.4, 0]
+  )
+
+  const scale = useTransform(
+    distanceFromCenter,
+    [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
+    [1, 0.95, 0.8, 0.6]
+  )
+
+  const blur = useTransform(
+    distanceFromCenter,
+    [0, itemSpacing * 0.6, itemSpacing * 1.2, itemSpacing * 2.0],
+    [0, 0.5, 3, 6]
+  )
+
+  const filter = useTransform(blur, (b) => `blur(${b}px)`)
+
+  return (
+    <motion.div
+      key={project.id || index}
+      className="absolute flex items-center justify-center"
+      style={{
+        x,
+        y,
+        opacity,
+        scale,
+        filter,
+        zIndex,
+        width: '50vw',
+        height: `${itemHeight}px`,
+        transformOrigin: 'center center',
+      }}
+      animate={isNavigating ? { x: -1200, opacity: 0 } : {}}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+    >
+      <ProjectItem 
+        title={project.title}
+        year={project.year}
+        description={project.description}
+        id={project.id}
+        onProjectClick={() => onProjectClick(project)}
+        isNavigating={isNavigating}
+      />
+    </motion.div>
+  )
+}
 
 export default function PortfolioMenu({ projects: propProjects = null }) {
   const containerRef = useRef(null)
@@ -65,28 +147,28 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
 
   const { itemHeight, itemSpacing, headerHeight, centerX, centerY } = dimensions
 
-  const handleWheel = (e) => {
+  const handleWheel = useCallback((e) => {
     e.preventDefault()
     e.stopPropagation()
     
     // Natural scroll accumulation
-    const delta = e.deltaY * 0.5 // Reduce sensitivity
+    const delta = e.deltaY * 0.5
     const currentY = scrollY.get()
     const newY = currentY - delta
     
     // Allow some overflow but with resistance
     const maxY = (projects.length - 1) * itemSpacing 
-    const minY = 0 // Starting position is 0
+    const minY = 0
     
     let constrainedY = newY
     if (newY > maxY) {
-      constrainedY = maxY + (newY - maxY) * 0.1 // Elastic resistance
+      constrainedY = maxY + (newY - maxY) * 0.1
     } else if (newY < minY) {
-      constrainedY = minY + (newY - minY) * 0.1 // Elastic resistance
+      constrainedY = minY + (newY - minY) * 0.1
     }
     
     scrollY.set(constrainedY)
-  }
+  }, [scrollY, projects.length, itemSpacing])
 
   // Snap to nearest item when scrolling stops
   useEffect(() => {
@@ -120,7 +202,7 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
     return () => {
       container.removeEventListener('wheel', handleWheel)
     }
-  }, [projects.length])
+  }, [projects.length, handleWheel])
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -130,92 +212,20 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
         className="absolute left-0 top-0 w-full h-full"
       >
         <div className="relative w-full h-full">
-          {projects.map((project, index) => {
-            // Calculate diagonal position (45-degree angle from top-left to bottom-right)
-            const diagonalPosition = useTransform(
-              smoothScrollY,
-              (scrollValue) => scrollValue - (index * itemSpacing)
-            )
-
-            // Calculate X and Y positions for 45-degree diagonal
-            const x = useTransform(
-              diagonalPosition,
-              (pos) => {
-                const diagonalOffset = pos * Math.cos(Math.PI / 4) * 0.8
-                return centerX + diagonalOffset
-              }
-            )
-
-            const y = useTransform(
-              diagonalPosition,
-              (pos) => {
-                const diagonalOffset = pos * Math.sin(Math.PI / 4) * 0.8
-                return centerY + diagonalOffset
-              }
-            )
-
-            // Distance from center for effects calculation
-            const distanceFromCenter = useTransform(
-              diagonalPosition,
-              (pos) => Math.abs(pos) // Use absolute value to ensure symmetric behavior
-            )
-
-            // Calculate z-index based on distance from center (closer items on top)
-            const zIndex = useTransform(
-              distanceFromCenter,
-              (distance) => Math.max(1, 100 - Math.round(distance / 10))
-            )
-
-            // Calculate opacity based on distance from center
-            const opacity = useTransform(
-              distanceFromCenter,
-              [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-              [1, 0.9, 0.4, 0]
-            )
-
-            // Calculate scale based on distance from center
-            const scale = useTransform(
-              distanceFromCenter,
-              [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-              [1, 0.95, 0.8, 0.6]
-            )
-
-            // Calculate blur based on distance from center
-            const blur = useTransform(
-              distanceFromCenter,
-              [0, itemSpacing * 0.6, itemSpacing * 1.2, itemSpacing * 2.0],
-              [0, 0.5, 3, 6]
-            )
-
-            return (
-              <motion.div
-                key={project.id || index}
-                className="absolute flex items-center justify-center"
-                style={{
-                  x,
-                  y,
-                  opacity,
-                  scale,
-                  filter: useTransform(blur, (b) => `blur(${b}px)`),
-                  zIndex,
-                  width: '50vw',
-                  height: `${itemHeight}px`,
-                  transformOrigin: 'center center',
-                }}
-                animate={isNavigating ? { x: -1200, opacity: 0 } : {}}
-                transition={{ duration: 0.8, ease: "easeInOut" }} // Slightly longer for smoother overlap
-              >
-                <ProjectItem 
-                  title={project.title}
-                  year={project.year}
-                  description={project.description}
-                  id={project.id}
-                  onProjectClick={() => handleProjectClick(project)}
-                  isNavigating={isNavigating}
-                />
-              </motion.div>
-            )
-          })}
+          {projects.map((project, index) => (
+            <AnimatedProjectItem
+              key={project.id || index}
+              project={project}
+              index={index}
+              smoothScrollY={smoothScrollY}
+              itemSpacing={itemSpacing}
+              itemHeight={itemHeight}
+              centerX={centerX}
+              centerY={centerY}
+              isNavigating={isNavigating}
+              onProjectClick={handleProjectClick}
+            />
+          ))}
         </div>
       </div>
 

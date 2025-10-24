@@ -67,7 +67,7 @@ const Hero = () => {
                       lg:text-[120px] lg:pt-[35vh] lg:mr-[5vh] 
                       xl:pt-[40vh] xl:mr-[5vh] ">
         <motion.h1 className="text-[var(--main-beige)]">
-          hey, it's diane.
+          hey, it&apos;s diane.
         </motion.h1>
 
       </div>

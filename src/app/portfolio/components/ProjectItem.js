@@ -21,7 +21,7 @@ export default function ProjectItem({ title, description, image, technologies = 
         {/* Year container - takes up left portion */}
         <div className="flex-1 flex justify-end items-end">
           <span className="text-lg text-[#CB0000] italic">
-             ('{year || '24'})
+             (&apos;{year || '24'})
           </span>
         </div>
         
