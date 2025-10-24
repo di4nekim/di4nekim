@@ -1,6 +1,7 @@
 export const EXP_OVERVIEW = {
-  hook: "Some PMs draw boxes and arrows. I write the code inside them too.",
-  hook2: "I'm equal parts builder and strategist–architecting AWS microservices one day, leading product discovery the next. I thrive in the overlap between code and product.",
+  hook: "Some PMs draw boxes and arrows.",
+  hook2: "I write the code inside them too.",
+  hook3: "I'm equal parts builder and strategist. I thrive in the overlap between code and product.",
   currently: "Currently, I'm:",
   currentlyBullets: [
     "A junior (class of '27) @ Georgetown University, working on my B.Sc. in Computer Science and minor in Science, Technology, and International Affairs (STIA)",

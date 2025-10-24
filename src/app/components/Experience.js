@@ -16,7 +16,7 @@ const Experience = () => {
   const translateY = useTransform(
     scrollYProgress,
     [0, 0.2, 0.7, 1],
-    [700, 500, 700, 0]
+    [680, 500, 680, 0]
   );
 
   const opacityContent = useTransform(
@@ -54,8 +54,9 @@ const Experience = () => {
                 opacity: opacityContent,
               }}
               >
-                <p className='text-[18px] font-semibold leading-tight'>{EXP_OVERVIEW.hook}</p>
-                <p className='mb-[20px] leading-tight'>{EXP_OVERVIEW.hook2}</p>
+                <p className='text-[30px] font-semibold leading-tight -mb-[10px]'>{EXP_OVERVIEW.hook}</p>
+                <p className='text-[30px] font-semibold leading-tight '>{EXP_OVERVIEW.hook2}</p>
+                <p className='mb-[20px] leading-tight'>{EXP_OVERVIEW.hook3}</p>
                 
                 <p className='font-semibold leading-tight'>{EXP_OVERVIEW.currently}</p>
                 <ul className='mb-[10px]'>

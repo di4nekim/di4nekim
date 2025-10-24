@@ -13,6 +13,13 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
   const smoothScrollY = useSpring(scrollY, { damping: 20, stiffness: 100 })
   const router = useRouter()
   const [isNavigating, setIsNavigating] = useState(false)
+  const [dimensions, setDimensions] = useState({
+    itemHeight: 300,
+    itemSpacing: 320,
+    headerHeight: 50,
+    centerX: 300,
+    centerY: 200
+  })
 
   // Default projects as fallback
   const defaultProjects = [
@@ -26,17 +33,37 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
   // Use provided projects or fall back to defaults
   const projects = propProjects && propProjects.length > 0 ? propProjects : defaultProjects
 
+  // Calculate dimensions on client side only
+  useEffect(() => {
+    const updateDimensions = () => {
+      const itemHeight = window.innerHeight * 0.33
+      const itemSpacing = window.innerHeight * 0.4
+      const headerHeight = window.innerWidth >= 640 ? 65 : 50
+      const centerX = window.innerWidth * 0.3
+      const centerY = headerHeight + (window.innerHeight - headerHeight) / 3.5
+      
+      setDimensions({
+        itemHeight,
+        itemSpacing,
+        headerHeight,
+        centerX,
+        centerY
+      })
+    }
+
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
+
   const handleProjectClick = (project) => {
     setIsNavigating(true)
-    // Short delay to let slide-out animation be visible, but not long enough for blank screen
     setTimeout(() => {
       router.push(`/portfolio/project/${project.id || project.title.toLowerCase().replace(/\s+/g, '-')}`)
-    }, 300) // Enough time to see the slide-out start, but quick enough to avoid gaps
+    }, 300)
   }
 
-  const itemHeight = typeof window !== 'undefined' ? window.innerHeight * 0.33 : 300
-  const itemSpacing = typeof window !== 'undefined' ? window.innerHeight * 0.4 : 320
-  const headerHeight = typeof window !== 'undefined' ? (window.innerWidth >= 640 ? 65 : 50) : 50
+  const { itemHeight, itemSpacing, headerHeight, centerX, centerY } = dimensions
 
   const handleWheel = (e) => {
     e.preventDefault()
@@ -109,10 +136,6 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
               smoothScrollY,
               (scrollValue) => scrollValue - (index * itemSpacing)
             )
-
-            // Define consistent center points for both positioning and effects
-            const centerX = window.innerWidth * 0.3 // Affects left-right position
-            const centerY = headerHeight + (window.innerHeight - headerHeight) / 3.5 // Affects top-bottom position
 
             // Calculate X and Y positions for 45-degree diagonal
             const x = useTransform(

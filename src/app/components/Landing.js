@@ -119,10 +119,18 @@ const Cloud = ({className, src, start, end}) => {
   )
 }
 
-const ABOUT_HOOK = "I’ve always had my head up in the clouds";
-const ABOUT_P1 = "I wear all the hats I can, from emergency medical technician to culinary school graduate, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.";
-const ABOUT_P2 = "When I’m not at my keyboard, I love to be a shameless amateur in my ever-changing interests and to work with my hands :)";
-// const ABOUT_P3 = "Get to know me better by checking out some of the things I do for fun." // underline 'for fun', link to 'in the off hours'
+const ABOUT_HOOK = "I've been a project manager my whole life–I just don't have the job title yet.";
+const ABOUT_P1 = "I wear all the hats I can, from emergency medical technician to project manager to culinary school graduate, because creative solutions can only be honed through diverse experiences and a hands-on curiosity.";
+const ABOUT_P2 = "Even when I’m not at my keyboard, I treat each goal like a project to scope, execute, and complete. Here are some I've taken from 0 to 1:";
+const ABOUT_BULLETS = [
+  "Division I Top 64 Epee fencer @ 16",
+  "Attaining my EMT certification (NREMT)",
+  "Programme de Cuisine @ Le Cordon Bleu Madrid",
+  "A2 proficiency in Spanish in 2 months",
+  "Goodreads reading challenge, 2020 - 2025",
+  "Advice Column @ The Hoya",
+  "Worked as a florist"
+];
 
 const About = () => {
   return(
@@ -170,6 +178,19 @@ const About = () => {
       >
         {ABOUT_P2}
       </motion.p>
+
+      <motion.ul
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ease: "easeInOut", duration: 1}}
+        className="w-[60vw] sm:w-[50vw] mb-2 ml-[3vh] sm:mx-[5vh] font-normal"
+      >
+        {ABOUT_BULLETS.map((bullet, index) => (
+          <li key={index} className="before:content-['–_'] before:mr-2 leading-tight">
+            {bullet}
+          </li>
+        ))}
+      </motion.ul>
 
 
     </section>

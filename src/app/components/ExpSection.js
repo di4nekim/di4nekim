@@ -228,7 +228,7 @@ const Menu = () => {
                           lg:right-[15vw] lg:top-[20vh]
                           xl:right-[8vw]
                           flex flex-col gap-y-[20px] items-end'>
-            <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2024  </p>
+            <p className='text-[var(--main-red)] text-[10px] font-semibold italic'>––– 2025  </p>
             {EXPERIENCES.map((experience, key) => (
               <Button 
                 key={key}
