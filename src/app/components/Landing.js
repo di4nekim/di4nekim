@@ -165,7 +165,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[60vw] sm:w-[50vw] mb-5 ml-[3vh] sm:mx-[5vh] font-normal"
+        className="w-[60vw] sm:w-[50vw] mb-5 ml-[3vh] sm:mx-[5vh] font-normal leading-tight"
       >
         {ABOUT_P1}   
       </motion.p>
@@ -174,7 +174,7 @@ const About = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ease: "easeInOut", duration: 1}}
-        className="w-[60vw] sm:w-[50vw] mb-5 ml-[3vh] sm:mx-[5vh] font-normal"
+        className="w-[60vw] sm:w-[50vw] mb-5 ml-[3vh] sm:mx-[5vh] font-normal leading-tight"
       >
         {ABOUT_P2}
       </motion.p>
