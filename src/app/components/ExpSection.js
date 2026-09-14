@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import Image from 'next/image';
 import { useMediaQuery } from 'react-responsive';
 import Button from './Button';
@@ -17,8 +17,12 @@ const ExperienceContext = React.createContext();
 const ExpSection = () => {
   const [experience, setExperience] = useState("KEEPUP");
 
+  // Memoize so consumers (Menu, Dropdown, Role, Blurb, Impact, Projects)
+  // only re-render when `experience` actually changes.
+  const contextValue = useMemo(() => ({ experience, setExperience }), [experience]);
+
   return (
-    <ExperienceContext.Provider value={{ experience, setExperience }}>
+    <ExperienceContext.Provider value={contextValue}>
       <div className='relative h-full pb-[30vh] bg-[var(--main-beige)] pt-[5vh] px-[10vw]
                       sm:pt-[8vh]
                       md:grid md:grid-cols-[35%_65%] md:pt-0 md:px-0
