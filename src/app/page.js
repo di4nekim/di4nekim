@@ -3,7 +3,6 @@ import { Landing } from "./components/Landing.js";
 import Experience from "./components/Experience.js";
 import ExpSection from './components/ExpSection.js';
 import Footer from './components/Footer.js';
-import PersonalProjects from './components/PersonalProjects.js';
 import MobileBlocker from './components/MobileBlocker.js';
 import '@/app/globals.css';
 
@@ -16,7 +15,6 @@ export default function Home() {
         <Landing />
         <Experience />
         <ExpSection />
-        {/* <PersonalProjects /> */}
         <Footer />
       </div>
     </>

@@ -214,7 +214,7 @@ const TidBits = ({experience}) => {
 }
 
 const Menu = () => {
-  const { experience, setExperience } = React.useContext(ExperienceContext);
+  const { setExperience } = React.useContext(ExperienceContext);
   const isMdOrLarger = useMediaQuery({ minWidth: 768 });
 
   return(
