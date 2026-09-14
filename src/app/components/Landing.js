@@ -1,13 +1,7 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
-import Image from "next/image";
 import { motion, useTransform, useScroll } from 'framer-motion'
-import landingCloud from '../../../public/landing-cloud.webp';
-
-// Wrap next/image so framer-motion can drive its transform for the parallax.
-// Created at module scope to keep component identity stable across renders.
-const MotionImage = motion.create(Image);
 
 export const Landing = () => {
   return(
@@ -93,7 +87,7 @@ const ParallaxImages = () => {
       className={"absolute sm:right-0 w-full z-0 max-w-5xl pt-[80vh]"} // make sure absolute positioning doesn't mess with parallax
     >
       <Cloud
-        src={landingCloud}
+        src={'/landing-cloud.webp'}
         className={"h-[600px] overflow-x-clip sm:h-[700px] lg:pl-[20vh] xl:h-[700px]"}
         start={-600}
         end={800}
@@ -113,13 +107,12 @@ const Cloud = ({className, src, start, end}) => {
   const y = useTransform(scrollYProgress, [0, 1], [start, end]);
 
   return (
-    <MotionImage
+    <motion.img
       ref={ref}
       src={src}
       alt=""
       className={className}
-      style={{ y, width: 'auto' }}
-      sizes="(min-width: 1024px) 1000px, 100vw"
+      style={{ y }}
     />
   )
 }
