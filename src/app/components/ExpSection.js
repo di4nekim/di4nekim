@@ -223,10 +223,13 @@ const Menu = () => {
                     '> 
       {isMdOrLarger && (
         <>
-          <Image className='md:relative md:w-[18vw] md:ml-[11vw] md:mt-[5vh] 
+          <Image className='md:relative md:w-[18vw] md:ml-[11vw] md:mt-[5vh]
                             lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw]
-                            xl:w-[200px] 
-                            ' src={ExperienceCloud2} alt={"ExperienceCloud2"}/>
+                            xl:w-[200px]
+                            '
+                 src={ExperienceCloud2}
+                 alt=""
+                 sizes="(min-width: 1280px) 200px, (min-width: 1024px) 15vw, (min-width: 768px) 18vw, 0px" />
           <div className='absolute right-[100px] top-[130px]
                           md:right-[11vw] md:top-[20vh]
                           lg:right-[15vw] lg:top-[20vh]

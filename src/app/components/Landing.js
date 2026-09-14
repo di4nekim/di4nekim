@@ -1,12 +1,15 @@
 'use client' // need to add this line to use framer-motion; server component by default
 import React from "react";
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useTransform, useScroll } from 'framer-motion'
-import useLenis from '../hooks/useLenis';
+import landingCloud from '../../../public/landing-cloud.webp';
+
+// Wrap next/image so framer-motion can drive its transform for the parallax.
+// Created at module scope to keep component identity stable across renders.
+const MotionImage = motion.create(Image);
 
 export const Landing = () => {
-  useLenis();
-
   return(
     <div className="relative grid grid-cols-[15%_85%] h-[300vh] bg-[var(--main-red)] overflow-visible
                     sm:h-[290vh]
@@ -89,8 +92,8 @@ const ParallaxImages = () => {
     <div 
       className={"absolute sm:right-0 w-full z-0 max-w-5xl pt-[80vh]"} // make sure absolute positioning doesn't mess with parallax
     >
-      <Cloud 
-        src={'/landing-cloud.png'}
+      <Cloud
+        src={landingCloud}
         className={"h-[600px] overflow-x-clip sm:h-[700px] lg:pl-[20vh] xl:h-[700px]"}
         start={-600}
         end={800}
@@ -103,18 +106,20 @@ const ParallaxImages = () => {
 const Cloud = ({className, src, start, end}) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: ref, 
+    target: ref,
     offset: [`${start}px end`, `end ${end * -1}px`],
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [start, end]);
-  
+
   return (
-    <motion.img 
-      ref={ref} 
-      src={src} 
-      className={className} 
-      style={{ y }}
+    <MotionImage
+      ref={ref}
+      src={src}
+      alt=""
+      className={className}
+      style={{ y, width: 'auto' }}
+      sizes="(min-width: 1024px) 1000px, 100vw"
     />
   )
 }

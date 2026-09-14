@@ -17,11 +17,9 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 
 ## Session 2 — Perf pass (~1 hr)
 
-- [ ] **C2 — Optimize `landing-cloud.png`.** File is 4.2 MB, displayed at ~600px height from a 2955px source, loaded as raw `<motion.img>`. See `public/landing-cloud.png` and `src/app/components/Landing.js:113`. Two-part fix:
-  1. Resize the source PNG to ~1400px wide, export WebP.
-  2. Wrap with `next/image` (via `motion(Image)`) so it gets format negotiation, lazy loading, and dimension attributes.
-- [ ] **H1 — Pick one scroll library.** Both Lenis (`src/app/hooks/useLenis.js`) and Framer Motion's `useScroll`/`useTransform` are running. Recommendation: drop Lenis, keep Framer. Removes ~248 KB from bundle and eliminates dual scroll listeners.
-- [ ] **M5 — Add `width`/`height` to `<Image>`s** in `src/app/components/ExpSection.js:222` (`ExperienceCloud2`). Prevents CLS. `PortfolioLanding.js:25` already does this — copy the pattern.
+- [x] **C2 — Optimize `landing-cloud.png`**. Source 2955×1892 PNG (4.2 MB) → 1400×896 WebP (**31 KB**) via `sips` resize + `sharp` webp encode. Deleted the PNG (WebP is universally supported). Rewrote the `Cloud` component in `Landing.js`: `motion.img` → `motion.create(Image)` with static import so next/image applies. Browser now gets a responsive srcset (640/750/828/1080/1200/1920/2048/3840 widths at q=75) served via `/_next/image` — the largest asset in the whole site went from **4.2 MB → ~31 KB** at typical resolutions.
+- [x] **H1 — Pick one scroll library**. Dropped Lenis: uninstalled `@studio-freight/lenis`, deleted `src/app/hooks/useLenis.js`, removed the `useLenis()` call from `Landing.js`. Framer Motion's `useScroll`/`useTransform` handles all scroll-linked animation. `/` route First Load JS: 14.9 → **11.9 kB**.
+- [x] **M5 — Add sizing hint to ExpSection Image**. Note: original audit finding was based on a misread — `ExperienceCloud2` is a static import, so next/image already infers width/height and CLS was never at risk. Real improvement made instead: added responsive `sizes` prop matching the `w-[Xvw]` classes so the browser fetches the right resolution, and switched `alt="ExperienceCloud2"` → `alt=""` (decorative image; screen readers skip it).
 
 ## Session 3 — A11y + hygiene (when there's time)
 
@@ -68,3 +66,4 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - **2026-09-14** — C3 done. `next lint` restored to working order.
 - **2026-09-14** — Session 1 complete (C1, H2, H3, H4). Compile clean (`next build --no-lint` succeeds); `next build` without the flag now fails on pre-existing bugs surfaced by newly-working lint — tracked under "Discovered during audit" and must be addressed before production deploy.
 - **2026-09-14** — Deploy-blocking bugs fixed. `next build` succeeds with the lint gate on (zero errors, ~50 auto-fixable warnings remaining). Key changes: PortfolioMenu refactored (rules-of-hooks + `useCallback` for handlers + resize-reactive viewport state), ProjectItem now actually uses its props, Header uses `next/link`, entities escaped. All 6 routes generate; `/portfolio` bundle grew 3.65 → 3.86 kB (new PortfolioMenuItem).
+- **2026-09-14** — Session 2 complete (C2, H1, M5). Biggest win: `landing-cloud` went from a 4.2 MB PNG loaded as raw `<img>` to a 31 KB WebP served via next/image with a full responsive srcset. Lenis removed (`/` route: 14.9 → 11.9 kB First Load JS). Build clean; both `/` and `/portfolio` return 200 from the dev server.
