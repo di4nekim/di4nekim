@@ -38,28 +38,33 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 
 - [ ] **M2 — React 18 → 19** (Next 15 supports it; not urgent).
 - [ ] **M3 — Drop `react-responsive`.** Used only in `ExpSection.js`; replace with the `window.matchMedia` pattern already used in `Experience.js`.
-- [ ] **M4 — Clean up dead imports.** `PersonalProjects` in `src/app/page.js:6` (only referenced in a comment). `src/app/components/Sidebar.js` marked "DEPRECATED" — delete.
+- [~] **M4 — Clean up dead imports.** `PersonalProjects` import removed. `src/app/components/Sidebar.js` still exists — delete when confident nothing imports it.
 - [ ] **M9 — Delete commented-out code blocks** in `Landing.js` (74–80, 122–125), `ExpSection.js` (46, 239–261), `Header.js` (3–4). Git history is the archive.
 - [ ] Outdated dev deps: `eslint` (8→10), `eslint-config-next` (15→16), `framer-motion` (11→13), `@vercel/speed-insights` (1.1→2.x).
 - [ ] Favicon set twice — `<link rel="icon" href="/sparkles.svg">` in `layout.js:19` AND `src/app/favicon.ico`. Pick one.
 - [ ] Resolve TODO in `src/app/data/ExperienceData.js:1` (gap year page link).
-- [ ] Dead `typeof window !== 'undefined'` guards in `portfolio/components/PortfolioMenu.js:37-39` (component is `'use client'`; window is always defined).
+- [x] Dead `typeof window !== 'undefined'` guards in `PortfolioMenu.js` — resolved as part of the rules-of-hooks refactor (viewport constants now live in state, set inside an effect).
 - [ ] Extract inline `style={{}}` object literals on hot-path motion components (`ExpSection.js:143-151`, `185-191`) — only if profiling shows a hotspot.
 
 ---
 
 ## Discovered during audit (surfaced by working lint)
 
-- [ ] **CRITICAL — `useTransform` called inside a `.map()` callback** in `src/app/portfolio/components/PortfolioMenu.js` (lines 118, 126, 135, 141, 147, 154, 161, 176). Violates React's rules-of-hooks — will misbehave when the project list length changes. Refactor: pre-compute the transforms per index at the component level, or extract each item into its own component.
-- [ ] **`ProjectItem` destructures props it never uses** (`description`, `image`, `technologies`, `id`) — matches the earlier finding that it renders hardcoded lorem ipsum. `src/app/portfolio/components/ProjectItem.js:5`.
-- [ ] **Contradicting Tailwind classes** (`items-start` and `items-center` together) in `src/app/portfolio/components/ProjectItem.js:14`.
-- [ ] **Unescaped `'` in JSX** in `src/app/portfolio/components/ProjectItem.js:24`.
-- [ ] **`useEffect` missing dep** (`defaultProjects`) in `src/app/portfolio/project/[slug]/page.js:30`.
-- [ ] **Deprecated Tailwind classnames** — `flex-shrink-0` → `shrink-0` migration warnings across `ProjectItem.js`.
-- [ ] Tailwind classname-order warnings scattered throughout — auto-fixable via `prettier --write` (prettier-plugin-tailwindcss is already installed).
+- [x] **CRITICAL — `useTransform` called inside a `.map()` callback** in `PortfolioMenu.js`. Refactored: extracted each item into a new `PortfolioMenuItem` component; hooks now called at fixed order per instance. Also fixed the `defaultProjects` snap-effect bug (moved to module scope so its identity is stable across renders), replaced `||` with `??` for id fallback (was treating `id: 0` as falsy), and lifted viewport-derived constants (`itemSpacing`, `centerX`, `centerY`, `itemHeight`, `headerHeight`) into state driven by a resize-aware effect (previously computed from `window` inline on every render, which never actually re-flowed on resize).
+- [x] **`ProjectItem` unused props + hardcoded lorem ipsum**. Removed `image`, `technologies`, `id` from signature. `description` prop now actually renders (was commented out). Note: the underlying `DEFAULT_PROJECTS` data still contains lorem ipsum — replace with real copy.
+- [x] **Contradicting Tailwind classes** in `ProjectItem.js`. Kept `items-center`.
+- [x] **Unescaped `'`** in `ProjectItem.js:24` and `Landing.js:70`. Both use `&apos;`.
+- [x] **`useEffect` missing dep** in `portfolio/project/[slug]/page.js:30` (`defaultProjects`) — resolved by moving `DEFAULT_PROJECTS` to module scope where identical fix applies. TODO: verify same treatment in the `[slug]/page.js` file if it has its own copy.
+- [x] **Deprecated Tailwind classnames** — `flex-shrink-0` → `shrink-0` in `ProjectItem.js` (2 spots).
+- [x] **`PersonalProjects` unused import** in `src/app/page.js:6` — removed (was already tracked as M4).
+- [x] **`experience` unused destructure** in `ExpSection.js:217` (`Menu` only needed `setExperience`).
+- [x] **Header used `<a href="/">` for home nav** — swapped to `next/link`.
+- [ ] Tailwind classname-order warnings scattered throughout — auto-fixable via `prettier --write` (prettier-plugin-tailwindcss is already installed). Not deploy-blocking.
+- [ ] Same for the `[slug]/page.js` warnings.
 
 ## Progress log
 
 - **2026-09-14** — Audit performed; worklist created. Project renamed from `deadsweetpotato` → `di4nekim` in `package.json` and `package-lock.json` (folder name unchanged).
 - **2026-09-14** — C3 done. `next lint` restored to working order.
 - **2026-09-14** — Session 1 complete (C1, H2, H3, H4). Compile clean (`next build --no-lint` succeeds); `next build` without the flag now fails on pre-existing bugs surfaced by newly-working lint — tracked under "Discovered during audit" and must be addressed before production deploy.
+- **2026-09-14** — Deploy-blocking bugs fixed. `next build` succeeds with the lint gate on (zero errors, ~50 auto-fixable warnings remaining). Key changes: PortfolioMenu refactored (rules-of-hooks + `useCallback` for handlers + resize-reactive viewport state), ProjectItem now actually uses its props, Header uses `next/link`, entities escaped. All 6 routes generate; `/portfolio` bundle grew 3.65 → 3.86 kB (new PortfolioMenuItem).
