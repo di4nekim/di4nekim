@@ -1,36 +1,46 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 
-export default function ProjectItem({ title, description, link, year, onProjectClick, isNavigating }) {
+export default function ProjectItem({
+  title,
+  description,
+  link,
+  year,
+  onProjectClick,
+  isNavigating,
+}) {
   const handleClick = () => {
     if (onProjectClick) {
-      onProjectClick()
+      onProjectClick();
     }
-  }
+  };
 
   return (
     <motion.div
-      className="flex items-center gap-8 py-8 w-[50vw] justify-center cursor-pointer hover:opacity-80 transition-opacity"
+      className="flex w-[50vw] cursor-pointer items-center justify-center gap-8 py-8 transition-opacity hover:opacity-80"
       onClick={handleClick}
       animate={isNavigating ? { x: -1200, opacity: 0 } : { x: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
     >
       {/* Left side - Project name and year */}
-      <div className="shrink-0 w-60 flex flex-row">
+      <div className="flex w-60 shrink-0 flex-row">
         {/* Year container - takes up left portion */}
-        <div className="flex-1 flex justify-end items-end">
-          <span className="text-lg text-[#CB0000] italic">
-             (&apos;{year || '24'})
+        <div className="flex flex-1 items-end justify-end">
+          <span className="text-lg italic text-[#CB0000]">
+            (&apos;{year || "24"})
           </span>
         </div>
 
         {/* Title container - takes up right portion */}
-        <div className="ml-4 flex flex-col justify-center items-center text-[#CB0000] align-bottom">
+        <div className="ml-4 flex flex-col items-center justify-center align-bottom text-[#CB0000]">
           <div className="text-right">
             {/* Split title into words and display each on a new line */}
-            {(title || "Dead Sweet Potato").split(' ').map((word, index) => (
-              <div key={index} className="text-4xl font-medium italic leading-tight">
+            {(title || "Dead Sweet Potato").split(" ").map((word, index) => (
+              <div
+                key={index}
+                className="text-4xl font-medium italic leading-tight"
+              >
                 {word}
               </div>
             ))}
@@ -39,11 +49,11 @@ export default function ProjectItem({ title, description, link, year, onProjectC
       </div>
 
       {/* Vertical divider */}
-      <div className="w-[2px] bg-[#CB0000] self-stretch shrink-0"></div>
+      <div className="w-[2px] shrink-0 self-stretch bg-[#CB0000]"></div>
 
       {/* Right side - Description and details */}
       <div className="flex-1 pt-2">
-        <p className="text-lg text-[#CB0000] leading-tight italic mb-6">
+        <p className="mb-6 text-lg italic leading-tight text-[#CB0000]">
           {description}
         </p>
 
@@ -52,12 +62,12 @@ export default function ProjectItem({ title, description, link, year, onProjectC
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-blue-600 hover:text-blue-800 underline transition-colors"
+            className="inline-block text-blue-600 underline transition-colors hover:text-blue-800"
           >
             View Project →
           </a>
         )}
       </div>
     </motion.div>
-  )
+  );
 }

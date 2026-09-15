@@ -1,14 +1,11 @@
-import React from 'react';
+import React from "react";
 
 // Shown on viewports narrower than md (< 768px). Uses tailwind's responsive
 // utilities rather than a JS media query so it renders correctly on the
 // server and never flashes during hydration.
 const MobileBlocker = () => {
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[var(--main-red)] px-8 text-center text-[var(--main-beige)]
-                 md:hidden"
-    >
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[var(--main-red)] px-8 text-center text-[var(--main-beige)] md:hidden">
       <p className="mb-6 text-[12px] font-semibold uppercase tracking-[0.3em] opacity-70">
         di4nekim
       </p>

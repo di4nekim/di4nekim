@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { motion, useTransform } from 'framer-motion'
-import ProjectItem from './ProjectItem'
+import { motion, useTransform } from "framer-motion";
+import ProjectItem from "./ProjectItem";
 
 // One project row in the diagonal portfolio menu.
 //
@@ -23,43 +23,45 @@ export default function PortfolioMenuItem({
   // Item's scroll-space offset from the "current" position.
   const diagonalPosition = useTransform(
     smoothScrollY,
-    (v) => v - index * itemSpacing
-  )
+    (v) => v - index * itemSpacing,
+  );
 
   // 45° diagonal projection of that offset.
   const x = useTransform(
     diagonalPosition,
-    (pos) => centerX + pos * Math.cos(Math.PI / 4) * 0.8
-  )
+    (pos) => centerX + pos * Math.cos(Math.PI / 4) * 0.8,
+  );
   const y = useTransform(
     diagonalPosition,
-    (pos) => centerY + pos * Math.sin(Math.PI / 4) * 0.8
-  )
+    (pos) => centerY + pos * Math.sin(Math.PI / 4) * 0.8,
+  );
 
-  const distanceFromCenter = useTransform(diagonalPosition, (pos) => Math.abs(pos))
+  const distanceFromCenter = useTransform(diagonalPosition, (pos) =>
+    Math.abs(pos),
+  );
 
   const zIndex = useTransform(distanceFromCenter, (d) =>
-    Math.max(1, 100 - Math.round(d / 10))
-  )
+    Math.max(1, 100 - Math.round(d / 10)),
+  );
 
   const opacity = useTransform(
     distanceFromCenter,
     [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-    [1, 0.9, 0.4, 0]
-  )
+    [1, 0.9, 0.4, 0],
+  );
 
   const scale = useTransform(
     distanceFromCenter,
     [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-    [1, 0.95, 0.8, 0.6]
-  )
+    [1, 0.95, 0.8, 0.6],
+  );
 
   const blur = useTransform(
     distanceFromCenter,
     [0, itemSpacing * 0.6, itemSpacing * 1.2, itemSpacing * 2.0],
-    [0, 0.5, 3, 6]
-  )
-  const filter = useTransform(blur, (b) => `blur(${b}px)`)
+    [0, 0.5, 3, 6],
+  );
+  const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
   return (
     <motion.div
@@ -71,12 +73,12 @@ export default function PortfolioMenuItem({
         scale,
         filter,
         zIndex,
-        width: '50vw',
+        width: "50vw",
         height: `${itemHeight}px`,
-        transformOrigin: 'center center',
+        transformOrigin: "center center",
       }}
       animate={isNavigating ? { x: -1200, opacity: 0 } : {}}
-      transition={{ duration: 0.8, ease: 'easeInOut' }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
     >
       <ProjectItem
         title={project.title}
@@ -86,5 +88,5 @@ export default function PortfolioMenuItem({
         isNavigating={isNavigating}
       />
     </motion.div>
-  )
+  );
 }

@@ -1,55 +1,61 @@
-import { Inter } from 'next/font/google';
-import '@/app/globals.css';
+import { Inter } from "next/font/google";
+import "@/app/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'], // Regular, SemiBold, Bold
-  variable: '--font-inter',
+  subsets: ["latin"],
+  weight: ["400", "600", "700"], // Regular, SemiBold, Bold
+  variable: "--font-inter",
 });
 
-const SITE_URL = 'https://di4nekim.vercel.app';
-const SITE_DESCRIPTION = 'Portfolio of Diane Kim, technical product manager.';
+const SITE_URL = "https://di4nekim.vercel.app";
+const SITE_DESCRIPTION = "Portfolio of Diane Kim, technical product manager.";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'di4nekim',
-    template: '%s · di4nekim',
+    default: "di4nekim",
+    template: "%s · di4nekim",
   },
   description: SITE_DESCRIPTION,
-  applicationName: 'di4nekim',
-  authors: [{ name: 'Diane Kim' }],
-  creator: 'Diane Kim',
-  keywords: ['Diane Kim', 'di4nekim', 'portfolio', 'technical product manager', 'software engineer'],
+  applicationName: "di4nekim",
+  authors: [{ name: "Diane Kim" }],
+  creator: "Diane Kim",
+  keywords: [
+    "Diane Kim",
+    "di4nekim",
+    "portfolio",
+    "technical product manager",
+    "software engineer",
+  ],
   alternates: {
-    canonical: '/',
+    canonical: "/",
   },
   openGraph: {
-    type: 'website',
-    url: '/',
-    siteName: 'di4nekim',
-    title: 'di4nekim',
+    type: "website",
+    url: "/",
+    siteName: "di4nekim",
+    title: "di4nekim",
     description: SITE_DESCRIPTION,
   },
   twitter: {
-    card: 'summary',
-    title: 'di4nekim',
+    card: "summary",
+    title: "di4nekim",
     description: SITE_DESCRIPTION,
-    creator: '@deadsweetpotato',
+    creator: "@deadsweetpotato",
   },
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: '/sparkles.svg',
+    icon: "/sparkles.svg",
   },
 };
 
 export const viewport = {
-  themeColor: '#CB0000',
-  width: 'device-width',
+  themeColor: "#CB0000",
+  width: "device-width",
   initialScale: 1,
 };
 
