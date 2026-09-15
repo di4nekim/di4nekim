@@ -7,19 +7,11 @@ export default function ProjectItem({
   description,
   link,
   year,
-  onProjectClick,
   isNavigating,
 }) {
-  const handleClick = () => {
-    if (onProjectClick) {
-      onProjectClick();
-    }
-  };
-
   return (
     <motion.div
-      className="flex w-[50vw] cursor-pointer items-center justify-center gap-8 py-8 transition-opacity hover:opacity-80"
-      onClick={handleClick}
+      className="pointer-events-none flex w-[50vw] items-center justify-center gap-8 py-8 transition-opacity"
       animate={isNavigating ? { x: -1200, opacity: 0 } : { x: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
     >
@@ -62,7 +54,8 @@ export default function ProjectItem({
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-blue-600 underline transition-colors hover:text-blue-800"
+            onClick={(e) => e.stopPropagation()}
+            className="pointer-events-auto relative z-10 inline-block text-blue-600 underline transition-colors hover:text-blue-800"
           >
             View Project →
           </a>

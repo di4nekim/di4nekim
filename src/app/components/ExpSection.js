@@ -237,24 +237,24 @@ const Dropdown = () => {
   return (
     <>
       {isSmOrSmaller && (
-        <div
-          className="mb-[5vh] flex w-full justify-start"
-          onClick={() => {
-            setDropped(!dropped);
-          }}
-        >
+        <div className="mb-[5vh] flex w-full justify-start">
           <div className="flex flex-col">
             {dropped ? (
               <div className="mb-[15px]">
                 <button
+                  type="button"
                   onClick={() => {
                     setDropped(!dropped);
                   }}
-                  className={`flex h-[30px] w-full items-center justify-between rounded-[10px] border-2 border-[var(--main-red)] bg-[var(--main-red)] px-[15px] py-[5px] text-[15px] font-semibold text-[var(--main-beige)]`}
+                  aria-expanded={true}
+                  aria-haspopup="listbox"
+                  aria-label={`Selected experience: ${experience}. Collapse experience list.`}
+                  className={`flex h-[30px] w-full items-center justify-between rounded-[10px] border-2 border-[var(--main-red)] bg-[var(--main-red)] px-[15px] py-[5px] text-[15px] font-semibold text-[var(--main-beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-beige)]`}
                 >
                   <Image
                     src={Chevron_beige}
-                    alt="chevron_beige"
+                    alt=""
+                    aria-hidden="true"
                     className="mr-[3vw] mt-[2px] h-[10px] w-[16px]"
                   />
                   {experience}
@@ -262,26 +262,35 @@ const Dropdown = () => {
                 {EXPERIENCES.map(
                   (exp, key) =>
                     exp !== experience && (
-                      <div
+                      <button
+                        type="button"
                         key={key}
-                        className="mt-[8px] flex h-[30px] flex-col items-center justify-center rounded-[5px] border-[2px] border-[var(--main-blue)] bg-[var(--main-beige)] px-[15px] font-semibold text-[var(--main-blue)] opacity-100"
-                        onClick={() => setExperience(exp)}
+                        className="mt-[8px] flex h-[30px] w-full flex-col items-center justify-center rounded-[5px] border-[2px] border-[var(--main-blue)] bg-[var(--main-beige)] px-[15px] font-semibold text-[var(--main-blue)] opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]"
+                        onClick={() => {
+                          setExperience(exp);
+                          setDropped(false);
+                        }}
                       >
                         {exp}
-                      </div>
+                      </button>
                     ),
                 )}
               </div>
             ) : (
               <button
+                type="button"
                 onClick={() => {
                   setDropped(!dropped);
                 }}
-                className={`flex h-[30px] items-center justify-center rounded-[10px] border-2 border-[var(--main-red)] bg-[var(--main-beige)] px-[15px] py-[5px] text-[15px] font-semibold text-[var(--main-red)] opacity-100 focus:bg-[var(--main-red)] focus:text-[var(--main-beige)]`}
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                aria-label={`Selected experience: ${experience}. Expand experience list.`}
+                className={`flex h-[30px] items-center justify-center rounded-[10px] border-2 border-[var(--main-red)] bg-[var(--main-beige)] px-[15px] py-[5px] text-[15px] font-semibold text-[var(--main-red)] opacity-100 focus:bg-[var(--main-red)] focus:text-[var(--main-beige)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]`}
               >
                 <Image
                   src={Chevron_red}
-                  alt="chevron_red"
+                  alt=""
+                  aria-hidden="true"
                   className="mr-[3vw] mt-[2px] h-[10px] w-[16px]"
                 />
                 {experience}

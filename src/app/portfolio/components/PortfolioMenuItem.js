@@ -63,9 +63,21 @@ export default function PortfolioMenuItem({
   );
   const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
+  const handleActivate = () => onProjectClick(project);
+
   return (
     <motion.div
-      className="absolute flex items-center justify-center"
+      role="link"
+      tabIndex={0}
+      aria-label={`View project: ${project.title}`}
+      onClick={handleActivate}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleActivate();
+        }
+      }}
+      className="absolute flex cursor-pointer items-center justify-center rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]"
       style={{
         x,
         y,
@@ -84,7 +96,6 @@ export default function PortfolioMenuItem({
         title={project.title}
         year={project.year}
         description={project.description}
-        onProjectClick={() => onProjectClick(project)}
         isNavigating={isNavigating}
       />
     </motion.div>
