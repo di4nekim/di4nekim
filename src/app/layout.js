@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SITE } from "@/lib/content";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,7 +10,7 @@ const inter = Inter({
 });
 
 const SITE_URL = "https://di4nekim.vercel.app";
-const SITE_DESCRIPTION = "Portfolio of Diane Kim, technical product manager.";
+const SITE_DESCRIPTION = SITE.description;
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

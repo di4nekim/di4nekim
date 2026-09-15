@@ -6,7 +6,7 @@ import {
   useTransform,
   AnimatePresence,
 } from "framer-motion";
-import { EXP_OVERVIEW } from "../data/ExperienceData";
+import { EXPERIENCE } from "@/lib/content";
 
 const Experience = () => {
   // TAKE 3: ditch lenis, use useScroll's native target and offset props to dynamically preserve animation layouts despite viewport resizing
@@ -43,9 +43,12 @@ const Experience = () => {
               y: translateY,
             }}
           >
-            <p className="mb-[10px]">{EXP_OVERVIEW.p1}</p>
-            <p className="mb-[10px]">{EXP_OVERVIEW.p2}</p>
-            <p className="font-semibold italic">{EXP_OVERVIEW.p3}</p>
+            {EXPERIENCE.intro.map((paragraph, index) => (
+              <p className="mb-[10px]" key={index}>
+                {paragraph}
+              </p>
+            ))}
+            <p className="font-semibold italic">{EXPERIENCE.leadIn}</p>
           </motion.section>
           {/* )} */}
         </AnimatePresence>
@@ -124,7 +127,7 @@ const Sidebar = ({ scrollYProgress }) => {
               opacity: opacityTransform,
             }}
           >
-            EXPERIENCE
+            {EXPERIENCE.sidebarLabel}
           </motion.h1>
         </div>
       ) : (
@@ -145,7 +148,7 @@ const Sidebar = ({ scrollYProgress }) => {
               transformOrigin: "left center", // anchors scaling to the left
             }}
           >
-            EXPERIENCE
+            {EXPERIENCE.sidebarLabel}
           </motion.h1>
         </div>
       )}

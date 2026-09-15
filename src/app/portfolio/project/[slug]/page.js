@@ -4,47 +4,12 @@ import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import SharedBackground from "../../components/SharedBackground.js";
+import { PORTFOLIO, PROJECTS } from "@/lib/content";
 
-// Module-scope so identity is stable across renders — otherwise the useEffect
-// below would need it in deps, and re-lint would flag it. Matches the pattern
-// in PortfolioMenu.js.
-const DEFAULT_PROJECTS = [
-  {
-    title: "Dead Sweet Potato",
-    year: "'24",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-    id: 0,
-  },
-  {
-    title: "Hilltop Initiative",
-    year: "'24",
-    description:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con",
-    id: 1,
-  },
-  {
-    title: "Pavilion",
-    year: "'24",
-    description:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es",
-    id: 2,
-  },
-  {
-    title: "Digital Canvas",
-    year: "'24",
-    description:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-    id: 3,
-  },
-  {
-    title: "Urban Collective",
-    year: "'24",
-    description:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
-    id: 4,
-  },
-];
+// Module-scope (from content/site.md) so identity is stable across renders —
+// otherwise the useEffect below would need it in deps. Matches the pattern in
+// PortfolioMenu.js.
+const DEFAULT_PROJECTS = PROJECTS;
 
 export default function ProjectPage() {
   const params = useParams();
@@ -70,7 +35,7 @@ export default function ProjectPage() {
     return (
       <SharedBackground>
         <div className="flex h-screen items-center justify-center">
-          <div className="text-xl text-[#CB0000]">Project not found</div>
+          <div className="text-xl text-[#CB0000]">{PORTFOLIO.notFound}</div>
         </div>
       </SharedBackground>
     );
@@ -96,7 +61,7 @@ export default function ProjectPage() {
             onClick={handleBack}
             className="text-lg text-[#CB0000] transition-opacity hover:opacity-70"
           >
-            ← Back to Portfolio
+            {PORTFOLIO.backLink}
           </button>
         </motion.header>
 
@@ -112,7 +77,7 @@ export default function ProjectPage() {
               {project.title}
             </h1>
             <span className="text-2xl italic text-[#CB0000]">
-              ({project.year})
+              (&apos;{project.year})
             </span>
           </div>
 
@@ -132,12 +97,17 @@ export default function ProjectPage() {
             </div>
 
             <div className="mt-12">
-              <h2 className="mb-6 text-3xl font-bold">Project Details</h2>
-              <p className="text-lg leading-relaxed">
-                This is where you can add more detailed information about the
-                project, including technologies used, challenges faced, and
-                solutions implemented.
-              </p>
+              <h2 className="mb-6 text-3xl font-bold">
+                {PORTFOLIO.detailsHeading}
+              </h2>
+              {project.details.map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="mb-4 text-lg leading-relaxed last:mb-0"
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
         </motion.main>

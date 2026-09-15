@@ -2,6 +2,7 @@
 import React from "react";
 import { useRef } from "react";
 import { motion, useTransform, useScroll } from "framer-motion";
+import { ABOUT, HERO } from "@/lib/content";
 
 export const Landing = () => {
   return (
@@ -23,9 +24,11 @@ const Sidebar = () => {
         <div className="absolute left-1/2 top-[-10px] z-10 size-3 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)] sm:size-4"></div>
 
         <ul className="ml-[25px] mt-[60px] w-[15vw] text-[15px] font-semibold text-[var(--main-beige)] sm:ml-[20px] sm:text-[20px] md:ml-[30px]">
-          <li>HELLO</li>
-          <li className="opacity-60">ABOUT</li>
-          <li className="opacity-60">EXPERIENCE</li>
+          {HERO.sidebar.map((item, index) => (
+            <li key={item} className={index > 0 ? "opacity-60" : undefined}>
+              {item}
+            </li>
+          ))}
         </ul>
 
         <div className="absolute left-1/2 top-[128vh] z-10 size-4 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)]" />
@@ -45,7 +48,7 @@ const Hero = () => {
       <ParallaxImages />
       <div className="z-1000 absolute right-0 mr-[3vw] flex pt-[45vh] text-[50px] font-medium sm:mr-[5vw] sm:pt-[40vh] sm:text-[80px] md:mr-[3vw] md:pt-[38vh] md:text-[100px] lg:mr-[5vh] lg:pt-[35vh] lg:text-[120px] xl:mr-[5vh] xl:pt-[40vh]">
         <motion.h1 className="text-[var(--main-beige)]">
-          hey, it&apos;s diane.
+          {HERO.headline}
         </motion.h1>
       </div>
     </div>
@@ -89,12 +92,6 @@ const Cloud = ({ className, src, start, end }) => {
   );
 };
 
-const ABOUT_HOOK = "I’ve always had my head up in the clouds";
-const ABOUT_P1 =
-  "I wear all the hats I can, from emergency medical technician to culinary school graduate, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.";
-const ABOUT_P2 =
-  "When I’m not at my keyboard, I love to be a shameless amateur in my ever-changing interests and to work with my hands :)";
-
 const About = () => {
   return (
     <section
@@ -109,7 +106,7 @@ const About = () => {
         transition={{ ease: "easeInOut", duration: 1 }}
         className="mb-[20px] ml-[3vh] font-semibold sm:mx-[5vh]"
       >
-        ABOUT ME
+        {ABOUT.heading}
       </motion.h1>
 
       <motion.p
@@ -118,26 +115,20 @@ const About = () => {
         transition={{ ease: "easeInOut", duration: 1 }}
         className="mb-3 ml-[3vh] w-[60vw] font-semibold text-[var(--main-red)] sm:mx-[5vh] sm:w-[50vw] lg:text-[var(--main-beige)]"
       >
-        {ABOUT_HOOK}
+        {ABOUT.hook}
       </motion.p>
 
-      <motion.p
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeInOut", duration: 1 }}
-        className="mb-5 ml-[3vh] w-[60vw] font-normal sm:mx-[5vh] sm:w-[50vw]"
-      >
-        {ABOUT_P1}
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeInOut", duration: 1 }}
-        className="mb-5 ml-[3vh] w-[60vw] font-normal sm:mx-[5vh] sm:w-[50vw]"
-      >
-        {ABOUT_P2}
-      </motion.p>
+      {ABOUT.paragraphs.map((paragraph, index) => (
+        <motion.p
+          key={index}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ ease: "easeInOut", duration: 1 }}
+          className="mb-5 ml-[3vh] w-[60vw] font-normal sm:mx-[5vh] sm:w-[50vw]"
+        >
+          {paragraph}
+        </motion.p>
+      ))}
     </section>
   );
 };

@@ -6,47 +6,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import PortfolioMenuItem from "./PortfolioMenuItem";
 import clickToSee from "../../assets/click_to_see.svg";
+import { PROJECTS } from "@/lib/content";
 
-// Default projects as fallback (module scope so its identity is stable —
-// otherwise the snap effect below would treat a re-render as a projects
-// change and never converge).
-const DEFAULT_PROJECTS = [
-  {
-    title: "Dead Sweet Potato",
-    year: "24",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-    id: 0,
-  },
-  {
-    title: "Hilltop Initiative",
-    year: "24",
-    description:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con",
-    id: 1,
-  },
-  {
-    title: "Pavilion",
-    year: "24",
-    description:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es",
-    id: 2,
-  },
-  {
-    title: "Digital Canvas",
-    year: "24",
-    description:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-    id: 3,
-  },
-  {
-    title: "Urban Collective",
-    year: "24",
-    description:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
-    id: 4,
-  },
-];
+// Default projects come from content/site.md. PROJECTS is module-scoped so
+// its identity is stable — otherwise the snap effect below would treat a
+// re-render as a projects change and never converge.
+const DEFAULT_PROJECTS = PROJECTS;
 
 // Viewport-derived layout constants. Kept out of render so state updates only
 // fire when the numbers actually change.

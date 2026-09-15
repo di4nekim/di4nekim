@@ -20,15 +20,7 @@ function useMediaQuery(query) {
   return matches;
 }
 
-import {
-  EXP_BLURBS,
-  EXPERIENCES,
-  EXP_IMPACTS,
-  EXP_ROLES,
-  EXP_PROJECTS,
-  EXP_LINKS,
-  EXP_TECHS,
-} from "../data/ExperienceData";
+import { EXPERIENCE, EXPERIENCES } from "@/lib/content";
 import Arrow from "../../../public/Arrow.svg";
 import Chevron_red from "../../../public/chevron_red.png";
 import Chevron_beige from "../../../public/chevron_beige.png";
@@ -36,8 +28,13 @@ import ExperienceCloud2 from "../../../public/experience-cloud-2.png";
 
 const ExperienceContext = React.createContext();
 
+const JOBS_BY_KEY = Object.fromEntries(
+  EXPERIENCES.map((job) => [job.key, job]),
+);
+
 const ExpSection = () => {
-  const [experience, setExperience] = useState("KEEPUP");
+  const [experience, setExperience] = useState(EXPERIENCES[0].key);
+  const job = JOBS_BY_KEY[experience];
 
   // Memoize so consumers (Menu, Dropdown, Role, Blurb, Impact, Projects)
   // only re-render when `experience` actually changes.
@@ -52,44 +49,38 @@ const ExpSection = () => {
         <Menu />
         <section className="relative h-full bg-[var(--main-beige)] text-[var(--main-red)] md:pr-[5vw] lg:pr-[5vw] xl:px-[10vw]">
           <Dropdown />
-          <Role experience={experience} />
-          <Blurb experience={experience} />
-          {(experience === "KEEPUP" ||
-            experience === "HOYALYTICS" ||
-            experience === "THE HOYA" ||
-            experience === "HM ON TECH") && <Impact experience={experience} />}
-
-          {experience === "HOYA DEVELOPERS" && (
-            <Projects experience={experience} />
-          )}
+          <Role job={job} />
+          <Blurb job={job} />
+          {job.impact.length > 0 && <Impact job={job} />}
+          {job.projects.length > 0 && <Projects job={job} />}
         </section>
       </div>
     </ExperienceContext.Provider>
   );
 };
 
-const Role = ({ experience }) => {
+const Role = ({ job }) => {
   return (
     <div className="relative w-full text-[23px] sm:text-[28px] md:text-[25px] lg:text-[28px] xl:text-[30px]">
       <div className="mb-[5px] flex h-[30px] flex-col font-semibold md:flex-col lg:flex-col xl:flex-row">
         <h1 className="my-[-13px] md:my-[-13px] lg:my-[-13px] xl:my-0 xl:whitespace-nowrap">
-          {EXP_ROLES[experience].title}
+          {job.title}
         </h1>
         <h1 className="text-[var(--main-blue)] md:text-[22px] lg:text-[25px] xl:ml-[10px] xl:whitespace-nowrap xl:text-[30px]">
-          @ {EXP_ROLES[experience].company}
+          @ {job.company}
         </h1>
       </div>
       <p className="absolute left-0 top-[-25px] text-[13px] font-semibold italic text-[var(--main-blue)] opacity-70 md:absolute md:left-0 md:top-[-25px] md:text-[13px] md:opacity-70 xl:relative xl:mt-[30px] xl:text-[15px] xl:opacity-100">
-        ({EXP_ROLES[experience].date})
+        ({job.dates})
       </p>
     </div>
   );
 };
 
-const Blurb = ({ experience }) => {
+const Blurb = ({ job }) => {
   return (
     <div className="mt-[5vh] flex flex-col justify-center gap-y-3 xl:mt-[3vh]">
-      {EXP_BLURBS[experience].map((paragraph, index) => (
+      {job.blurb.map((paragraph, index) => (
         <div className="flex flex-row gap-x-5" key={index}>
           <Image
             src={Arrow}
@@ -103,15 +94,17 @@ const Blurb = ({ experience }) => {
   );
 };
 
-const Impact = ({ experience }) => {
+const Impact = ({ job }) => {
   return (
     <div>
       <div className="mt-[5vh] flex flex-row items-center gap-x-3">
-        <h1 className="text-[20px] font-semibold">IMPACT</h1>
+        <h1 className="text-[20px] font-semibold">
+          {EXPERIENCE.impactHeading}
+        </h1>
         <div className="h-[3px] w-full bg-[var(--main-red)]" />
       </div>
 
-      {EXP_IMPACTS[experience].map((paragraph, index) => (
+      {job.impact.map((paragraph, index) => (
         <ul
           className="ml-4 mt-[10px] list-disc space-y-[15px] leading-tight"
           key={index}
@@ -121,54 +114,54 @@ const Impact = ({ experience }) => {
       ))}
 
       {/* tidbits – links, techstack */}
-      <TidBits experience={experience} />
+      <TidBits job={job} />
     </div>
   );
 };
 
-const Projects = ({ experience }) => {
+const Projects = ({ job }) => {
   return (
     <div>
-      <h1 className="mt-[5vh] text-[15px] font-bold italic">PROJECTS</h1>
+      <h1 className="mt-[5vh] text-[15px] font-bold italic">
+        {EXPERIENCE.projectsHeading}
+      </h1>
 
-      {Object.entries(EXP_PROJECTS[experience]).map(
-        ([project, details], index) => (
-          <section className="mb-[30px]" key={index}>
-            <div className="flex flex-row items-center justify-start gap-x-[5px] text-[25px] text-[var(--main-blue)]">
-              <h1 className="whitespace-nowrap font-semibold">{project}</h1>
-              <div className="ml-[10px] h-[2px] w-full rounded-[5px] bg-[var(--main-red)]" />
-              {details.site && (
-                <Button
-                  text={"SITE"}
-                  style={{
-                    borderWidth: "2px",
-                    opacity: "100%",
-                    fontSize: "15px",
-                    padding: "7px",
-                    paddingLeft: "10px",
-                    paddingRight: "10px",
-                    marginLeft: "10px",
-                  }}
-                  link={details.site}
-                />
-              )}
-            </div>
-            <ul className="ml-4 mt-[10px] list-disc space-y-[10px] leading-tight">
-              {details.paragraphs.map((paragraph, paragraphIndex) => (
-                <li key={paragraphIndex}>{paragraph}</li>
-              ))}
-            </ul>
-          </section>
-        ),
-      )}
+      {job.projects.map((project, index) => (
+        <section className="mb-[30px]" key={index}>
+          <div className="flex flex-row items-center justify-start gap-x-[5px] text-[25px] text-[var(--main-blue)]">
+            <h1 className="whitespace-nowrap font-semibold">{project.name}</h1>
+            <div className="ml-[10px] h-[2px] w-full rounded-[5px] bg-[var(--main-red)]" />
+            {project.site && (
+              <Button
+                text={"SITE"}
+                style={{
+                  borderWidth: "2px",
+                  opacity: "100%",
+                  fontSize: "15px",
+                  padding: "7px",
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  marginLeft: "10px",
+                }}
+                link={project.site}
+              />
+            )}
+          </div>
+          <ul className="ml-4 mt-[10px] list-disc space-y-[10px] leading-tight">
+            {project.bullets.map((bullet, bulletIndex) => (
+              <li key={bulletIndex}>{bullet}</li>
+            ))}
+          </ul>
+        </section>
+      ))}
 
       {/* tidbits -- links, tech stack */}
-      <TidBits experience={experience} className="relative" />
+      <TidBits job={job} className="relative" />
     </div>
   );
 };
 
-const TidBits = ({ experience }) => {
+const TidBits = ({ job }) => {
   return (
     <div
       className="relative h-[5vh] w-full"
@@ -178,30 +171,28 @@ const TidBits = ({ experience }) => {
 
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-x-[10px]">
-          {EXP_LINKS[experience] &&
-            Object.entries(EXP_LINKS[experience]).map(([name, link], index) => (
-              <Button
-                key={index}
-                text={name}
-                style={{
-                  borderColor: "var(--main-blue)",
-                  borderWidth: "2px",
-                  color: "var(--main-blue)",
-                  opacity: "100%",
-                  fontSize: "18px",
-                }}
-                link={link}
-              />
-            ))}
+          {job.links.map(({ label, href }, index) => (
+            <Button
+              key={index}
+              text={label}
+              style={{
+                borderColor: "var(--main-blue)",
+                borderWidth: "2px",
+                color: "var(--main-blue)",
+                opacity: "100%",
+                fontSize: "18px",
+              }}
+              link={href}
+            />
+          ))}
         </div>
 
         <div className="ml-[5vw] flex flex-row flex-wrap justify-end gap-x-[15px] text-[15px] font-semibold italic text-[var(--main-blue)] underline md:ml-[3vw] md:text-[16px] lg:ml-[5vw] lg:text-[15px] xl:text-[18px]">
-          {EXP_TECHS[experience] &&
-            EXP_TECHS[experience].map((tech, index) => (
-              <p className="whitespace-nowrap" key={index}>
-                {tech}
-              </p>
-            ))}
+          {job.tech.map((tech, index) => (
+            <p className="whitespace-nowrap" key={index}>
+              {tech}
+            </p>
+          ))}
         </div>
       </div>
     </div>
@@ -224,19 +215,14 @@ const Menu = () => {
           />
           <div className="absolute right-[100px] top-[130px] flex flex-col items-end gap-y-[20px] md:right-[11vw] md:top-[20vh] lg:right-[15vw] lg:top-[20vh] xl:right-[8vw]">
             <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
-              ––– 2024{" "}
+              {EXPERIENCE.timelineTop}
             </p>
-            {EXPERIENCES.map((experience, key) => (
-              <Button
-                key={key}
-                text={experience}
-                onClick={() => setExperience(experience)}
-              />
+            {EXPERIENCES.map(({ key }) => (
+              <Button key={key} text={key} onClick={() => setExperience(key)} />
             ))}
 
             <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
-              {" "}
-              ––– 2021{" "}
+              {EXPERIENCE.timelineBottom}
             </p>
           </div>
         </>
@@ -276,11 +262,11 @@ const Dropdown = () => {
                   {experience}
                 </button>
                 {EXPERIENCES.map(
-                  (exp, key) =>
+                  ({ key: exp }) =>
                     exp !== experience && (
                       <button
                         type="button"
-                        key={key}
+                        key={exp}
                         className="mt-[8px] flex h-[30px] w-full flex-col items-center justify-center rounded-[5px] border-2 border-[var(--main-blue)] bg-[var(--main-beige)] px-[15px] font-semibold text-[var(--main-blue)] opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]"
                         onClick={() => {
                           setExperience(exp);
