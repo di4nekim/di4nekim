@@ -55,7 +55,10 @@ const Experience = () => {
 };
 
 const Sidebar = ({ scrollYProgress }) => {
-  const [isMobile, setIsMobile] = useState(false);
+  // `null` sentinel means we haven't measured yet. Prevents rendering the
+  // desktop branch on the server and then flashing to the mobile branch
+  // after hydration (H6 in the audit).
+  const [isMobile, setIsMobile] = useState(null);
 
   useEffect(() => {
     const mediaQueryMobile = window.matchMedia("(max-width: 767px)");
@@ -92,6 +95,16 @@ const Sidebar = ({ scrollYProgress }) => {
     [0, 0.05, 0.2, 1],
     [0, 0.5, 1, 1],
   );
+
+  // Wait for the first client-side measurement before committing to a
+  // layout — otherwise mobile viewers see the desktop branch for a beat
+  // between SSR and hydration. Return the shell so the grid column doesn't
+  // collapse.
+  if (isMobile === null) {
+    return (
+      <div className="relative z-20 h-full overflow-visible bg-[var(--main-beige)]" />
+    );
+  }
 
   return (
     <div className="relative z-20 h-full overflow-visible bg-[var(--main-beige)]">
