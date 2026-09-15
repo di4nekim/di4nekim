@@ -21,28 +21,30 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - [x] **H1 — Pick one scroll library**. Dropped Lenis: uninstalled `@studio-freight/lenis`, deleted `src/app/hooks/useLenis.js`, removed the `useLenis()` call from `Landing.js`. Framer Motion's `useScroll`/`useTransform` handles all scroll-linked animation. `/` route First Load JS: 14.9 → **11.9 kB**.
 - [x] **M5 — Add sizing hint to ExpSection Image**. Note: original audit finding was based on a misread — `ExperienceCloud2` is a static import, so next/image already infers width/height and CLS was never at risk. Real improvement made instead: added responsive `sizes` prop matching the `w-[Xvw]` classes so the browser fetches the right resolution, and switched `alt="ExperienceCloud2"` → `alt=""` (decorative image; screen readers skip it).
 
-## Session 3 — A11y + hygiene (when there's time)
+## Session 3 — A11y + hygiene
 
-- [ ] **H5 — Fix keyboard-inaccessible controls.** `<div>` with `onClick` used as buttons in `ExpSection.js` (~L280 Dropdown, menu items) and `portfolio/components/PortfolioMenu.js:106-195`. Convert to `<button>` or add `role="button"` + `tabindex="0"` + keydown handlers.
-- [ ] **M8 — Refactor `Button` component.** `src/app/components/Button.js:6-14` renders a `<button>` wrapping an `<a>` — invalid HTML. Render one or the other based on the `link` prop.
-- [ ] **M10 — Add `alt` on the parallax hero image** in `src/app/components/Landing.js:113`. If decorative, use `alt=""` explicitly.
-- [ ] **M11 — Contrast pass.** Verify `opacity-60` sidebar links (`Landing.js:41-44`) and `opacity-70` Button default state pass WCAG AA 4.5:1. Use Lighthouse or axe.
-- [ ] **M1 — Kill CSS Modules.** Migrate `styles/Header.module.css` into Tailwind classes in `src/app/components/Header.js`, then delete the module file. Consolidates styling paradigm.
-- [ ] **M6 — Add security headers** in `next.config.mjs`: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`. Consider a CSP.
-- [ ] **M7 — Add `robots.txt` and `sitemap.xml`** via Next's file conventions (`src/app/robots.js`, `src/app/sitemap.js`).
-- [ ] **H6 — Fix Experience mobile hydration flicker** in `src/app/components/Experience.js:~70`. `isMobile` initialized to `false` then flipped in `useEffect`; mobile viewers see desktop layout for a beat.
+- [x] **H5 — Keyboard-inaccessible controls fixed.** ExpSection Dropdown: removed a redundant outer `<div onClick>`, converted experience-item `<div onClick>` → `<button type="button">`, added `aria-expanded`/`aria-haspopup="listbox"`/`aria-label` to toggle buttons, marked decorative chevron images with `alt=""` + `aria-hidden`. PortfolioMenu items: converted to `role="link" tabIndex={0} aria-label={"View project: …"}` with Enter/Space keydown handling (over wrapping in `<Link>` because navigation is deliberately delayed by `setTimeout` to play a slide-out animation — a real `<Link>` would fight that or break right-click/cmd-click semantics). Focus-visible outline rings added throughout.
+- [x] **M8 — Button HTML validity.** Was rendering `<div><button><a>…</a></button></div>` (invalid nesting; screen readers confused). Now renders one of `<a href target="_blank" rel="noopener noreferrer">` (when `link` prop present) or `<button type="button" onClick>`. Added focus:* states matching hover:*. Extracted the shared class list to a `BUTTON_CLASSNAME` constant and added a `className` prop for per-call overrides.
+- [x] **M10 — Alt on parallax hero image.** `<motion.img alt="">` — decorative image, screen readers skip.
+- [x] **M11 — Contrast pass (verification + partial fix).**
+  - Button default `opacity-70` = 3.73:1 → bumped to `opacity-85` = 4.61:1 (passes AA).
+  - Landing.js sidebar `opacity-60` = 2.43:1 (fails). Left untouched by design decision — these `<li>` labels are decorative (no href, no onClick), so WCAG contrast rules technically don't apply.
+- [x] **M1 — CSS Modules killed.** Migrated `styles/Header.module.css` → Tailwind arbitrary-value classes on `src/app/components/Header.js`. `styles/` directory removed. All styling in the project is now Tailwind.
+- [x] **M6 — Security headers.** `next.config.mjs` now emits `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()` for all routes. CSP deferred (needs care around Framer Motion + Speed Insights).
+- [x] **M7 — `robots.js` + `sitemap.js`** added via Next's file conventions. Sitemap lists `/` and `/portfolio` with monthly cadence. Dynamic route `/portfolio/project/[slug]` excluded (no known slugs yet).
+- [x] **H6 — Experience mobile hydration flicker fixed.** `isMobile` state now starts `null` (not `false`); component renders the shell only until the first `useEffect` measurement decides mobile vs desktop. No flash of the wrong branch.
 
 ## Backlog — low priority
 
-- [ ] **M2 — React 18 → 19** (Next 15 supports it; not urgent).
-- [ ] **M3 — Drop `react-responsive`.** Used only in `ExpSection.js`; replace with the `window.matchMedia` pattern already used in `Experience.js`.
-- [~] **M4 — Clean up dead imports.** `PersonalProjects` import removed. `src/app/components/Sidebar.js` still exists — delete when confident nothing imports it.
-- [ ] **M9 — Delete commented-out code blocks** in `Landing.js` (74–80, 122–125), `ExpSection.js` (46, 239–261), `Header.js` (3–4). Git history is the archive.
-- [ ] Outdated dev deps: `eslint` (8→10), `eslint-config-next` (15→16), `framer-motion` (11→13), `@vercel/speed-insights` (1.1→2.x).
-- [ ] Favicon set twice — `<link rel="icon" href="/sparkles.svg">` in `layout.js:19` AND `src/app/favicon.ico`. Pick one.
-- [ ] Resolve TODO in `src/app/data/ExperienceData.js:1` (gap year page link).
-- [x] Dead `typeof window !== 'undefined'` guards in `PortfolioMenu.js` — resolved as part of the rules-of-hooks refactor (viewport constants now live in state, set inside an effect).
-- [ ] Extract inline `style={{}}` object literals on hot-path motion components (`ExpSection.js:143-151`, `185-191`) — only if profiling shows a hotspot.
+- [-] **M2 — React 18 → 19.** Deferred by explicit decision (2026-09-15). React 19 has subtle breaking changes; not deploy-blocking to stay on 18.
+- [x] **M3 — Dropped `react-responsive`.** Replaced with a small local `useMediaQuery(query)` hook built on `window.matchMedia` (matches the `Sidebar` pattern in `Experience.js`). Same SSR behavior as before via `null` sentinel. Package uninstalled.
+- [x] **M4 — Dead imports cleaned up.** `PersonalProjects` removed earlier; `Sidebar.js` deleted (was marked DEPRECATED, no imports found).
+- [x] **M9 — Commented-out code deleted.** 37 lines across `Landing.js`, `ExpSection.js`, `Header.js`. Preserved comments that document *why* (e.g. "need 'use client' for framer-motion", memoization rationales).
+- [x] **Outdated dev deps** — safe patch/minor bumps applied via `npm update`: `@vercel/speed-insights` 1.1 → 1.3, `framer-motion` 11.11 → 11.18, `prettier` 3.3 → 3.9, `tailwindcss` 3.4.14 → 3.4.19, `postcss` 8.4 → 8.5, plus lint plugins. Vulnerabilities dropped 3 → 2. **Skipped majors** (all require deliberate migrations): `next` 15 → 16, `eslint` 8 → 10, `eslint-config-next` 15 → 16, `eslint-plugin-react-hooks` 5 → 7, `eslint-plugin-tailwindcss` 3 → 4 (tied to Tailwind 4), `framer-motion` 11 → 13, `@vercel/speed-insights` 1 → 2, `tailwindcss` 3 → 4.
+- [x] **Favicon dedup.** `src/app/favicon.ico` deleted; `sparkles.svg` (declared via `metadata.icons`) is now the sole favicon.
+- [-] **TODO in `data/ExperienceData.js:1`** (gap year page link) — left as-is by decision (2026-09-15).
+- [x] Dead `typeof window !== 'undefined'` guards in `PortfolioMenu.js` — resolved during the rules-of-hooks refactor (viewport constants now live in state, set inside an effect).
+- [ ] Extract inline `style={{}}` object literals on hot-path motion components — deferred until profiling shows a hotspot.
 
 ---
 
@@ -57,8 +59,7 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - [x] **`PersonalProjects` unused import** in `src/app/page.js:6` — removed (was already tracked as M4).
 - [x] **`experience` unused destructure** in `ExpSection.js:217` (`Menu` only needed `setExperience`).
 - [x] **Header used `<a href="/">` for home nav** — swapped to `next/link`.
-- [ ] Tailwind classname-order warnings scattered throughout — auto-fixable via `prettier --write` (prettier-plugin-tailwindcss is already installed). Not deploy-blocking.
-- [ ] Same for the `[slug]/page.js` warnings.
+- [x] Tailwind classname-order warnings — resolved via `npx prettier --write "src/**/*.js"`. Remaining lint output is warnings-only, mostly non-auto-fixable (Tailwind v3 shorthand suggestions, one `react-hooks/exhaustive-deps` in `[slug]/page.js`).
 
 ## Progress log
 
@@ -67,3 +68,6 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - **2026-09-14** — Session 1 complete (C1, H2, H3, H4). Compile clean (`next build --no-lint` succeeds); `next build` without the flag now fails on pre-existing bugs surfaced by newly-working lint — tracked under "Discovered during audit" and must be addressed before production deploy.
 - **2026-09-14** — Deploy-blocking bugs fixed. `next build` succeeds with the lint gate on (zero errors, ~50 auto-fixable warnings remaining). Key changes: PortfolioMenu refactored (rules-of-hooks + `useCallback` for handlers + resize-reactive viewport state), ProjectItem now actually uses its props, Header uses `next/link`, entities escaped. All 6 routes generate; `/portfolio` bundle grew 3.65 → 3.86 kB (new PortfolioMenuItem).
 - **2026-09-14** — Session 2 complete (C2, H1, M5). Biggest win: `landing-cloud` went from a 4.2 MB PNG loaded as raw `<img>` to a 31 KB WebP served via next/image with a full responsive srcset. Lenis removed (`/` route: 14.9 → 11.9 kB First Load JS). Build clean; both `/` and `/portfolio` return 200 from the dev server.
+- **2026-09-14** — Rolled back the next/image wrap in C2 (broke layout). Kept the WebP file so the 4.2 MB → 31 KB size win holds; dropped the responsive srcset (marginal value at 31 KB).
+- **2026-09-14** — Pushed 6 commits to `origin/portfolio`. Remote URL migrated `dsp` → `di4nekim`.
+- **2026-09-15** — Session 3 + backlog swept in one workflow pass, tests-as-you-go, opus subagents for the actual edits, orchestrator committing between phases. All Session 3 items closed (H5, M8, M10, M11, M1, M6, M7, H6). All backlog items resolved except two intentional deferrals (React 19; the gap year TODO) and one profiling-gated (inline motion styles). Vulnerabilities down to 2 (from 3 last session); remaining are transitive postcss in Next internals, patched only by a Next 16 major bump.
