@@ -1,8 +1,24 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
 import Button from "./Button";
+
+// Local SSR-safe useMediaQuery. Returns `null` until the first client-side
+// measurement (matches the pattern in Experience.js). Callers guard with
+// `matches && (...)` so `null` renders nothing on the server and before
+// hydration — same effective behavior as the previous library's SSR-false
+// default under an `&&` guard.
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(null);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const update = () => setMatches(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, [query]);
+  return matches;
+}
 
 import {
   EXP_BLURBS,
@@ -194,7 +210,7 @@ const TidBits = ({ experience }) => {
 
 const Menu = () => {
   const { setExperience } = React.useContext(ExperienceContext);
-  const isMdOrLarger = useMediaQuery({ minWidth: 768 });
+  const isMdOrLarger = useMediaQuery("(min-width: 768px)");
 
   return (
     <div className="relative z-0 h-full w-full bg-[var(--main-beige)] xl:pr-[100px]">
@@ -232,7 +248,7 @@ const Menu = () => {
 const Dropdown = () => {
   const { experience, setExperience } = React.useContext(ExperienceContext);
   const [dropped, setDropped] = useState(false);
-  const isSmOrSmaller = useMediaQuery({ maxWidth: 640 });
+  const isSmOrSmaller = useMediaQuery("(max-width: 640px)");
 
   return (
     <>
