@@ -14,7 +14,6 @@ import {
   EXP_TECHS,
 } from "../data/ExperienceData";
 import Arrow from "../../../public/Arrow.svg";
-// import Chevron from '../../../public/chevron.png';
 import Chevron_red from "../../../public/chevron_red.png";
 import Chevron_beige from "../../../public/chevron_beige.png";
 import ExperienceCloud2 from "../../../public/experience-cloud-2.png";
@@ -48,7 +47,6 @@ const ExpSection = () => {
             <Projects experience={experience} />
           )}
         </section>
-        {/* <div className="absolute bottom-[0] z-10 ml-[10vw] h-[35vh] w-[4px] rounded-full bg-[var(--main-red)]" /> */}
       </div>
     </ExperienceContext.Provider>
   );
@@ -116,8 +114,6 @@ const Projects = ({ experience }) => {
   return (
     <div>
       <h1 className="mt-[5vh] text-[15px] font-bold italic">PROJECTS</h1>
-
-      {/* <p className='italic font-light whitespace-nowrap'>(S/S 24)</p> */}
 
       {Object.entries(EXP_PROJECTS[experience]).map(
         ([project, details], index) => (
@@ -221,28 +217,6 @@ const Menu = () => {
                 onClick={() => setExperience(experience)}
               />
             ))}
-            {/* <Button 
-              text={"KEEPUP"}
-              onClick={() => {
-                  setExperience("KEEPUP")
-                }}
-            />
-            <Button 
-              text={"HOYALYTICS"}
-              onClick={() => setExperience("HOYALYTICS")}
-            />
-            <Button 
-              text={"HOYA DEVELOPERS"}
-              onClick={() => setExperience("HOYA DEVELOPERS")}
-            />
-            <Button 
-              text={"THE HOYA"}
-              onClick={() => setExperience("THE HOYA")}
-            />
-            <Button 
-              text={"HM ON TECH"}
-              onClick={() => setExperience("HM ON TECH")}
-            /> */}
 
             <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
               {" "}

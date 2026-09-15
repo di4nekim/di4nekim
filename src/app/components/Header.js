@@ -19,7 +19,6 @@ const Header = () => {
               RESUME
             </a>
           </li>
-          {/* <li className={styles.navItem}><a className={styles.navLink} href="/projects">PROJECTS</a></li> */}
           <li className={styles.navItem}>
             <a
               className={styles.navLink}

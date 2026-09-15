@@ -26,8 +26,6 @@ const Sidebar = () => {
           <li>HELLO</li>
           <li className="opacity-60">ABOUT</li>
           <li className="opacity-60">EXPERIENCE</li>
-          {/* <li className="opacity-60">IN THE OFF HOURS</li> */}
-          {/* <li className="opacity-60">GET IN TOUCH</li> */}
         </ul>
 
         <div className="absolute left-1/2 top-[128vh] z-10 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)]" />
@@ -50,13 +48,6 @@ const Hero = () => {
           hey, it&apos;s diane.
         </motion.h1>
       </div>
-      {/* <div className="absolute right-0 mt-[55vh] mr-[23vh] flex z-1000 text-3xl font-medium">
-        <motion.h2
-          className="text-[var(--main-beige)]"
-        > 
-          I build things to make myself happy.
-        </motion.h2>
-      </div> */}
     </div>
   );
 };
@@ -103,7 +94,6 @@ const ABOUT_P1 =
   "I wear all the hats I can, from emergency medical technician to culinary school graduate, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.";
 const ABOUT_P2 =
   "When I’m not at my keyboard, I love to be a shameless amateur in my ever-changing interests and to work with my hands :)";
-// const ABOUT_P3 = "Get to know me better by checking out some of the things I do for fun." // underline 'for fun', link to 'in the off hours'
 
 const About = () => {
   return (
