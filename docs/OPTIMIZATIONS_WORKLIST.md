@@ -40,7 +40,10 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - [x] **M3 — Dropped `react-responsive`.** Replaced with a small local `useMediaQuery(query)` hook built on `window.matchMedia` (matches the `Sidebar` pattern in `Experience.js`). Same SSR behavior as before via `null` sentinel. Package uninstalled.
 - [x] **M4 — Dead imports cleaned up.** `PersonalProjects` removed earlier; `Sidebar.js` deleted (was marked DEPRECATED, no imports found).
 - [x] **M9 — Commented-out code deleted.** 37 lines across `Landing.js`, `ExpSection.js`, `Header.js`. Preserved comments that document *why* (e.g. "need 'use client' for framer-motion", memoization rationales).
-- [x] **Outdated dev deps** — safe patch/minor bumps applied via `npm update`: `@vercel/speed-insights` 1.1 → 1.3, `framer-motion` 11.11 → 11.18, `prettier` 3.3 → 3.9, `tailwindcss` 3.4.14 → 3.4.19, `postcss` 8.4 → 8.5, plus lint plugins. Vulnerabilities dropped 3 → 2. **Skipped majors** (all require deliberate migrations): `next` 15 → 16, `eslint` 8 → 10, `eslint-config-next` 15 → 16, `eslint-plugin-react-hooks` 5 → 7, `eslint-plugin-tailwindcss` 3 → 4 (tied to Tailwind 4), `framer-motion` 11 → 13, `@vercel/speed-insights` 1 → 2, `tailwindcss` 3 → 4.
+- [x] **Outdated dev deps** — safe patch/minor bumps applied via `npm update`: `@vercel/speed-insights` 1.1 → 1.3, `framer-motion` 11.11 → 11.18, `prettier` 3.3 → 3.9, `tailwindcss` 3.4.14 → 3.4.19, `postcss` 8.4 → 8.5, plus lint plugins. Vulnerabilities dropped 3 → 2.
+- [x] **`@vercel/speed-insights` 1 → 2** — dropped in cleanly; same import path (`/next`) and component name in v2, no code changes needed.
+- [-] **`framer-motion` 11 → 13** — **attempted and reverted**. `PortfolioLanding.js` combines `initial+animate` entry animation with scroll-linked `style={{ x, y, opacity }}` motion values on the same element. v11 composed them correctly; v13 lets the initial state stick and the LATEST PROJECTS motion.div never leaves `opacity:0`. Rolled back to ^11.18.2. A proper migration would need each such conflict split across a wrapper (entry) + inner (scroll motion values) — separate PR.
+- **Skipped majors** (still open, each needs its own migration PR): `next` 15 → 16, `eslint` 8 → 10 + `eslint-config-next` 15 → 16 (flat config), `eslint-plugin-react-hooks` 5 → 7, `eslint-plugin-tailwindcss` 3 → 4 (tied to Tailwind 4), `framer-motion` 11 → 13 (see above), `tailwindcss` 3 → 4.
 - [x] **Favicon dedup.** `src/app/favicon.ico` deleted; `sparkles.svg` (declared via `metadata.icons`) is now the sole favicon.
 - [-] **TODO in `data/ExperienceData.js:1`** (gap year page link) — left as-is by decision (2026-09-15).
 - [x] Dead `typeof window !== 'undefined'` guards in `PortfolioMenu.js` — resolved during the rules-of-hooks refactor (viewport constants now live in state, set inside an effect).
@@ -59,7 +62,9 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - [x] **`PersonalProjects` unused import** in `src/app/page.js:6` — removed (was already tracked as M4).
 - [x] **`experience` unused destructure** in `ExpSection.js:217` (`Menu` only needed `setExperience`).
 - [x] **Header used `<a href="/">` for home nav** — swapped to `next/link`.
-- [x] Tailwind classname-order warnings — resolved via `npx prettier --write "src/**/*.js"`. Remaining lint output is warnings-only, mostly non-auto-fixable (Tailwind v3 shorthand suggestions, one `react-hooks/exhaustive-deps` in `[slug]/page.js`).
+- [x] Tailwind classname-order warnings — resolved via `npx prettier --write "src/**/*.js"`.
+- [x] Remaining Tailwind v3 lint warnings (shorthand `size-*`, unnecessary arbitrary values, negative-arbitrary-value form) — swept manually across 4 files after an agent hallucinated an alternative `@/lib/content` refactor that had to be fully reverted. Final lint state: 0 errors, 0 warnings.
+- [x] `react-hooks/exhaustive-deps` in `portfolio/project/[slug]/page.js` — resolved by moving the local `defaultProjects` to module-scope `DEFAULT_PROJECTS` (same treatment as `PortfolioMenu.js`).
 
 ## Progress log
 
@@ -71,3 +76,4 @@ Legend: `[ ]` open · `[x]` done · `[~]` in progress · `[-]` skipped (with rea
 - **2026-09-14** — Rolled back the next/image wrap in C2 (broke layout). Kept the WebP file so the 4.2 MB → 31 KB size win holds; dropped the responsive srcset (marginal value at 31 KB).
 - **2026-09-14** — Pushed 6 commits to `origin/portfolio`. Remote URL migrated `dsp` → `di4nekim`.
 - **2026-09-15** — Session 3 + backlog swept in one workflow pass, tests-as-you-go, opus subagents for the actual edits, orchestrator committing between phases. All Session 3 items closed (H5, M8, M10, M11, M1, M6, M7, H6). All backlog items resolved except two intentional deferrals (React 19; the gap year TODO) and one profiling-gated (inline motion styles). Vulnerabilities down to 2 (from 3 last session); remaining are transitive postcss in Next internals, patched only by a Next 16 major bump.
+- **2026-09-15 (afternoon pass)** — Lint sweep + selective major bumps: 0 → 0 lint errors/warnings after the manual Tailwind v3 cleanup (one Opus subagent attempted this and hallucinated a fictional `@/lib/content` module — reverted). `@vercel/speed-insights` cleanly bumped to v2. `framer-motion` → 13 attempted, broke PortfolioLanding's entry animation (initial+animate stuck at opacity:0), reverted to ^11.18.2.
