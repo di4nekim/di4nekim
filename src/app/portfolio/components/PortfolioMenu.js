@@ -163,8 +163,8 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <div ref={containerRef} className="absolute left-0 top-0 h-full w-full">
-        <div className="relative h-full w-full">
+      <div ref={containerRef} className="absolute left-0 top-0 size-full">
+        <div className="relative size-full">
           {ready &&
             projects.map((project, index) => (
               <PortfolioMenuItem
@@ -197,7 +197,7 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
           src={clickToSee}
           alt="Click to see the full visual story"
           width={350}
-          className="h-auto w-auto max-w-[350px] opacity-100 transition-opacity duration-300"
+          className="size-auto max-w-[350px] opacity-100 transition-opacity duration-300"
         />
       </motion.div>
     </div>

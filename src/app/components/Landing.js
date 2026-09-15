@@ -6,7 +6,7 @@ import { motion, useTransform, useScroll } from "framer-motion";
 export const Landing = () => {
   return (
     <div className="relative grid h-[300vh] grid-cols-[15%_85%] overflow-visible bg-[var(--main-red)] sm:h-[290vh] lg:h-[270vh]">
-      <Sidebar className="sticky top-[40vh] z-[10] h-full" />
+      <Sidebar className="sticky top-[40vh] z-10 h-full" />
       <div className="flex w-full flex-col">
         <Hero />
         <About />
@@ -19,8 +19,8 @@ const Sidebar = () => {
   return (
     <div className="relative z-10 h-full min-h-screen w-[15vw] bg-[var(--main-red)]">
       <div className="relative z-0 ml-[10vw] mt-[70vh] h-full w-[2px] bg-[var(--main-beige)] sm:w-[4px]">
-        <div className="absolute -top-[40px] left-1/2 z-10 h-3 w-3 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)] sm:h-4 sm:w-4"></div>
-        <div className="absolute -top-[10px] left-1/2 z-10 h-3 w-3 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)] sm:h-4 sm:w-4"></div>
+        <div className="absolute left-1/2 top-[-40px] z-10 size-3 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)] sm:size-4"></div>
+        <div className="absolute left-1/2 top-[-10px] z-10 size-3 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)] sm:size-4"></div>
 
         <ul className="ml-[25px] mt-[60px] w-[15vw] text-[15px] font-semibold text-[var(--main-beige)] sm:ml-[20px] sm:text-[20px] md:ml-[30px]">
           <li>HELLO</li>
@@ -28,7 +28,7 @@ const Sidebar = () => {
           <li className="opacity-60">EXPERIENCE</li>
         </ul>
 
-        <div className="absolute left-1/2 top-[128vh] z-10 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)]" />
+        <div className="absolute left-1/2 top-[128vh] z-10 size-4 -translate-x-1/2 transform rounded-full bg-[var(--main-beige)]" />
       </div>
     </div>
   );

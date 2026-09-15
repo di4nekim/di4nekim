@@ -27,7 +27,7 @@ const Experience = () => {
     <div className="grid h-[1500px] grid-cols-[20%_80%] md:grid-cols-[30%_70%]">
       {/* Sidebar (incl. Experience Menu) */}
       <Sidebar
-        className="absolute top-[40vh] z-[20]"
+        className="absolute top-[40vh] z-20"
         scrollYProgress={scrollYProgress}
       />
       {/* <div /> */}
@@ -38,7 +38,7 @@ const Experience = () => {
         {/* overview */}
         <AnimatePresence>
           <motion.section
-            className="sticky top-[0vh] z-[10] mr-[5vw] h-[10vh] text-[14px] leading-tight sm:mr-[10vw] sm:text-[16px] sm:leading-snug md:ml-[12vw] md:mr-[10vw] lg:sticky lg:top-[0vh] lg:z-[10] lg:ml-[5vw] lg:mr-[20vw] lg:h-[10vh]"
+            className="sticky top-0 z-10 mr-[5vw] h-[10vh] text-[14px] leading-tight sm:mr-[10vw] sm:text-[16px] sm:leading-snug md:ml-[12vw] md:mr-[10vw] lg:sticky lg:top-0 lg:z-10 lg:ml-[5vw] lg:mr-[20vw] lg:h-[10vh]"
             style={{
               y: translateY,
             }}
@@ -111,7 +111,7 @@ const Sidebar = ({ scrollYProgress }) => {
       {isMobile ? (
         <div className="absolute z-10 ml-[10vw] h-full w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
           <motion.div
-            className="absolute left-1/2 z-10 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[var(--main-red)]"
+            className="absolute left-1/2 z-10 size-4 -translate-x-1/2 transform rounded-full bg-[var(--main-red)]"
             style={{
               top: topPosMobileSmall,
               opacity: opacityTransform,
@@ -130,7 +130,7 @@ const Sidebar = ({ scrollYProgress }) => {
       ) : (
         <div className="absolute z-10 ml-[10vw] h-full w-[4px] rounded-full bg-[var(--main-red)] text-[var(--main-red)]">
           <motion.div
-            className="absolute left-1/2 z-10 h-4 w-4 -translate-x-1/2 transform rounded-full bg-[var(--main-red)]"
+            className="absolute left-1/2 z-10 size-4 -translate-x-1/2 transform rounded-full bg-[var(--main-red)]"
             style={{
               top: topPos,
               opacity: opacityTransform,

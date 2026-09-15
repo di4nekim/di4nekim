@@ -5,54 +5,56 @@ import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import SharedBackground from "../../components/SharedBackground.js";
 
+// Module-scope so identity is stable across renders — otherwise the useEffect
+// below would need it in deps, and re-lint would flag it. Matches the pattern
+// in PortfolioMenu.js.
+const DEFAULT_PROJECTS = [
+  {
+    title: "Dead Sweet Potato",
+    year: "'24",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+    id: 0,
+  },
+  {
+    title: "Hilltop Initiative",
+    year: "'24",
+    description:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con",
+    id: 1,
+  },
+  {
+    title: "Pavilion",
+    year: "'24",
+    description:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es",
+    id: 2,
+  },
+  {
+    title: "Digital Canvas",
+    year: "'24",
+    description:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+    id: 3,
+  },
+  {
+    title: "Urban Collective",
+    year: "'24",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+    id: 4,
+  },
+];
+
 export default function ProjectPage() {
   const params = useParams();
   const router = useRouter();
   const [project, setProject] = useState(null);
 
-  // Default projects data (same as in PortfolioMenu)
-  const defaultProjects = [
-    {
-      title: "Dead Sweet Potato",
-      year: "'24",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
-      id: 0,
-    },
-    {
-      title: "Hilltop Initiative",
-      year: "'24",
-      description:
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con",
-      id: 1,
-    },
-    {
-      title: "Pavilion",
-      year: "'24",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es",
-      id: 2,
-    },
-    {
-      title: "Digital Canvas",
-      year: "'24",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
-      id: 3,
-    },
-    {
-      title: "Urban Collective",
-      year: "'24",
-      description:
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
-      id: 4,
-    },
-  ];
-
   useEffect(() => {
     const slug = params.slug;
     // Find project by id or slug
-    const foundProject = defaultProjects.find(
+    const foundProject = DEFAULT_PROJECTS.find(
       (p) =>
         p.id.toString() === slug ||
         p.title.toLowerCase().replace(/\s+/g, "-") === slug,

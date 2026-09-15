@@ -72,14 +72,14 @@ const Role = ({ experience }) => {
   return (
     <div className="relative w-full text-[23px] sm:text-[28px] md:text-[25px] lg:text-[28px] xl:text-[30px]">
       <div className="mb-[5px] flex h-[30px] flex-col font-semibold md:flex-col lg:flex-col xl:flex-row">
-        <h1 className="-my-[13px] md:-my-[13px] lg:-my-[13px] xl:my-0 xl:whitespace-nowrap">
+        <h1 className="my-[-13px] md:my-[-13px] lg:my-[-13px] xl:my-0 xl:whitespace-nowrap">
           {EXP_ROLES[experience].title}
         </h1>
         <h1 className="text-[var(--main-blue)] md:text-[22px] lg:text-[25px] xl:ml-[10px] xl:whitespace-nowrap xl:text-[30px]">
           @ {EXP_ROLES[experience].company}
         </h1>
       </div>
-      <p className="absolute -top-[25px] left-0 text-[13px] font-semibold italic text-[var(--main-blue)] opacity-70 md:absolute md:-top-[25px] md:left-0 md:text-[13px] md:opacity-70 xl:relative xl:mt-[30px] xl:text-[15px] xl:opacity-100">
+      <p className="absolute left-0 top-[-25px] text-[13px] font-semibold italic text-[var(--main-blue)] opacity-70 md:absolute md:left-0 md:top-[-25px] md:text-[13px] md:opacity-70 xl:relative xl:mt-[30px] xl:text-[15px] xl:opacity-100">
         ({EXP_ROLES[experience].date})
       </p>
     </div>
@@ -213,7 +213,7 @@ const Menu = () => {
   const isMdOrLarger = useMediaQuery("(min-width: 768px)");
 
   return (
-    <div className="relative z-0 h-full w-full bg-[var(--main-beige)] xl:pr-[100px]">
+    <div className="relative z-0 size-full bg-[var(--main-beige)] xl:pr-[100px]">
       {isMdOrLarger && (
         <>
           <Image
@@ -281,7 +281,7 @@ const Dropdown = () => {
                       <button
                         type="button"
                         key={key}
-                        className="mt-[8px] flex h-[30px] w-full flex-col items-center justify-center rounded-[5px] border-[2px] border-[var(--main-blue)] bg-[var(--main-beige)] px-[15px] font-semibold text-[var(--main-blue)] opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]"
+                        className="mt-[8px] flex h-[30px] w-full flex-col items-center justify-center rounded-[5px] border-2 border-[var(--main-blue)] bg-[var(--main-beige)] px-[15px] font-semibold text-[var(--main-blue)] opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--main-red)]"
                         onClick={() => {
                           setExperience(exp);
                           setDropped(false);
