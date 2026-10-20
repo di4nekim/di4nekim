@@ -103,7 +103,7 @@ There’s still so much to learn, but here’s a little of how far I’ve come s
 
 ## Timeline top
 
-––– 2024
+––– {year}
 
 ## Timeline bottom
 
@@ -127,7 +127,7 @@ PROJECTS
 
 ## KEEPUP
 
-Title: Software Engineering Intern
+Title: Product Management Intern
 Company: KeepUp Technologies
 Dates: MAY ‘24 - DEC '24
 Tech: REACT, POSTGRESQL, AWS, FIGMA
@@ -144,6 +144,7 @@ In collaboration with stakeholders, I developed user-focused prototypes and deli
 - Refactored the React app’s architecture, implementing modular design principles to develop a table-based layout for scalability and improved functionality.
 - Delivered high-quality, maintainable full-stack features that optimized app performance while meeting business objectives.
 - Collaborated with cross-functional teams to create high-fidelity Figma prototypes that balanced user needs with technical constraints.
+- Top 10% of YC applicants for W24
 
 ### Links
 

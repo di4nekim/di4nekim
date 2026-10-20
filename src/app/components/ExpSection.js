@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Button from "./Button";
 
 // Local SSR-safe useMediaQuery. Returns `null` until the first client-side
@@ -25,6 +26,8 @@ import Arrow from "../../../public/Arrow.svg";
 import Chevron_red from "../../../public/chevron_red.png";
 import Chevron_beige from "../../../public/chevron_beige.png";
 import ExperienceCloud2 from "../../../public/experience-cloud-2.png";
+
+const MotionImage = motion.create(Image);
 
 const ExperienceContext = React.createContext();
 
@@ -144,6 +147,7 @@ const Projects = ({ job }) => {
                   marginLeft: "10px",
                 }}
                 link={project.site}
+                className="hover:!border-[var(--main-blue)] hover:!bg-[rgba(48,142,219,0.2)] hover:!text-[var(--main-blue)]"
               />
             )}
           </div>
@@ -183,11 +187,12 @@ const TidBits = ({ job }) => {
                 fontSize: "18px",
               }}
               link={href}
+              className="hover:!border-[var(--main-blue)] hover:!bg-[rgba(48,142,219,0.2)] hover:!text-[var(--main-blue)]"
             />
           ))}
         </div>
 
-        <div className="ml-[5vw] flex flex-row flex-wrap justify-end gap-x-[15px] text-[15px] font-semibold italic text-[var(--main-blue)] underline md:ml-[3vw] md:text-[16px] lg:ml-[5vw] lg:text-[15px] xl:text-[18px]">
+        <div className="ml-[5vw] flex flex-row flex-wrap justify-end gap-x-[15px] text-[12px] font-semibold not-italic text-[var(--main-blue)] no-underline md:ml-[3vw] md:text-[13px] lg:ml-[5vw] lg:text-[12px] xl:text-[14px]">
           {job.tech.map((tech, index) => (
             <p className="whitespace-nowrap" key={index}>
               {tech}
@@ -200,25 +205,49 @@ const TidBits = ({ job }) => {
 };
 
 const Menu = () => {
-  const { setExperience } = React.useContext(ExperienceContext);
+  const { experience, setExperience } = React.useContext(ExperienceContext);
   const isMdOrLarger = useMediaQuery("(min-width: 768px)");
 
+  // Cloud hero is tied to scroll progress through the menu panel.
+  const menuRef = React.useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: menuRef,
+    offset: ["start end", "end start"],
+  });
+  const cloudY = useTransform(scrollYProgress, [0, 1], [120, -30]);
+  const cloudOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+
   return (
-    <div className="relative z-0 size-full bg-[var(--main-beige)] xl:pr-[100px]">
+    <div
+      ref={menuRef}
+      className="relative z-0 size-full bg-[var(--main-beige)] xl:pr-[100px]"
+    >
       {isMdOrLarger && (
         <>
-          <Image
+          <MotionImage
+            style={{ y: cloudY, opacity: cloudOpacity }}
             className="md:relative md:ml-[11vw] md:mt-[5vh] md:w-[18vw] lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw] xl:w-[200px]"
             src={ExperienceCloud2}
             alt=""
             sizes="(min-width: 1280px) 200px, (min-width: 1024px) 15vw, (min-width: 768px) 18vw, 0px"
           />
           <div className="absolute right-[100px] top-[130px] flex flex-col items-end gap-y-[20px] md:right-[11vw] md:top-[20vh] lg:right-[15vw] lg:top-[20vh] xl:right-[8vw]">
-            <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
-              {EXPERIENCE.timelineTop}
+            <p
+              className="text-[10px] font-semibold italic text-[var(--main-red)]"
+              suppressHydrationWarning
+            >
+              {EXPERIENCE.timelineTop.replace(
+                "{year}",
+                String(new Date().getFullYear()),
+              )}
             </p>
             {EXPERIENCES.map(({ key }) => (
-              <Button key={key} text={key} onClick={() => setExperience(key)} />
+              <Button
+                key={key}
+                text={key}
+                selected={key === experience}
+                onClick={() => setExperience(key)}
+              />
             ))}
 
             <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
