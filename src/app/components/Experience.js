@@ -53,12 +53,11 @@ const Experience = () => {
             {EXPERIENCE.hook.map((line, index) => (
               <p
                 key={index}
-                className={`text-[30px] font-semibold leading-tight ${index === 0 ? "mb-[-10px]" : ""}`}
+                className={`text-[30px] font-semibold leading-tight ${index === 0 ? "mb-[-10px]" : "mb-[20px]"}`}
               >
                 {line}
               </p>
             ))}
-            <p className="mb-[20px] leading-tight">{EXPERIENCE.summary}</p>
 
             <p className="font-semibold leading-tight">
               {EXPERIENCE.currentlyLabel}

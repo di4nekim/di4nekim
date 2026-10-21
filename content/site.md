@@ -83,17 +83,18 @@ I've been a project manager my whole life–I just don't have the job title yet.
 
 I wear all the hats I can, from emergency medical technician to project manager to culinary school graduate, because creative solutions can only be honed through diverse experiences and a hands-on curiosity.
 
-Even when I’m not at my keyboard, I treat each goal like a project to scope, execute, and complete. Here are some I've taken from 0 to 1:
+Here are some of my favorite experiences so far:
 
 ## Bullets
 
-- Division I Top 64 Epee fencer @ 16
-- Attaining my EMT certification (NREMT)
+- Product Management Intern @ AfterQuery, Nov '25 - Aug '26
+- Earned EMT certification (NREMT), 1 month
 - Programme de Cuisine @ Le Cordon Bleu Madrid
-- A2 proficiency in Spanish in 2 months
-- Goodreads reading challenge, 2020 - 2025
+- Spanish, A2 Proficiency, 2 months
+- Goodreads reading challenge, ~25 books/year, 2020-2026
 - Advice Column @ The Hoya
-- Worked as a florist
+- Florist @ Metropolitan Plant and Flower Exchange
+- Division I Top 64 Epee fencer @ 16
 
 # Experience
 
@@ -106,10 +107,6 @@ EXPERIENCE
 Some PMs draw boxes and arrows.
 
 I write the code inside them too.
-
-## Summary
-
-I'm equal parts builder and strategist. I thrive in the overlap between code and product.
 
 ## Currently label
 
@@ -163,9 +160,9 @@ PROJECTS
 
 ## HOYA DEVELOPERS
 
-Title: Co-founder & President
+Title: Founding Project Manager
 Company: Hoya Developers
-Dates: JUL ‘23 - PRESENT
+Dates: JUL ‘23 - DEC '24
 Tech: REACT, REACT NATIVE, FIREBASE, FIGMA
 
 ### Blurb
