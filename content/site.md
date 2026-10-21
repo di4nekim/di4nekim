@@ -177,7 +177,7 @@ GITHUB: https://github.com/Hoyalytics
 
 ## HOYA DEVELOPERS
 
-Title: Senior Project Manager
+Title: Founding Project Manager
 Company: Hoya Developers
 Dates: JUL ‘23 - MAY '24
 Tech: REACT, REACT NATIVE, FIREBASE, FIGMA

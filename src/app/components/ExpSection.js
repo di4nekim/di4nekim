@@ -27,8 +27,6 @@ import Chevron_red from "../../../public/chevron_red.png";
 import Chevron_beige from "../../../public/chevron_beige.png";
 import ExperienceCloud2 from "../../../public/experience-cloud-2.png";
 
-const MotionImage = motion.create(Image);
-
 const ExperienceContext = React.createContext();
 
 const JOBS_BY_KEY = Object.fromEntries(
@@ -208,14 +206,14 @@ const Menu = () => {
   const { experience, setExperience } = React.useContext(ExperienceContext);
   const isMdOrLarger = useMediaQuery("(min-width: 768px)");
 
-  // Cloud hero is tied to scroll progress through the menu panel.
+  // The cloud stays put; the menu chips travel up over it with scroll.
   const menuRef = React.useRef(null);
   const { scrollYProgress } = useScroll({
     target: menuRef,
     offset: ["start end", "end start"],
   });
-  const cloudY = useTransform(scrollYProgress, [0, 1], [120, -30]);
-  const cloudOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const menuY = useTransform(scrollYProgress, [0, 1], [100, -300]);
+  const menuOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (
     <div
@@ -224,14 +222,16 @@ const Menu = () => {
     >
       {isMdOrLarger && (
         <>
-          <MotionImage
-            style={{ y: cloudY, opacity: cloudOpacity }}
+          <Image
             className="md:relative md:ml-[11vw] md:mt-[5vh] md:w-[18vw] lg:relative lg:ml-[16vw] lg:mt-[5vh] lg:w-[15vw] xl:w-[200px]"
             src={ExperienceCloud2}
             alt=""
             sizes="(min-width: 1280px) 200px, (min-width: 1024px) 15vw, (min-width: 768px) 18vw, 0px"
           />
-          <div className="absolute right-[100px] top-[130px] flex flex-col items-end gap-y-[20px] md:right-[11vw] md:top-[20vh] lg:right-[15vw] lg:top-[20vh] xl:right-[8vw]">
+          <motion.div
+            style={{ y: menuY, opacity: menuOpacity }}
+            className="absolute right-[100px] top-[130px] flex flex-col items-end gap-y-[20px] md:right-[11vw] md:top-[20vh] lg:right-[15vw] lg:top-[20vh] xl:right-[8vw]"
+          >
             <p
               className="text-[10px] font-semibold italic text-[var(--main-red)]"
               suppressHydrationWarning
@@ -253,7 +253,7 @@ const Menu = () => {
             <p className="text-[10px] font-semibold italic text-[var(--main-red)]">
               {EXPERIENCE.timelineBottom}
             </p>
-          </div>
+          </motion.div>
         </>
       )}
     </div>
