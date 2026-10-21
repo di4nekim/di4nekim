@@ -77,13 +77,23 @@ ABOUT ME
 
 ## Hook
 
-I’ve always had my head up in the clouds
+I've been a project manager my whole life–I just don't have the job title yet.
 
 ## Paragraphs
 
-I wear all the hats I can, from emergency medical technician to culinary school graduate, and strive to go all the way in anything I commit myself to. In my work, that translates to flexibility under pressure and creative technical solutions that makes me well-suited for both interpersonal and technical demands.
+I wear all the hats I can, from emergency medical technician to project manager to culinary school graduate, because creative solutions can only be honed through diverse experiences and a hands-on curiosity.
 
-When I’m not at my keyboard, I love to be a shameless amateur in my ever-changing interests and to work with my hands :)
+Even when I’m not at my keyboard, I treat each goal like a project to scope, execute, and complete. Here are some I've taken from 0 to 1:
+
+## Bullets
+
+- Division I Top 64 Epee fencer @ 16
+- Attaining my EMT certification (NREMT)
+- Programme de Cuisine @ Le Cordon Bleu Madrid
+- A2 proficiency in Spanish in 2 months
+- Goodreads reading challenge, 2020 - 2025
+- Advice Column @ The Hoya
+- Worked as a florist
 
 # Experience
 
@@ -91,15 +101,41 @@ When I’m not at my keyboard, I love to be a shameless amateur in my ever-chang
 
 EXPERIENCE
 
-## Intro
+## Hook
 
-Though I’m currently on a gap year (May ‘24 - Aug ‘25), I’m a student at Georgetown University working on my B.Sc. in Computer Science and minors in Cognitive Science and Science, Technology, and International Affairs (STIA). There, I’ve honed my skills in advanced programming, data structures, and user-focused product development. From redesigning scalable React applications to leading high-impact projects for clients through Georgetown’s premier software development club, I thrive at the intersection of technology, design, and collaboration.
+Some PMs draw boxes and arrows.
 
-Outside the classroom, I’ve built full-stack applications, led cross-functional teams, and shaped product strategies to bring innovative ideas to life. Whether it’s crafting scalable platforms with React and Firebase or designing intuitive interfaces and data-driven models, I thrive on solving complex problems where technology and design meet.
+I write the code inside them too.
+
+## Summary
+
+I'm equal parts builder and strategist. I thrive in the overlap between code and product.
+
+## Currently label
+
+Currently, I'm:
+
+## Currently bullets
+
+- A junior (class of '27) @ Georgetown University, working on my B.Sc. in Computer Science and minor in Science, Technology, and International Affairs (STIA)
+- President of Hoya Developers
+- Director of Product @ Product Space
+
+## Previously label
+
+Previously, I've:
+
+## Previously bullets
+
+- Led product discovery and roadmapping for a B2B CRM, conducting user research with 50+ users while managing backlogs for 3-4 engineers
+- Improved engineering delivery velocity by 30% by implementing Scrumban workflows and facilitating critical architecture decisions
+- Architected serverless AWS infrastructure with 9 Lambda microservices and advanced DynamoDB patterns, achieving sub-100ms WebSocket latency
+- Bridged technical and business stakeholders, translating client needs into specs while evaluating trade-offs in performance, scalability, and maintainability
+- Coordinated 8+ client projects for 100+ students, guiding teams through user research, technical scope definition, and agile delivery
 
 ## Lead-in
 
-There’s still so much to learn, but here’s a little of how far I’ve come since I’ve started:
+There's still so much to learn, but here's a little of how far I've come since I've started:
 
 ## Timeline top
 
@@ -125,16 +161,55 @@ PROJECTS
   Sections (all optional): ### Blurb, ### Impact, ### Projects, ### Links.
 -->
 
+## HOYA DEVELOPERS
+
+Title: Co-founder & President
+Company: Hoya Developers
+Dates: JUL ‘23 - PRESENT
+Tech: REACT, REACT NATIVE, FIREBASE, FIGMA
+
+### Blurb
+
+As a founding member and senior Project Manager of Hoya Developers, I established Georgetown’s premier software development club, providing students with technical experience through high-impact collaborations with real clients.
+
+I ensured the successful delivery of impactful solutions that addressed user needs and advanced our mission by aligning product visions, fostering strong stakeholder relationships, and guiding cross-functional teams toward shared goals.
+
+### Projects
+
+#### Meander
+
+Site: https://github.com/di4nekim/meander
+
+- Spearheaded the development of a mobile matchmaking platform for students studying abroad, aligning product vision with user needs and technical feasibility through market research and client collaboration.
+- Directed an Agile development team to deliver core features, including a chat system, matchmaking directory, and community forum, fostering connection and engagement among users.
+- Defined and executed the product roadmap, prioritizing features based on user pain points and personas, ensuring a seamless and intuitive user journey.
+- Designed high-fidelity mockups and user journey maps in Figma to guide UX/UI design, creating a cohesive and user-centered product experience.
+
+#### Hilltop Microfinance Initiative
+
+Site: https://www.hilltopmfi.org/
+
+- Led a user-focused redesign of the website, partnering with stakeholders to align functionality with business goals such as marketing, donations, and user education.
+- Designed and iterated high-fidelity Figma mockups, refining UX/UI based on stakeholder feedback to create an intuitive and visually appealing user experience.
+- Directed the development and deployment of a Next.js and React web app, significantly enhancing platform performance and usability to support the organization’s mission.
+- Streamlined information architecture to effectively serve diverse audiences, including clients, students, and users seeking educational resources.
+- Integrated Stripe and Airtable to enable seamless donations, directly supporting organizational growth and impact.
+
+### Links
+
+SITE: https://www.hoyadevelopers.com/
+GITHUB: https://github.com/hoya-developers
+
 ## KEEPUP
 
 Title: Product Management Intern
 Company: KeepUp Technologies
-Dates: MAY ‘24 - DEC '24
+Dates: MAY ‘24 - NOV '24
 Tech: REACT, POSTGRESQL, AWS, FIGMA
 
 ### Blurb
 
-As a Product Management and Software Engineering Intern at KeepUp, I redesigned and scaled the company’s React-based MVP, making impactful contributions in a fast-paced startup environment where I shaped key technical and product decisions.
+As a Product Management and Engineering Intern at KeepUp, I redesigned and scaled the company’s React-based MVP, making impactful contributions in a fast-paced startup environment where I shaped key technical and product decisions.
 
 In collaboration with stakeholders, I developed user-focused prototypes and delivered features that emphasized usability, performance, and maintainability.
 
@@ -174,43 +249,6 @@ I designed impactful models by leveraging advanced techniques, and delivered ins
 
 SITE: https://www.hoyalytics.com/
 GITHUB: https://github.com/Hoyalytics
-
-## HOYA DEVELOPERS
-
-Title: Founding Project Manager
-Company: Hoya Developers
-Dates: JUL ‘23 - MAY '24
-Tech: REACT, REACT NATIVE, FIREBASE, FIGMA
-
-### Blurb
-
-As a founding member and senior Project Manager of Hoya Developers, I established Georgetown’s premier software development club, providing students with technical experience through high-impact collaborations with real clients.
-
-I ensured the successful delivery of impactful solutions that addressed user needs and advanced our mission by aligning product visions, fostering strong stakeholder relationships, and guiding cross-functional teams toward shared goals.
-
-### Projects
-
-#### Meander
-
-- Spearheaded the development of a mobile matchmaking platform for students studying abroad, aligning product vision with user needs and technical feasibility through market research and client collaboration.
-- Directed an Agile development team to deliver core features, including a chat system, matchmaking directory, and community forum, fostering connection and engagement among users.
-- Defined and executed the product roadmap, prioritizing features based on user pain points and personas, ensuring a seamless and intuitive user journey.
-- Designed high-fidelity mockups and user journey maps in Figma to guide UX/UI design, creating a cohesive and user-centered product experience.
-
-#### Hilltop Microfinance Initiative
-
-Site: https://www.hilltopmfi.org/
-
-- Led a user-focused redesign of the website, partnering with stakeholders to align functionality with business goals such as marketing, donations, and user education.
-- Designed and iterated high-fidelity Figma mockups, refining UX/UI based on stakeholder feedback to create an intuitive and visually appealing user experience.
-- Directed the development and deployment of a Next.js and React web app, significantly enhancing platform performance and usability to support the organization’s mission.
-- Streamlined information architecture to effectively serve diverse audiences, including clients, students, and users seeking educational resources.
-- Integrated Stripe and Airtable to enable seamless donations, directly supporting organizational growth and impact.
-
-### Links
-
-SITE: https://www.hoyadevelopers.com/
-GITHUB: https://github.com/hoya-developers
 
 ## THE HOYA
 

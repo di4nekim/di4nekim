@@ -124,11 +124,27 @@ const About = () => {
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ ease: "easeInOut", duration: 1 }}
-          className="mb-5 ml-[3vh] w-[60vw] font-normal sm:mx-[5vh] sm:w-[50vw]"
+          className="mb-5 ml-[3vh] w-[60vw] font-normal leading-tight sm:mx-[5vh] sm:w-[50vw]"
         >
           {paragraph}
         </motion.p>
       ))}
+
+      <motion.ul
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ ease: "easeInOut", duration: 1 }}
+        className="mb-2 ml-[3vh] w-[60vw] font-normal sm:mx-[5vh] sm:w-[50vw]"
+      >
+        {ABOUT.bullets.map((bullet, index) => (
+          <li
+            key={index}
+            className="leading-tight before:mr-2 before:content-['–_']"
+          >
+            {bullet}
+          </li>
+        ))}
+      </motion.ul>
     </section>
   );
 };

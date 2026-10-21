@@ -135,12 +135,18 @@ export const ABOUT = {
   heading: text(section(about, "Heading")),
   hook: text(section(about, "Hook")),
   paragraphs: paragraphs(section(about, "Paragraphs")),
+  bullets: list(section(about, "Bullets")),
 };
 
 const experience = section(doc, "Experience");
 export const EXPERIENCE = {
   sidebarLabel: text(section(experience, "Sidebar label")),
-  intro: paragraphs(section(experience, "Intro")),
+  hook: paragraphs(section(experience, "Hook")),
+  summary: text(section(experience, "Summary")),
+  currentlyLabel: text(section(experience, "Currently label")),
+  currentlyBullets: list(section(experience, "Currently bullets")),
+  previouslyLabel: text(section(experience, "Previously label")),
+  previouslyBullets: list(section(experience, "Previously bullets")),
   leadIn: text(section(experience, "Lead-in")),
   timelineTop: text(section(experience, "Timeline top")),
   timelineBottom: text(section(experience, "Timeline bottom")),

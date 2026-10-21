@@ -20,7 +20,13 @@ const Experience = () => {
   const translateY = useTransform(
     scrollYProgress,
     [0, 0.2, 0.7, 1],
-    [800, 500, 800, 0],
+    [680, 500, 680, 0],
+  );
+
+  const opacityContent = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.25],
+    [0, 0, 1],
   );
 
   return (
@@ -41,14 +47,36 @@ const Experience = () => {
             className="sticky top-0 z-10 mr-[5vw] h-[10vh] text-[14px] leading-tight sm:mr-[10vw] sm:text-[16px] sm:leading-snug md:ml-[12vw] md:mr-[10vw] lg:sticky lg:top-0 lg:z-10 lg:ml-[5vw] lg:mr-[20vw] lg:h-[10vh]"
             style={{
               y: translateY,
+              opacity: opacityContent,
             }}
           >
-            {EXPERIENCE.intro.map((paragraph, index) => (
-              <p className="mb-[10px]" key={index}>
-                {paragraph}
+            {EXPERIENCE.hook.map((line, index) => (
+              <p
+                key={index}
+                className={`text-[30px] font-semibold leading-tight ${index === 0 ? "mb-[-10px]" : ""}`}
+              >
+                {line}
               </p>
             ))}
-            <p className="font-semibold italic">{EXPERIENCE.leadIn}</p>
+            <p className="mb-[20px] leading-tight">{EXPERIENCE.summary}</p>
+
+            <p className="font-semibold leading-tight">
+              {EXPERIENCE.currentlyLabel}
+            </p>
+            <BulletList
+              items={EXPERIENCE.currentlyBullets}
+              className="mb-[10px]"
+            />
+
+            <p className="font-semibold leading-tight">
+              {EXPERIENCE.previouslyLabel}
+            </p>
+            <BulletList
+              items={EXPERIENCE.previouslyBullets}
+              className="mb-[15px]"
+            />
+
+            <p className="text-[18px] font-semibold">{EXPERIENCE.leadIn}</p>
           </motion.section>
           {/* )} */}
         </AnimatePresence>
@@ -56,6 +84,17 @@ const Experience = () => {
     </div>
   );
 };
+
+const BulletList = ({ items, className }) => (
+  <ul className={className}>
+    {items.map((item, index) => (
+      <li key={index} className="flex">
+        <span className="mr-2 shrink-0">–</span>
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+);
 
 const Sidebar = ({ scrollYProgress }) => {
   // `null` sentinel means we haven't measured yet. Prevents rendering the
