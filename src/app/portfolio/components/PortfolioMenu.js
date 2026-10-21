@@ -1,231 +1,150 @@
-'use client'
+"use client";
 
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
-import ProjectItem from './ProjectItem'
-import clickToSee from '../../assets/click_to_see.svg'
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import PortfolioMenuItem from "./PortfolioMenuItem";
+import clickToSee from "../../assets/click_to_see.svg";
+import { PROJECTS } from "@/lib/content";
 
-function AnimatedProjectItem({ project, index, smoothScrollY, itemSpacing, itemHeight, centerX, centerY, isNavigating, onProjectClick }) {
-  const diagonalPosition = useTransform(
-    smoothScrollY,
-    (scrollValue) => scrollValue - (index * itemSpacing)
-  )
+// Default projects come from content/site.md. PROJECTS is module-scoped so
+// its identity is stable — otherwise the snap effect below would treat a
+// re-render as a projects change and never converge.
+const DEFAULT_PROJECTS = PROJECTS;
 
-  const x = useTransform(
-    diagonalPosition,
-    (pos) => {
-      const diagonalOffset = pos * Math.cos(Math.PI / 4) * 0.8
-      return centerX + diagonalOffset
-    }
-  )
-
-  const y = useTransform(
-    diagonalPosition,
-    (pos) => {
-      const diagonalOffset = pos * Math.sin(Math.PI / 4) * 0.8
-      return centerY + diagonalOffset
-    }
-  )
-
-  const distanceFromCenter = useTransform(
-    diagonalPosition,
-    (pos) => Math.abs(pos)
-  )
-
-  const zIndex = useTransform(
-    distanceFromCenter,
-    (distance) => Math.max(1, 100 - Math.round(distance / 10))
-  )
-
-  const opacity = useTransform(
-    distanceFromCenter,
-    [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-    [1, 0.9, 0.4, 0]
-  )
-
-  const scale = useTransform(
-    distanceFromCenter,
-    [0, itemSpacing * 0.8, itemSpacing * 1.5, itemSpacing * 2.5],
-    [1, 0.95, 0.8, 0.6]
-  )
-
-  const blur = useTransform(
-    distanceFromCenter,
-    [0, itemSpacing * 0.6, itemSpacing * 1.2, itemSpacing * 2.0],
-    [0, 0.5, 3, 6]
-  )
-
-  const filter = useTransform(blur, (b) => `blur(${b}px)`)
-
-  return (
-    <motion.div
-      key={project.id || index}
-      className="absolute flex items-center justify-center"
-      style={{
-        x,
-        y,
-        opacity,
-        scale,
-        filter,
-        zIndex,
-        width: '50vw',
-        height: `${itemHeight}px`,
-        transformOrigin: 'center center',
-      }}
-      animate={isNavigating ? { x: -1200, opacity: 0 } : {}}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
-    >
-      <ProjectItem 
-        title={project.title}
-        year={project.year}
-        description={project.description}
-        id={project.id}
-        onProjectClick={() => onProjectClick(project)}
-        isNavigating={isNavigating}
-      />
-    </motion.div>
-  )
+// Viewport-derived layout constants. Kept out of render so state updates only
+// fire when the numbers actually change.
+function computeViewport() {
+  const innerWidth = window.innerWidth;
+  const innerHeight = window.innerHeight;
+  const headerHeight = innerWidth >= 640 ? 65 : 50;
+  return {
+    itemHeight: innerHeight * 0.33,
+    itemSpacing: innerHeight * 0.4,
+    headerHeight,
+    centerX: innerWidth * 0.3,
+    centerY: headerHeight + (innerHeight - headerHeight) / 3.5,
+    ready: true,
+  };
 }
 
+const INITIAL_VIEWPORT = {
+  itemHeight: 300,
+  itemSpacing: 320,
+  headerHeight: 50,
+  centerX: 400,
+  centerY: 200,
+  ready: false,
+};
+
 export default function PortfolioMenu({ projects: propProjects = null }) {
-  const containerRef = useRef(null)
-  const scrollY = useMotionValue(0)
-  const smoothScrollY = useSpring(scrollY, { damping: 20, stiffness: 100 })
-  const router = useRouter()
-  const [isNavigating, setIsNavigating] = useState(false)
-  const [dimensions, setDimensions] = useState({
-    itemHeight: 300,
-    itemSpacing: 320,
-    headerHeight: 50,
-    centerX: 300,
-    centerY: 200
-  })
+  const containerRef = useRef(null);
+  const scrollY = useMotionValue(0);
+  const smoothScrollY = useSpring(scrollY, { damping: 20, stiffness: 100 });
+  const router = useRouter();
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
 
-  // Default projects as fallback
-  const defaultProjects = [
-    { title: 'Dead Sweet Potato', year: '24', description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore', id: 0 },
-    { title: 'Hilltop Initiative', year: '24', description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con', id: 1 },
-    { title: 'Pavilion', year: '24', description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es', id: 2 },
-    { title: 'Digital Canvas', year: '24', description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur', id: 3 },
-    { title: 'Urban Collective', year: '24', description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', id: 4 },
-  ]
+  const projects =
+    propProjects && propProjects.length > 0 ? propProjects : DEFAULT_PROJECTS;
+  const { itemSpacing, itemHeight, centerX, centerY, ready } = viewport;
 
-  // Use provided projects or fall back to defaults
-  const projects = propProjects && propProjects.length > 0 ? propProjects : defaultProjects
-
-  // Calculate dimensions on client side only
+  // Measure the viewport client-side and react to resize.
   useEffect(() => {
-    const updateDimensions = () => {
-      const itemHeight = window.innerHeight * 0.33
-      const itemSpacing = window.innerHeight * 0.4
-      const headerHeight = window.innerWidth >= 640 ? 65 : 50
-      const centerX = window.innerWidth * 0.3
-      const centerY = headerHeight + (window.innerHeight - headerHeight) / 3.5
-      
-      setDimensions({
-        itemHeight,
-        itemSpacing,
-        headerHeight,
-        centerX,
-        centerY
-      })
-    }
+    setViewport(computeViewport());
+    const onResize = () => setViewport(computeViewport());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
-    updateDimensions()
-    window.addEventListener('resize', updateDimensions)
-    return () => window.removeEventListener('resize', updateDimensions)
-  }, [])
+  const handleProjectClick = useCallback(
+    (project) => {
+      setIsNavigating(true);
+      // Short delay to let the slide-out animation start before route change.
+      setTimeout(() => {
+        router.push(
+          `/portfolio/project/${project.id ?? project.title.toLowerCase().replace(/\s+/g, "-")}`,
+        );
+      }, 300);
+    },
+    [router],
+  );
 
-  const handleProjectClick = (project) => {
-    setIsNavigating(true)
-    setTimeout(() => {
-      router.push(`/portfolio/project/${project.id || project.title.toLowerCase().replace(/\s+/g, '-')}`)
-    }, 300)
-  }
+  const handleWheel = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-  const { itemHeight, itemSpacing, headerHeight, centerX, centerY } = dimensions
+      const delta = e.deltaY * 0.5;
+      const currentY = scrollY.get();
+      const newY = currentY - delta;
 
-  const handleWheel = useCallback((e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    
-    // Natural scroll accumulation
-    const delta = e.deltaY * 0.5
-    const currentY = scrollY.get()
-    const newY = currentY - delta
-    
-    // Allow some overflow but with resistance
-    const maxY = (projects.length - 1) * itemSpacing 
-    const minY = 0
-    
-    let constrainedY = newY
-    if (newY > maxY) {
-      constrainedY = maxY + (newY - maxY) * 0.1
-    } else if (newY < minY) {
-      constrainedY = minY + (newY - minY) * 0.1
-    }
-    
-    scrollY.set(constrainedY)
-  }, [scrollY, projects.length, itemSpacing])
+      const maxY = (projects.length - 1) * itemSpacing;
+      const minY = 0;
 
-  // Snap to nearest item when scrolling stops
+      let constrainedY = newY;
+      if (newY > maxY) {
+        constrainedY = maxY + (newY - maxY) * 0.1; // elastic
+      } else if (newY < minY) {
+        constrainedY = minY + (newY - minY) * 0.1; // elastic
+      }
+
+      scrollY.set(constrainedY);
+    },
+    [scrollY, itemSpacing, projects.length],
+  );
+
+  // Snap to nearest item when scrolling settles.
   useEffect(() => {
-    let timeout
-    const unsubscribe = scrollY.on('change', () => {
-      clearTimeout(timeout)
+    let timeout;
+    const unsubscribe = scrollY.on("change", () => {
+      clearTimeout(timeout);
       timeout = setTimeout(() => {
-        const currentY = scrollY.get()
-        const targetIndex = Math.round(currentY / itemSpacing)
-        const clampedIndex = Math.max(0, Math.min(projects.length - 1, targetIndex))
-        const targetY = clampedIndex * itemSpacing
-        
-        // Smooth snap to nearest item
-        scrollY.set(targetY)
-      }, 150) // Snap after 150ms of no movement
-    })
+        const currentY = scrollY.get();
+        const targetIndex = Math.round(currentY / itemSpacing);
+        const clampedIndex = Math.max(
+          0,
+          Math.min(projects.length - 1, targetIndex),
+        );
+        scrollY.set(clampedIndex * itemSpacing);
+      }, 150);
+    });
 
     return () => {
-      unsubscribe()
-      clearTimeout(timeout)
-    }
-  }, [scrollY, itemSpacing, projects.length])
+      unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, [scrollY, itemSpacing, projects.length]);
 
-  // Properly attach wheel event listener
+  // Attach wheel listener with `{ passive: false }` so preventDefault works.
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const container = containerRef.current;
+    if (!container) return;
 
-    container.addEventListener('wheel', handleWheel, { passive: false })
-
-    return () => {
-      container.removeEventListener('wheel', handleWheel)
-    }
-  }, [projects.length, handleWheel])
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, [handleWheel]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-
-      <div 
-        ref={containerRef}
-        className="absolute left-0 top-0 w-full h-full"
-      >
-        <div className="relative w-full h-full">
-          {projects.map((project, index) => (
-            <AnimatedProjectItem
-              key={project.id || index}
-              project={project}
-              index={index}
-              smoothScrollY={smoothScrollY}
-              itemSpacing={itemSpacing}
-              itemHeight={itemHeight}
-              centerX={centerX}
-              centerY={centerY}
-              isNavigating={isNavigating}
-              onProjectClick={handleProjectClick}
-            />
-          ))}
+    <div className="relative h-screen w-full overflow-hidden">
+      <div ref={containerRef} className="absolute left-0 top-0 size-full">
+        <div className="relative size-full">
+          {ready &&
+            projects.map((project, index) => (
+              <PortfolioMenuItem
+                key={project.id ?? index}
+                project={project}
+                index={index}
+                smoothScrollY={smoothScrollY}
+                itemSpacing={itemSpacing}
+                centerX={centerX}
+                centerY={centerY}
+                itemHeight={itemHeight}
+                isNavigating={isNavigating}
+                onProjectClick={handleProjectClick}
+              />
+            ))}
         </div>
       </div>
 
@@ -233,16 +152,19 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
         className="absolute bottom-10 left-10 z-50"
         initial={{ opacity: 0, y: 20 }}
         animate={isNavigating ? { x: -1200, opacity: 0 } : { opacity: 1, y: 0 }}
-        transition={isNavigating ? { duration: 0.8, ease: "easeInOut" } : { delay: 0.5, duration: 0.6 }}
+        transition={
+          isNavigating
+            ? { duration: 0.8, ease: "easeInOut" }
+            : { delay: 0.5, duration: 0.6 }
+        }
       >
         <Image
           src={clickToSee}
           alt="Click to see the full visual story"
           width={350}
-          // height={304}
-          className="max-w-[350px] w-auto h-auto opacity-100 transition-opacity duration-300"
+          className="size-auto max-w-[350px] opacity-100 transition-opacity duration-300"
         />
       </motion.div>
     </div>
-  )
+  );
 }
