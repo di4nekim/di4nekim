@@ -92,6 +92,26 @@ function field(node, label, { required = true } = {}) {
   return found?.value ?? null;
 }
 
+// Quarters are YYQX. The "(Oct - Dec)" tag on a blurb is its quarter spelled
+// out, so the two can never disagree.
+const QUARTER_RE = /^\d{2}Q[1-4]$/;
+const QUARTER_MONTHS = {
+  1: "Jan - Mar",
+  2: "Apr - Jun",
+  3: "Jul - Sep",
+  4: "Oct - Dec",
+};
+
+function quarter(node) {
+  const value = field(node, "Quarter");
+  if (!QUARTER_RE.test(value)) {
+    throw new Error(
+      `${FILE}: "Quarter: ${value}" ${where(node)} is not a quarter like "24Q4"`,
+    );
+  }
+  return value;
+}
+
 function assertUnique(values, what) {
   const duplicate = values.find((value, i) => values.indexOf(value) !== i);
   if (duplicate !== undefined) {
@@ -114,6 +134,15 @@ export const HEADER = {
     label,
     href: value,
   })),
+  afterHoursLinks: fields(section(header, "After-hours links")).map(
+    ({ label, value }) => ({
+      label,
+      href: value,
+      hoverText: field(section(header, "After-hours hover text"), label, {
+        required: false,
+      }),
+    }),
+  ),
   resumeDownloadName: text(section(header, "Resume download name")),
 };
 
@@ -189,19 +218,80 @@ const portfolio = section(doc, "Portfolio");
 export const PORTFOLIO = {
   backLink: text(section(portfolio, "Back link")),
   notFound: text(section(portfolio, "Not found")),
-  detailsHeading: text(section(portfolio, "Details heading")),
 };
 
-export const PROJECTS = section(doc, "Projects").children.map(
-  (project, id) => ({
+// Case studies are content/projects/<title-in-kebab-case>.md, bundled as raw
+// strings by the same webpack rule. Comments are stripped here, as above, so
+// the markdown renderer never sees them.
+const CASE_STUDY_FILES = require.context(
+  "../../content/projects",
+  false,
+  /\.md$/,
+);
+const kebab = (title) =>
+  title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+const caseStudyFile = (title) => `./${kebab(title)}.md`;
+
+export const PROJECTS = section(doc, "Projects").children.map((project, id) => {
+  const code = quarter(project);
+  const file = caseStudyFile(project.title);
+  if (!CASE_STUDY_FILES.keys().includes(file)) {
+    throw new Error(
+      `${FILE}: "## ${project.title}" has no content/projects/${file.slice(2)}`,
+    );
+  }
+  return {
     id,
     title: project.title,
     year: field(project, "Year"),
+    quarter: code,
+    months: QUARTER_MONTHS[code.slice(-1)],
+    // Joined for the project page; kept split for the After Hours blurb,
+    // which sets a blank line between paragraphs.
     description: text(section(project, "Description")),
-    details: paragraphs(optionalSection(project, "Details")),
-  }),
-);
+    blurb: paragraphs(section(project, "Description")),
+    caseStudy: CASE_STUDY_FILES(file)
+      .replace(/<!--[\s\S]*?-->/g, "")
+      .trim(),
+  };
+});
 assertUnique(
   PROJECTS.map((project) => project.title),
   "project",
 );
+
+function projectNamed(node, name) {
+  const found = PROJECTS.find((project) => same(project.title, name));
+  if (!found) {
+    throw new Error(
+      `${FILE}: "Project: ${name}" ${where(node)} names no "## ${name}" under "# Projects"`,
+    );
+  }
+  return found;
+}
+
+// The After Hours rail. Oldest first; the stop carrying "Project: ..." is the
+// one the blurb column is focused on.
+export const TIMELINE = section(doc, "Timeline").children.map((stop) => {
+  const name = field(stop, "Project", { required: false });
+  const project = name ? projectNamed(stop, name) : null;
+  return {
+    label: stop.title,
+    quarter: quarter(stop),
+    note: field(stop, "Note", { required: false }),
+    projectId: project?.id ?? null,
+  };
+});
+
+// Every project is a stop — the rail is how the blurb column is navigated, so
+// a project missing from it would be unreachable from the ticker.
+for (const project of PROJECTS) {
+  if (!TIMELINE.some((stop) => stop.projectId === project.id)) {
+    throw new Error(
+      `${FILE}: "## ${project.title}" has no stop under "# Timeline"`,
+    );
+  }
+}

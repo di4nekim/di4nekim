@@ -11,7 +11,7 @@ export default function sitemap() {
       priority: 1,
     },
     {
-      url: `${SITE_URL}/portfolio`,
+      url: `${SITE_URL}/after-hours`,
       lastModified,
       changeFrequency: "monthly",
       priority: 0.8,

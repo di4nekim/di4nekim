@@ -39,6 +39,20 @@ RESUME: /resume.pdf
 GITHUB: https://github.com/di4nekim
 LINKEDIN: https://www.linkedin.com/in/di4nekim/
 
+## After-hours links
+
+<!-- Shown in the header on /after-hours instead of the links above. -->
+
+PROJECTS: #
+PORTFOLIO: #
+
+## After-hours hover text
+
+<!-- Scrolls inside the link's own width on hover, matched by label. Links not listed here don't animate. -->
+
+PROJECTS: PROJECTS TECHNICAL
+PORTFOLIO: PORTFOLIO CREATIVE
+
 ## Resume download name
 
 Diane Kim, Resume.pdf
@@ -61,7 +75,7 @@ this site was made for a larger canvas — see you there :)
 
 ## Headline
 
-hey, it's diane.
+hey, it's di4ne.
 
 ## Sidebar
 
@@ -288,79 +302,129 @@ By overseeing development and collaborating with stakeholders, I delivered a sca
 
 ## Back link
 
-← Back to Portfolio
+Portfolio
 
 ## Not found
 
 Project not found
 
-## Details heading
-
-Project Details
-
 # Projects
 
 <!--
   One "##" per project, in menu order. Year is the two-digit year ("24"
-  shows as ('24)). Project URLs are /portfolio/project/0, /1, ... by position.
+  shows as ('24)). Quarter is YYQX and ties the project to a stop under
+  "# Timeline" — it drives the flip clock and the (Oct - Dec) tag on the
+  blurb, so Q1 is Jan - Mar, Q2 Apr - Jun, Q3 Jul - Sep, Q4 Oct - Dec.
+  Project URLs are /after-hours/project/0, /1, ... by position. Each
+  project's case study lives in content/projects/<title-in-kebab-case>.md.
 -->
 
 ## Dead Sweet Potato
 
 Year: 24
+Quarter: 24Q4
 
 ### Description
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
-## Hilltop Initiative
+## Hilltop Microfinance Initiative
 
 Year: 24
+Quarter: 24Q1
 
 ### Description
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Pavilion
 
 Year: 24
+Quarter: 25Q4
 
 ### Description
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Digital Canvas
 
 Year: 24
+Quarter: 25Q2
 
 ### Description
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Urban Collective
 
 Year: 24
+Quarter: 25Q3
 
 ### Description
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
 
-### Details
+# Timeline
 
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
+<!--
+  The rail on the right of the After Hours blurbs, oldest at the top. One
+  "##" per stop, in order — the rail shows a five-stop window centred on the
+  stop of whichever project is in focus, so order is what matters here, not
+  the quarter.
+
+  Quarter is YYQX. A stop with "Project: <name>" is that project's stop: it
+  gets the heavy tick, links to the project's page, and the name must match a
+  "##" under "# Projects" exactly. Everything else is a milestone. "Note: ..."
+  is the smaller second line under the label.
+-->
+
+## Hilltop Microfinance Initiative
+
+Quarter: 24Q1
+Project: Hilltop Microfinance Initiative
+
+## retired from fencing
+
+Quarter: 24Q2
+Note: T64 in D1 Women's Epee
+
+## gap year begins
+
+Quarter: 24Q3
+
+## Dead Sweet Potato
+
+Quarter: 24Q4
+Project: Dead Sweet Potato
+
+## florist @ The Metropolitan Plant Center
+
+Quarter: 25Q1
+Note: 2 months
+
+## EMT certification
+
+Quarter: 25Q1
+
+## Digital Canvas
+
+Quarter: 25Q2
+Project: Digital Canvas
+
+## culinary school, graduated
+
+Quarter: 25Q2
+
+## back on campus, YR3
+
+Quarter: 25Q3
+
+## Urban Collective
+
+Quarter: 25Q3
+Project: Urban Collective
+
+## Pavilion
+
+Quarter: 25Q4
+Project: Pavilion

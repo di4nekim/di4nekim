@@ -5,7 +5,8 @@ import { SITE } from "@/lib/content";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700"], // Regular, SemiBold, Bold
+  weight: ["400", "500", "600", "700"], // Regular, Medium, SemiBold, Bold
+  style: ["normal", "italic"],
   variable: "--font-inter",
 });
 
