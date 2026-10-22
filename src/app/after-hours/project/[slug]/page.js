@@ -12,7 +12,8 @@ import CaseStudyMarkdown, {
 } from "../../components/CaseStudyMarkdown.js";
 import { BackLink, MAIN } from "../../components/CaseStudyLayout.js";
 import { useLeaveTo } from "../../components/leave.js";
-import { PORTFOLIO, PROJECTS } from "@/lib/content";
+import { AFTER_HOURS } from "@/lib/content";
+import { PROJECTS } from "@/lib/projects";
 
 // The other half of the exit in after-hours/components/leave.js: while the
 // projects screen's elements are still sliding off to the left, this page's
@@ -23,13 +24,12 @@ export default function ProjectPage() {
   const reduceMotion = useReducedMotion();
 
   // Resolved during render, so there's no first frame without the project.
+  // A bare number is an old /portfolio/project/<index> link (redirected here
+  // by next.config.mjs), so it still finds the project at that position.
   const project = useMemo(
     () =>
-      PROJECTS.find(
-        (p) =>
-          p.id.toString() === params.slug ||
-          p.title.toLowerCase().replace(/\s+/g, "-") === params.slug,
-      ),
+      PROJECTS.find((p) => p.slug === params.slug) ??
+      (/^\d+$/.test(params.slug) ? PROJECTS[Number(params.slug)] : undefined),
     [params.slug],
   );
 
@@ -101,7 +101,7 @@ export default function ProjectPage() {
             </>
           ) : (
             <motion.p data-exit variants={FADE_UP} className="text-xl">
-              {PORTFOLIO.notFound}
+              {AFTER_HOURS.notFound}
             </motion.p>
           )}
         </motion.main>

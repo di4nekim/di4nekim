@@ -8,7 +8,8 @@ import TimelineTicker from "./TimelineTicker.js";
 import { box, u } from "./frame.js";
 import blurbBloom from "../../assets/after-hours/blurb-bloom.svg";
 import tickerBloom from "../../assets/after-hours/ticker-bloom.svg";
-import { PROJECTS, TIMELINE } from "@/lib/content";
+import { TIMELINE } from "@/lib/content";
+import { PROJECTS } from "@/lib/projects";
 
 // Figma: "project blurbs v9" (1664:340). Composed on the 1440 × 1024 frame;
 // `--u` is one design pixel, scaled so the frame fits the section, so every

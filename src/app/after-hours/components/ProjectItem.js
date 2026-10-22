@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 export default function ProjectItem({
   title,
   description,
-  link,
   year,
   isNavigating,
 }) {
@@ -48,18 +47,6 @@ export default function ProjectItem({
         <p className="mb-6 text-lg italic leading-tight text-[#CB0000]">
           {description}
         </p>
-
-        {link && (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="pointer-events-auto relative z-10 inline-block text-blue-600 underline transition-colors hover:text-blue-800"
-          >
-            View Project →
-          </a>
-        )}
       </div>
     </motion.div>
   );

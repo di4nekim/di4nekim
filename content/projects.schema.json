@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AFTER HOURS projects",
+  "description": "Everything listed on /after-hours and /projects. Read by src/lib/projects.js, which also checks the rules this schema can't express (category ids exist under categories[kind], slugs are unique, case study files exist).",
+  "type": "object",
+  "required": ["categories", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "categories": {
+      "description": "Category chips per kind, in display order. Items reference a category by id; label is what the page shows.",
+      "type": "object",
+      "required": ["project", "portfolio"],
+      "additionalProperties": false,
+      "properties": {
+        "project": { "$ref": "#/$defs/categoryList" },
+        "portfolio": { "$ref": "#/$defs/categoryList" }
+      }
+    },
+    "items": {
+      "description": "Display order on /after-hours and /projects is the order of this array. Each project also needs a stop under # Timeline in content/site.md.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "categoryList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "label": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "month": {
+      "type": "string",
+      "description": "YYYY-MM, or YYYY-MM-DD for a dated piece like an op-ed.",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\\d|3[01]))?$"
+    },
+    "item": {
+      "type": "object",
+      "required": ["slug", "title", "kind", "category", "date", "blurb"],
+      "additionalProperties": false,
+      "properties": {
+        "slug": {
+          "description": "URL: /after-hours/project/<slug>. Changing it breaks existing links.",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["project", "portfolio"] },
+        "category": {
+          "description": "An id from categories[kind]. Kept in sync with the lists in projects.json for editor autocomplete; the build checks it against those lists.",
+          "type": "string"
+        },
+        "date": {
+          "type": "object",
+          "required": ["start"],
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "$ref": "#/$defs/month",
+              "description": "Drives the ('24) year label, the 24Q4 flip clock and the (Oct - Dec) tag."
+            },
+            "end": {
+              "description": "Leave out for a one-off piece. null means ongoing and shows as NOW.",
+              "oneOf": [{ "$ref": "#/$defs/month" }, { "type": "null" }]
+            }
+          }
+        },
+        "blurb": {
+          "description": "Plain text, one or two sentences. Shown on the After Hours blurbs, /projects and the case study. A blank line (\\n\\n) starts a new paragraph.",
+          "type": "string",
+          "minLength": 1
+        },
+        "caseStudy": {
+          "description": "Path to the case study's Markdown file, relative to content/ (convention: case-studies/<slug>.md). Rendered on /after-hours/project/<slug>. Required for kind \"project\".",
+          "type": "string",
+          "pattern": "^case-studies/[a-z0-9]+(-[a-z0-9]+)*\\.md$"
+        },
+        "images": {
+          "description": "The first image is the cover. Put files in public/projects/<slug>/.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["src", "alt"],
+            "additionalProperties": false,
+            "properties": {
+              "src": { "type": "string", "pattern": "^/" },
+              "alt": { "type": "string" },
+              "caption": { "type": "string" }
+            }
+          }
+        },
+        "links": {
+          "description": "External links (published piece, repo, live site), shown on the item's page.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "href"],
+            "additionalProperties": false,
+            "properties": {
+              "label": { "type": "string", "minLength": 1 },
+              "href": { "type": "string", "format": "uri" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "project" } } },
+          "then": {
+            "required": ["caseStudy"],
+            "properties": {
+              "category": { "enum": ["personal", "extracurricular", "work"] }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "portfolio" } } },
+          "then": {
+            "properties": {
+              "category": {
+                "enum": ["physical-media", "essay", "op-ed", "story", "misc"]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
