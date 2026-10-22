@@ -64,10 +64,6 @@ export const PROJECTS = DATA.items.map((item) => {
       `${where} category "${item.category}" is not in categories.${item.kind}`,
     );
   }
-  if (item.kind === "project" && !item.caseStudy) {
-    fail(`${where} is a project, so it needs a "caseStudy"`);
-  }
-
   const start = parseMonth(item.date?.start, `${where} date.start`);
   // end: absent = one-off, null = ongoing (NOW), string = finished.
   const end = item.date?.end;
@@ -112,3 +108,18 @@ const duplicate = PROJECTS.map((p) => p.slug).find(
   (slug, i, slugs) => slugs.indexOf(slug) !== i,
 );
 if (duplicate) fail(`duplicate slug "${duplicate}"`);
+
+// PROJECTS is every item, which is what the timeline indexes. Only items with
+// a case study get a blurb and a page; the rest show only as their stop.
+// Both lists are module-scoped so their identity is stable across renders.
+
+// /after-hours: both kinds, in file order.
+export const CASE_STUDIES = PROJECTS.filter((p) => p.caseStudy);
+
+// /projects and /portfolio: one kind each, keyed by kind.
+export const CASE_STUDIES_BY_KIND = Object.fromEntries(
+  Object.keys(CATEGORIES).map((kind) => [
+    kind,
+    CASE_STUDIES.filter((p) => p.kind === kind),
+  ]),
+);

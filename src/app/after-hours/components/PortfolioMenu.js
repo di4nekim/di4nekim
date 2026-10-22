@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import PortfolioMenuItem from "./PortfolioMenuItem";
 import clickToSee from "../../assets/click_to_see.svg";
-import { PROJECTS } from "@/lib/projects";
+import { CASE_STUDIES } from "@/lib/projects";
 
-// Default projects come from content/projects.json. PROJECTS is module-scoped so
+// Default projects come from content/projects.json. CASE_STUDIES is module-scoped so
 // its identity is stable — otherwise the snap effect below would treat a
 // re-render as a projects change and never converge.
-const DEFAULT_PROJECTS = PROJECTS;
+const DEFAULT_PROJECTS = CASE_STUDIES;
 
 // Viewport-derived layout constants. Kept out of render so state updates only
 // fire when the numbers actually change.

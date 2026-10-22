@@ -5,15 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-// Everything on the case study arrives the same way: a short fade upwards,
-// one element after the next, under a parent that staggers its children.
-// Each is also marked `data-exit`, so leaving for the projects screen slides
-// it off to the right (see leave.js).
-export const FADE_UP = {
-  out: { opacity: 0, y: 16 },
+// Everything on the case study arrives the same way: pulled in from the right,
+// one element after the next, under a parent that staggers its children, the
+// other half of the projects screen's exit to the left (see leave.js). Each is
+// also marked `data-exit`, so leaving for the projects screen slides it off to
+// the right again.
+export const PULL_IN = {
+  out: { x: "100vw" },
   in: {
-    opacity: 1,
-    y: 0,
+    x: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 };
@@ -34,19 +34,19 @@ const withClass = (className, props) => ({
   className: [className, props.className].filter(Boolean).join(" "),
 });
 
-// A block-level markdown element that fades up with the rest.
+// A block-level markdown element that pulls in with the rest.
 const block = (tag, className) =>
   function Block(props) {
     const Tag = motion[tag];
     return (
-      <Tag data-exit variants={FADE_UP} {...withClass(className, props)} />
+      <Tag data-exit variants={PULL_IN} {...withClass(className, props)} />
     );
   };
 
 // Wide tables scroll sideways instead of widening the page.
 function Table(props) {
   return (
-    <motion.div data-exit variants={FADE_UP} className="overflow-x-auto">
+    <motion.div data-exit variants={PULL_IN} className="overflow-x-auto">
       <table
         {...withClass(
           "w-full border-collapse text-left text-base sm:text-lg",
@@ -88,7 +88,7 @@ function Paragraph({ node, children, ...props }) {
   return (
     <motion.p
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className="text-base leading-relaxed sm:text-lg"
       {...props}
     >
@@ -113,7 +113,7 @@ function ProjectImage({ src, alt = "" }) {
     return (
       <motion.span
         data-exit
-        variants={FADE_UP}
+        variants={PULL_IN}
         className="flex h-64 items-center justify-center rounded-lg bg-gray-200 text-base text-gray-500"
       >
         {alt}
@@ -124,7 +124,7 @@ function ProjectImage({ src, alt = "" }) {
   return (
     <motion.span
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className={`relative block min-h-64 overflow-hidden rounded-lg bg-gray-200 ${loaded ? "" : "animate-pulse motion-reduce:animate-none"}`}
     >
       {/* Markdown images have no known size, so next/image can't lay them out. */}

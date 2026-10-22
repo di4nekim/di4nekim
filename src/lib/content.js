@@ -124,6 +124,7 @@ export const SITE = {
 const header = section(doc, "Header");
 export const HEADER = {
   name: text(section(header, "Name")),
+  afterHoursName: text(section(header, "After-hours name")),
   links: fields(section(header, "Links")).map(({ label, value }) => ({
     label,
     href: value,
@@ -235,6 +236,7 @@ export const TIMELINE = section(doc, "Timeline").children.map((stop) => {
     quarter: quarter(stop),
     note: field(stop, "Note", { required: false }),
     projectId: project?.id ?? null,
+    hasCaseStudy: Boolean(project?.caseStudy),
   };
 });
 

@@ -13,7 +13,7 @@ export default function Projects() {
     <>
       <MobileBlocker />
       <div className="relative hidden md:block">
-        <Header />
+        <Header variant="after-hours" />
         <ProjectsLanding />
       </div>
     </>

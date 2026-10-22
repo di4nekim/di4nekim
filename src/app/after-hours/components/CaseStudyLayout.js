@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { AFTER_HOURS } from "@/lib/content";
-import { FADE_UP } from "./CaseStudyMarkdown.js";
+import { PULL_IN } from "./CaseStudyMarkdown.js";
 import { SETTLE } from "./frame.js";
+import { backTo } from "./leave.js";
 
 // The case study's column, shared with its loading skeleton so the two line
 // up. The top padding clears the fixed header (50px, 65px from sm), the back
@@ -14,16 +15,17 @@ export const MAIN =
 
 // Pinned under the header in the top left. At rest it's only the arrow; on
 // hover (or keyboard focus) the label slides out to its right. The link is
-// only as big as what's showing, so nothing around it is clickable.
+// only as big as what's showing, so nothing around it is clickable. It goes
+// back to whichever projects screen the case study was opened from.
 export function BackLink({ onClick }) {
   return (
     <motion.div
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className="fixed left-6 top-[74px] z-[999] sm:left-8 sm:top-[97px]"
     >
       <Link
-        href="/after-hours"
+        href={backTo()}
         onClick={onClick}
         className="group flex items-center text-lg leading-7 text-[#CB0000] outline-none focus-visible:underline focus-visible:underline-offset-4"
       >

@@ -9,7 +9,7 @@ import { box, u } from "./frame.js";
 import blurbBloom from "../../assets/after-hours/blurb-bloom.svg";
 import tickerBloom from "../../assets/after-hours/ticker-bloom.svg";
 import { TIMELINE } from "@/lib/content";
-import { PROJECTS } from "@/lib/projects";
+import { CASE_STUDIES } from "@/lib/projects";
 
 // Figma: "project blurbs v9" (1664:340). Composed on the 1440 × 1024 frame;
 // `--u` is one design pixel, scaled so the frame fits the section, so every
@@ -38,10 +38,10 @@ const NOTCH = 120;
 const COOLDOWN = 320;
 
 const wrap = (slot) =>
-  ((slot % PROJECTS.length) + PROJECTS.length) % PROJECTS.length;
+  ((slot % CASE_STUDIES.length) + CASE_STUDIES.length) % CASE_STUDIES.length;
 
 // Which pass through the list a slot is on.
-const lap = (slot) => Math.floor(slot / PROJECTS.length);
+const lap = (slot) => Math.floor(slot / CASE_STUDIES.length);
 
 export default function ProjectBlurbs() {
   // An unbounded slot, not an index: the focused project is `wrap(focus)`.
@@ -49,7 +49,7 @@ export default function ProjectBlurbs() {
   const [focus, setFocus] = useState(() =>
     Math.max(
       0,
-      PROJECTS.findIndex((p) => p.id === returningFrom()),
+      CASE_STUDIES.findIndex((p) => p.id === returningFrom()),
     ),
   );
   // How many times the focus has crossed between the ends of the list.
@@ -64,7 +64,7 @@ export default function ProjectBlurbs() {
 
   usePullIn(sectionRef);
 
-  const last = PROJECTS.length - 1;
+  const last = CASE_STUDIES.length - 1;
 
   const moveTo = useCallback((next) => {
     if (lap(next) !== lap(focusRef.current)) setWraps((n) => n + 1);
@@ -120,7 +120,7 @@ export default function ProjectBlurbs() {
     }
   };
 
-  const project = PROJECTS[wrap(focus)];
+  const project = CASE_STUDIES[wrap(focus)];
 
   // The column keeps its slots filled by wrapping: a slot is a position in the
   // column, and the project it carries runs off one end of the list and back
@@ -175,7 +175,7 @@ export default function ProjectBlurbs() {
           {slots.map((slot) => (
             <ProjectBlurb
               key={slot}
-              project={PROJECTS[wrap(slot)]}
+              project={CASE_STUDIES[wrap(slot)]}
               depth={slot - focus}
               onFocus={() => moveTo(slot)}
             />
@@ -189,7 +189,7 @@ export default function ProjectBlurbs() {
             wraps={wraps}
             focusedId={project.id}
             onFocus={(id) =>
-              moveToIndex(PROJECTS.findIndex((p) => p.id === id))
+              moveToIndex(CASE_STUDIES.findIndex((p) => p.id === id))
             }
             zoneRef={tickerRef}
           />
