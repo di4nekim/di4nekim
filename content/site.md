@@ -39,6 +39,20 @@ RESUME: /resume.pdf
 GITHUB: https://github.com/di4nekim
 LINKEDIN: https://www.linkedin.com/in/di4nekim/
 
+## After-hours links
+
+<!-- Shown in the header on /after-hours instead of the links above. -->
+
+PROJECTS: #
+PORTFOLIO: #
+
+## After-hours hover text
+
+<!-- Scrolls inside the link's own width on hover, matched by label. Links not listed here don't animate. -->
+
+PROJECTS: PROJECTS TECHNICAL
+PORTFOLIO: PORTFOLIO CREATIVE
+
 ## Resume download name
 
 Diane Kim, Resume.pdf

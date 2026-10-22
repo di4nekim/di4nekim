@@ -114,6 +114,15 @@ export const HEADER = {
     label,
     href: value,
   })),
+  afterHoursLinks: fields(section(header, "After-hours links")).map(
+    ({ label, value }) => ({
+      label,
+      href: value,
+      hoverText: field(section(header, "After-hours hover text"), label, {
+        required: false,
+      }),
+    }),
+  ),
   resumeDownloadName: text(section(header, "Resume download name")),
 };
 

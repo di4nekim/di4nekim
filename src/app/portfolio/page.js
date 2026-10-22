@@ -12,7 +12,7 @@ export default function Portfolio() {
   return (
     <SharedBackground>
       <DiagonalReveal>
-        <Header />
+        <Header variant="after-hours" />
         <PortfolioLanding />
       </DiagonalReveal>
       <PortfolioMenu />

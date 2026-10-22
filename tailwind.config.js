@@ -17,7 +17,17 @@ module.exports = {
         title: "var(--font-title-size)",
         subtitle: "var(--font-subtitle-size)",
         paragraph: "var(--font-paragraph-size)",
-      }
+      },
+      keyframes: {
+        // Track holds two copies of the text, so -50% loops seamlessly.
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 4s linear infinite",
+      },
     },
   },
   plugins: [],
