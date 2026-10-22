@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { PORTFOLIO } from "@/lib/content";
+import { AFTER_HOURS } from "@/lib/content";
 import { FADE_UP } from "./CaseStudyMarkdown.js";
 import { SETTLE } from "./frame.js";
 
@@ -35,7 +35,7 @@ export function BackLink({ onClick }) {
             <span
               className={`inline-block -translate-x-full pl-1 opacity-0 transition-[transform,opacity] group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${SETTLE}`}
             >
-              {PORTFOLIO.backLink}
+              {AFTER_HOURS.backLink}
             </span>
           </span>
         </span>

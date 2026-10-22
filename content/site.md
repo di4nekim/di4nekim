@@ -33,7 +33,12 @@ DIANE KIM
 
 ## Links
 
-<!-- Links starting with "/" download a file from /public; others open in a new tab. -->
+<!--
+  Links starting with "/" stay on the site: a path with a file extension
+  ("/resume.pdf") downloads that file from /public, any other path
+  ("/projects") is a page. "#" is a placeholder that goes nowhere yet.
+  Everything else opens in a new tab.
+-->
 
 RESUME: /resume.pdf
 GITHUB: https://github.com/di4nekim
@@ -43,7 +48,7 @@ LINKEDIN: https://www.linkedin.com/in/di4nekim/
 
 <!-- Shown in the header on /after-hours instead of the links above. -->
 
-PROJECTS: #
+PROJECTS: /projects
 PORTFOLIO: #
 
 ## After-hours hover text
@@ -298,7 +303,13 @@ By overseeing development and collaborating with stakeholders, I delivered a sca
 - Created a React-based platform to centralize event and publication discovery, enhancing accessibility for students.
 - Built a robust backend infrastructure using MySQL to enable seamless data storage and retrieval, supporting dynamic user interactions.
 
-# Portfolio
+# After Hours
+
+<!--
+  Copy for /after-hours and its case study pages. The projects themselves
+  live in content/projects.json, and each one's case study in
+  content/case-studies/.
+-->
 
 ## Back link
 
@@ -308,61 +319,11 @@ Portfolio
 
 Project not found
 
-# Projects
+## Clock label
 
-<!--
-  One "##" per project, in menu order. Year is the two-digit year ("24"
-  shows as ('24)). Quarter is YYQX and ties the project to a stop under
-  "# Timeline" — it drives the flip clock and the (Oct - Dec) tag on the
-  blurb, so Q1 is Jan - Mar, Q2 Apr - Jun, Q3 Jul - Sep, Q4 Oct - Dec.
-  Project URLs are /after-hours/project/0, /1, ... by position. Each
-  project's case study lives in content/projects/<title-in-kebab-case>.md.
--->
+<!-- Above the flip clock on /projects. -->
 
-## Dead Sweet Potato
-
-Year: 24
-Quarter: 24Q4
-
-### Description
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-
-## Hilltop Microfinance Initiative
-
-Year: 24
-Quarter: 24Q1
-
-### Description
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con
-
-## Pavilion
-
-Year: 24
-Quarter: 25Q4
-
-### Description
-
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es
-
-## Digital Canvas
-
-Year: 24
-Quarter: 25Q2
-
-### Description
-
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
-
-## Urban Collective
-
-Year: 24
-Quarter: 25Q3
-
-### Description
-
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
+PROJECTS
 
 # Timeline
 
@@ -374,7 +335,7 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 
   Quarter is YYQX. A stop with "Project: <name>" is that project's stop: it
   gets the heavy tick, links to the project's page, and the name must match a
-  "##" under "# Projects" exactly. Everything else is a milestone. "Note: ..."
+  project's "title" in content/projects.json exactly. Everything else is a milestone. "Note: ..."
   is the smaller second line under the label.
 -->
 

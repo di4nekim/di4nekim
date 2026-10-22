@@ -1,0 +1,64 @@
+{
+  "$schema": "./projects.schema.json",
+  "categories": {
+    "project": [
+      { "id": "personal", "label": "PERSONAL" },
+      { "id": "extracurricular", "label": "EXTRACURRICULAR" },
+      { "id": "work", "label": "WORK" }
+    ],
+    "portfolio": [
+      { "id": "physical-media", "label": "PHYSICAL MEDIA" },
+      { "id": "essay", "label": "ESSAYS" },
+      { "id": "op-ed", "label": "OP-EDS" },
+      { "id": "story", "label": "STORIES" },
+      { "id": "misc", "label": "MISC" }
+    ]
+  },
+  "items": [
+    {
+      "slug": "dead-sweet-potato",
+      "title": "Dead Sweet Potato",
+      "kind": "project",
+      "category": "personal",
+      "date": { "start": "2024-10", "end": null },
+      "blurb": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore",
+      "caseStudy": "case-studies/dead-sweet-potato.md"
+    },
+    {
+      "slug": "hilltop-microfinance-initiative",
+      "title": "Hilltop Microfinance Initiative",
+      "kind": "project",
+      "category": "extracurricular",
+      "date": { "start": "2024-01" },
+      "blurb": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con",
+      "caseStudy": "case-studies/hilltop-microfinance-initiative.md"
+    },
+    {
+      "slug": "pavilion",
+      "title": "Pavilion",
+      "kind": "project",
+      "category": "personal",
+      "date": { "start": "2025-10" },
+      "blurb": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es",
+      "caseStudy": "case-studies/pavilion.md"
+    },
+    {
+      "slug": "digital-canvas",
+      "title": "Digital Canvas",
+      "kind": "project",
+      "category": "personal",
+      "date": { "start": "2025-04" },
+      "blurb": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur",
+      "caseStudy": "case-studies/digital-canvas.md"
+    },
+    {
+      "slug": "urban-collective",
+      "title": "Urban Collective",
+      "kind": "project",
+      "category": "personal",
+      "date": { "start": "2025-07" },
+      "blurb": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium",
+      "caseStudy": "case-studies/urban-collective.md"
+    }
+  ]
+}

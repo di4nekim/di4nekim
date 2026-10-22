@@ -3,15 +3,24 @@ import Link from "next/link";
 import { HEADER } from "@/lib/content";
 import { Reveal } from "./DiagonalReveal.js";
 
-// Site-relative links ("/resume.pdf") are downloads; everything else is
-// external and opens in a new tab.
-// "#" placeholders stay in place.
+// Site-relative links are pages ("/projects") unless they name a file
+// ("/resume.pdf"), which downloads. "#" placeholders stay in place.
+// Everything else is external and opens in a new tab.
+const isPage = (href) => href.startsWith("/") && !/\.\w+$/.test(href);
+
 const linkProps = (href) =>
   href.startsWith("#")
     ? {}
     : href.startsWith("/")
       ? { download: HEADER.resumeDownloadName }
       : { target: "_blank", rel: "noopener noreferrer" };
+
+const NavLink = ({ href, ...props }) =>
+  isPage(href) ? (
+    <Link href={href} {...props} />
+  ) : (
+    <a href={href} {...linkProps(href)} {...props} />
+  );
 
 const Header = ({ variant = "main" }) => {
   const links =
@@ -32,10 +41,9 @@ const Header = ({ variant = "main" }) => {
               exitOnScroll={false}
               className="group relative m-0 inline-block cursor-pointer bg-no-repeat [background-image:linear-gradient(to_right,#F5EFE8,#F5EFE8)] [background-position:0_0] [background-size:3px_100%] [transition:background-size_0.2s,background-position_0.2s_0.3s] hover:[background-position:100%_0] hover:[background-size:100%_100%] sm:[background-size:5px_100%]"
             >
-              <a
+              <NavLink
                 className="px-[10px] py-[5px] text-[#F5EFE8] no-underline hover:text-[var(--main-red)] sm:px-[20px] sm:py-[10px]"
                 href={href}
-                {...linkProps(href)}
               >
                 {hoverText ? (
                   // On hover, hoverText scrolls inside the label's own width.
@@ -52,7 +60,7 @@ const Header = ({ variant = "main" }) => {
                 ) : (
                   label
                 )}
-              </a>
+              </NavLink>
             </Reveal>
           ))}
         </ul>
