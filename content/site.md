@@ -75,7 +75,7 @@ this site was made for a larger canvas — see you there :)
 
 ## Headline
 
-hey, it's diane.
+hey, it's di4ne.
 
 ## Sidebar
 
@@ -302,15 +302,11 @@ By overseeing development and collaborating with stakeholders, I delivered a sca
 
 ## Back link
 
-← Back to Portfolio
+Portfolio
 
 ## Not found
 
 Project not found
-
-## Details heading
-
-Project Details
 
 # Projects
 
@@ -319,7 +315,8 @@ Project Details
   shows as ('24)). Quarter is YYQX and ties the project to a stop under
   "# Timeline" — it drives the flip clock and the (Oct - Dec) tag on the
   blurb, so Q1 is Jan - Mar, Q2 Apr - Jun, Q3 Jul - Sep, Q4 Oct - Dec.
-  Project URLs are /after-hours/project/0, /1, ... by position.
+  Project URLs are /after-hours/project/0, /1, ... by position. Each
+  project's case study lives in content/projects/<title-in-kebab-case>.md.
 -->
 
 ## Dead Sweet Potato
@@ -331,10 +328,6 @@ Quarter: 24Q4
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Hilltop Microfinance Initiative
 
 Year: 24
@@ -343,10 +336,6 @@ Quarter: 24Q1
 ### Description
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo con
-
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
 
 ## Pavilion
 
@@ -357,10 +346,6 @@ Quarter: 25Q4
 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id es
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Digital Canvas
 
 Year: 24
@@ -370,10 +355,6 @@ Quarter: 25Q2
 
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
 
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
-
 ## Urban Collective
 
 Year: 24
@@ -382,10 +363,6 @@ Quarter: 25Q3
 ### Description
 
 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
-
-### Details
-
-This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
 
 # Timeline
 

@@ -1,117 +1,112 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
+import Header from "../../../components/Header.js";
+import Footer from "../../../components/Footer.js";
 import SharedBackground from "../../components/SharedBackground.js";
+import CaseStudyMarkdown, {
+  FADE_UP,
+  STAGGER,
+} from "../../components/CaseStudyMarkdown.js";
+import { BackLink, MAIN } from "../../components/CaseStudyLayout.js";
+import { useLeaveTo } from "../../components/leave.js";
 import { PORTFOLIO, PROJECTS } from "@/lib/content";
 
-// Module-scope (from content/site.md) so identity is stable across renders —
-// otherwise the useEffect below would need it in deps. Matches the pattern in
-// PortfolioMenu.js.
-const DEFAULT_PROJECTS = PROJECTS;
-
+// The other half of the exit in after-hours/components/leave.js: while the
+// projects screen's elements are still sliding off to the left, this page's
+// fade up into place one at a time, top first. Going back, they slide off to
+// the right and the projects screen comes back to this project.
 export default function ProjectPage() {
   const params = useParams();
-  const router = useRouter();
-  const [project, setProject] = useState(null);
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const slug = params.slug;
-    // Find project by id or slug
-    const foundProject = DEFAULT_PROJECTS.find(
-      (p) =>
-        p.id.toString() === slug ||
-        p.title.toLowerCase().replace(/\s+/g, "-") === slug,
-    );
-    setProject(foundProject);
-  }, [params.slug]);
+  // Resolved during render, so there's no first frame without the project.
+  const project = useMemo(
+    () =>
+      PROJECTS.find(
+        (p) =>
+          p.id.toString() === params.slug ||
+          p.title.toLowerCase().replace(/\s+/g, "-") === params.slug,
+      ),
+    [params.slug],
+  );
 
-  const handleBack = () => {
-    router.push("/after-hours");
-  };
-
-  if (!project) {
-    return (
-      <SharedBackground>
-        <div className="flex h-screen items-center justify-center">
-          <div className="text-xl text-[#CB0000]">{PORTFOLIO.notFound}</div>
-        </div>
-      </SharedBackground>
-    );
-  }
+  // A plain click plays the way back; a modified click (new tab) is left to
+  // the browser.
+  const { leaveTo } = useLeaveTo();
+  const back = useCallback(
+    (event) => {
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      event.preventDefault();
+      leaveTo(event.currentTarget.getAttribute("href"), {
+        direction: 1,
+        from: project?.id,
+      });
+    },
+    [leaveTo, project],
+  );
 
   return (
-    <SharedBackground>
+    <SharedBackground glow={false}>
+      {/* Same nav as the projects screen; it stays put while the page arrives. */}
+      <Header variant="after-hours" />
       <motion.div
-        initial={{ x: "100%", opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: "-100%", opacity: 0 }}
-        transition={{ duration: 0.6, ease: "easeInOut" }} // Faster to overlap with menu slide-out
-        className="flex h-screen w-full flex-col"
+        initial={reduceMotion ? false : "out"}
+        animate="in"
+        variants={STAGGER}
+        className="flex min-h-screen w-full flex-col"
       >
-        {/* Header */}
-        <motion.header
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.3 }} // Reduced delay for faster appearance
-          className="border-b border-[#CB0000] p-8"
-        >
-          <button
-            onClick={handleBack}
-            className="text-lg text-[#CB0000] transition-opacity hover:opacity-70"
-          >
-            {PORTFOLIO.backLink}
-          </button>
-        </motion.header>
+        <BackLink onClick={back} />
 
-        {/* Main content */}
-        <motion.main
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }} // Reduced delay for faster appearance
-          className="mx-auto max-w-4xl flex-1 p-8"
-        >
-          <div className="mb-8">
-            <h1 className="mb-4 text-6xl font-bold text-[#CB0000]">
-              {project.title}
-            </h1>
-            <span className="text-2xl italic text-[#CB0000]">
-              (&apos;{project.year})
-            </span>
-          </div>
-
-          <div className="prose prose-lg max-w-none text-[#CB0000]">
-            <p className="mb-8 text-xl leading-relaxed">
-              {project.description}
-            </p>
-
-            {/* Placeholder for additional project content */}
-            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
-              <div className="flex h-64 items-center justify-center rounded-lg bg-gray-200">
-                <span className="text-gray-500">Project Image</span>
-              </div>
-              <div className="flex h-64 items-center justify-center rounded-lg bg-gray-200">
-                <span className="text-gray-500">Project Image</span>
-              </div>
-            </div>
-
-            <div className="mt-12">
-              <h2 className="mb-6 text-3xl font-bold">
-                {PORTFOLIO.detailsHeading}
-              </h2>
-              {project.details.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="mb-4 text-lg leading-relaxed last:mb-0"
+        <motion.main variants={STAGGER} className={MAIN}>
+          {project ? (
+            <>
+              <div className="flex flex-wrap items-end gap-x-4 gap-y-1">
+                <motion.h1
+                  data-exit
+                  variants={FADE_UP}
+                  className="text-4xl font-bold sm:text-5xl lg:text-6xl"
                 >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
+                  {project.title}
+                </motion.h1>
+                <motion.span
+                  data-exit
+                  variants={FADE_UP}
+                  className="text-xl italic sm:text-2xl"
+                >
+                  (&apos;{project.year})
+                </motion.span>
+              </div>
+
+              <div className="flex flex-col gap-12">
+                <motion.div data-exit variants={FADE_UP} className="flex gap-4">
+                  <div className="w-[2px] shrink-0 rounded-[1px] bg-[#CB0000]" />
+                  <p className="flex-1 text-lg leading-relaxed sm:text-xl">
+                    {project.description}
+                  </p>
+                </motion.div>
+
+                <CaseStudyMarkdown source={project.caseStudy} />
+              </div>
+            </>
+          ) : (
+            <motion.p data-exit variants={FADE_UP} className="text-xl">
+              {PORTFOLIO.notFound}
+            </motion.p>
+          )}
         </motion.main>
       </motion.div>
+      <Footer />
     </SharedBackground>
   );
 }

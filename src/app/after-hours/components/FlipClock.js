@@ -6,8 +6,8 @@ import { u } from "./frame.js";
 
 // Figma: "FLIP CLOCK – YYQX" (1615:241) as it heads the rail in "project
 // blurbs v9" — the component's 60 × 80 cards rendered at 42.093 × 56.124.
-// Flat #9C0D0F leaves over a darker body, so the hinge reads as a line and
-// not as a bevel.
+// Flat #9C0D0F leaves over a see-through body, so the hinge reads as a gap
+// onto the page and not as a bevel.
 const CARD_W = 42.093;
 const CARD_H = 56.124;
 const GAP = 4.209;
@@ -16,6 +16,10 @@ const LEAF_H = 27.36;
 const HINGE = 28.76;
 // The prototype's Smart Animate beat.
 const FOLD = 0.35;
+// Each half of a wrap's shuffle: out to the right, then back in behind.
+const SHUFFLE = 0.35;
+// Far enough out that the old clock clears the new one before it tucks under.
+const CLEAR = "110%";
 
 // Half a card: a window onto a full-height face, so the character runs
 // unbroken across the hinge instead of being set twice.
@@ -71,7 +75,7 @@ function FlipCard({ char }) {
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden bg-[#5A0809]"
+      className="relative shrink-0 overflow-hidden"
       style={{
         width: u(CARD_W),
         height: u(CARD_H),
@@ -106,16 +110,63 @@ function FlipCard({ char }) {
   );
 }
 
-// `value` is a quarter code, YYQX.
-export default function FlipClock({ value, className, style }) {
+function Cards({ value }) {
+  return value.split("").map((char, i) => <FlipCard char={char} key={i} />);
+}
+
+// `value` is a quarter code, YYQX. `wraps` counts the times the list has come
+// round from one end to the other. A wrap is not a step through time, so the
+// clock doesn't flip through it: the new quarter is dealt straight in, and the
+// old clock slides out to the right and tucks back in behind it, like a card
+// sent to the bottom of the deck.
+export default function FlipClock({
+  value,
+  wraps = 0,
+  className,
+  style,
+  ...rest
+}) {
+  const reduceMotion = useReducedMotion();
+  // Held during render rather than in an effect, so the old clock is already
+  // on top of the new one in the first frame of a wrap.
+  const [seen, setSeen] = useState({ value, wraps });
+  const [shuffled, setShuffled] = useState(null);
+
+  if (wraps !== seen.wraps) {
+    setSeen({ value, wraps });
+    setShuffled(
+      reduceMotion ? null : { key: wraps, value: seen.value, behind: false },
+    );
+  } else if (value !== seen.value) {
+    setSeen({ value, wraps });
+  }
+
   return (
     <div
-      className={`flex items-center ${className ?? ""}`}
+      {...rest}
+      className={`isolate flex items-center ${className ?? ""}`}
       style={{ gap: u(GAP), ...style }}
     >
-      {value.split("").map((char, i) => (
-        <FlipCard char={char} key={i} />
-      ))}
+      {/* Keyed by the wrap, so a wrap swaps the cards in rather than flipping
+          them. */}
+      <Cards value={value} key={`cards-${wraps}`} />
+
+      {shuffled && (
+        <motion.div
+          key={`shuffled-${shuffled.key}`}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 flex items-center"
+          style={{ gap: u(GAP), zIndex: shuffled.behind ? -1 : 1 }}
+          initial={{ x: 0 }}
+          animate={shuffled.behind ? { x: 0 } : { x: CLEAR }}
+          transition={{ duration: SHUFFLE, ease: "easeInOut" }}
+          onAnimationComplete={() =>
+            setShuffled((s) => s && (s.behind ? null : { ...s, behind: true }))
+          }
+        >
+          <Cards value={shuffled.value} />
+        </motion.div>
+      )}
     </div>
   );
 }

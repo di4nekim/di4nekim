@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import FlipClock from "./FlipClock.js";
-import { red, SETTLE, u } from "./frame.js";
+import { red, SETTLE, SETTLE_MOTION, u } from "./frame.js";
+import { useLeaveTo } from "./leave.js";
 
 // Figma: "TIMELINE TICKER" (1664:356), the rail to the right of the blurbs.
 // A five-stop window onto the one chronological list in content/site.md,
@@ -13,7 +20,12 @@ import { red, SETTLE, u } from "./frame.js";
 // what separates the index from the content, so no copy explains it.
 const LEADING = 1.21;
 
+// The ticker's empty left margin, up to the tick slot. It sits outside the
+// wheel zone, so the offsets inside the zone are the Figma numbers less this.
+const GUTTER = 96;
+
 function Stop({ stop, focused, onFocus }) {
+  const { onLinkClick } = useLeaveTo();
   const project = stop.projectId !== null;
 
   const label = project ? (
@@ -24,7 +36,15 @@ function Stop({ stop, focused, onFocus }) {
       {stop.label}
       {/* Only the stop that leaves the page carries the arrow; the other
           project stops in the window move the focus here instead. */}
-      {focused && <span style={{ fontSize: u(16) }}>{" ↗"}</span>}
+      {focused && (
+        <motion.span
+          style={{ fontSize: u(16) }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {" ↗"}
+        </motion.span>
+      )}
     </p>
   ) : (
     <p
@@ -36,7 +56,7 @@ function Stop({ stop, focused, onFocus }) {
   );
 
   return (
-    <div className="flex items-center" style={{ paddingLeft: u(96) }}>
+    <div data-exit className="flex items-center">
       {/* The tick slot's centre is the axis. A project gets the heavy tick. */}
       <div
         className="flex shrink-0 items-center justify-center"
@@ -61,7 +81,8 @@ function Stop({ stop, focused, onFocus }) {
         {project && focused ? (
           <Link
             href={`/after-hours/project/${stop.projectId}`}
-            className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
+            onClick={onLinkClick}
+            className="decoration-[var(--main-red)] decoration-1 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
           >
             {label}
           </Link>
@@ -91,53 +112,85 @@ function Stop({ stop, focused, onFocus }) {
   );
 }
 
-export default function TimelineTicker({ stops, quarter, focusedId, onFocus }) {
+// `zoneRef` is the wheel zone: the clock and the stops, from the tick slot to
+// the right edge and from the top of the clock to the bottom of the last stop.
+// The glow and the axis's tail are decoration and stay out of it.
+export default function TimelineTicker({
+  stops,
+  quarter,
+  wraps,
+  focusedId,
+  onFocus,
+  zoneRef,
+}) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className="relative" style={{ width: u(388) }}>
-      {/* The axis runs from below the clock to a little past the last stop. */}
-      <div
-        className="absolute"
-        style={{
-          left: u(109),
-          top: u(45),
-          bottom: u(-58),
-          width: u(2),
-          backgroundColor: red(0.3),
-        }}
-      />
+    <MotionConfig transition={reduceMotion ? { duration: 0 } : SETTLE_MOTION}>
+      <div style={{ width: u(388), paddingLeft: u(GUTTER) }}>
+        <div ref={zoneRef} className="relative">
+          {/* The axis runs from below the clock to a little past the last stop. */}
+          <div
+            data-exit
+            className="pointer-events-none absolute"
+            style={{
+              left: u(109 - GUTTER),
+              top: u(45),
+              bottom: u(-58),
+              width: u(2),
+              backgroundColor: red(0.3),
+            }}
+          />
 
-      <div
-        className="absolute"
-        style={{
-          left: u(113),
-          top: u(-65),
-          width: u(191.127),
-          height: u(59.089),
-          borderRadius: u(65.8),
-          backgroundColor: red(0.39),
-          filter: `blur(${u(29.82)})`,
-        }}
-      />
-      <FlipClock
-        value={quarter}
-        className="absolute"
-        style={{ left: u(109), top: u(-56) }}
-      />
+          <div
+            data-exit
+            className="pointer-events-none absolute"
+            style={{
+              left: u(113 - GUTTER),
+              top: u(-65),
+              width: u(191.127),
+              height: u(59.089),
+              borderRadius: u(65.8),
+              backgroundColor: red(0.39),
+              filter: `blur(${u(29.82)})`,
+            }}
+          />
+          <FlipClock
+            data-exit
+            value={quarter}
+            wraps={wraps}
+            className="absolute"
+            style={{ left: u(109 - GUTTER), top: u(-56) }}
+          />
 
-      <ul
-        className="m-0 flex list-none flex-col p-0"
-        style={{ paddingTop: u(55), gap: u(15) }}
-      >
-        {stops.map((stop) => (
-          <li className="m-0" key={`${stop.quarter}-${stop.label}`}>
-            <Stop
-              stop={stop}
-              focused={stop.projectId === focusedId}
-              onFocus={() => onFocus(stop.projectId)}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+          <ul
+            className="m-0 flex list-none flex-col p-0"
+            style={{ paddingTop: u(55), gap: u(15) }}
+          >
+            {/* As the window slides, the stops that stay glide to their new
+              places while the one leaving fades out and the one arriving
+              fades in. */}
+            <AnimatePresence initial={false} mode="popLayout">
+              {stops.map((stop) => (
+                <motion.li
+                  className="m-0"
+                  key={`${stop.quarter}-${stop.label}`}
+                  layout="position"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <Stop
+                    stop={stop}
+                    focused={stop.projectId === focusedId}
+                    onFocus={() => onFocus(stop.projectId)}
+                  />
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </ul>
+        </div>
+      </div>
+    </MotionConfig>
   );
 }

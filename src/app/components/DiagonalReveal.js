@@ -42,6 +42,9 @@ export function DiagonalReveal({
   distance = 200,
   // Fraction of the viewport height scrolled by the time every element is out.
   exitSpan = 0.8,
+  // Called once the last element has finished entering, so the page can hold
+  // off on anything that would cut the entrance short.
+  onSettled,
 }) {
   const nodes = useRef({});
   const [ranks, setRanks] = useState(null);
@@ -58,6 +61,16 @@ export function DiagonalReveal({
       .sort((a, b) => a[1] - b[1]);
     setRanks(Object.fromEntries(ranked.map(([id], i) => [id, i])));
   }, []);
+
+  // Ranks land in one pass after layout, so the last element's delay is known
+  // as soon as they do.
+  useEffect(() => {
+    if (!ranks || !onSettled) return;
+    const count = Object.keys(ranks).length;
+    const settle = (duration + Math.max(0, count - 1) * step) * 1000;
+    const timer = setTimeout(onSettled, settle);
+    return () => clearTimeout(timer);
+  }, [ranks, duration, step, onSettled]);
 
   const value = {
     nodes,

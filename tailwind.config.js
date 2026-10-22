@@ -24,9 +24,14 @@ module.exports = {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-50%)" },
         },
+        "fade-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
       },
       animation: {
         marquee: "marquee 4s linear infinite",
+        "fade-in": "fade-in 350ms ease-out both",
       },
     },
   },

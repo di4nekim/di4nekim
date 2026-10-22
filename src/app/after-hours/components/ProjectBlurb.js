@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { red, SETTLE, u } from "./frame.js";
+import { useLeaveTo } from "./leave.js";
 
 // One row of the blurb column in Figma's "project blurbs v9" (1664:343).
 //
@@ -29,6 +30,7 @@ const AXIS = 476.5;
 const LEADING = 1.21;
 
 export default function ProjectBlurb({ project, depth, onFocus }) {
+  const { leaveTo, onLinkClick } = useLeaveTo();
   const distance = Math.abs(depth);
   const { height, title, body, ink, meta, blur } = DEPTH[Math.min(distance, 2)];
   const focused = depth === 0;
@@ -45,19 +47,25 @@ export default function ProjectBlurb({ project, depth, onFocus }) {
   };
 
   // Out of focus the whole row is the control that brings a project into
-  // focus; in focus it is a plain block and the eyebrow carries the link.
-  const Row = focused || spent ? "div" : "button";
+  // focus; in focus it is a plain block and the eyebrow carries the link. The
+  // row itself stays one element either way, with the control laid over it,
+  // so a row changing depth transitions instead of being swapped out.
+  const clickable = !focused && !spent;
+  const href = `/after-hours/project/${project.id}`;
+
+  // In focus, a click anywhere on the row opens the case study too. That is a
+  // mouse convenience only: the eyebrow stays the one real link, for keyboards
+  // and screen readers, and the only thing that underlines on hover.
+  const openCaseStudy = (event) => {
+    if (event.target.closest("a")) return;
+    leaveTo(href);
+  };
 
   return (
-    <Row
-      {...(Row === "button"
-        ? {
-            type: "button",
-            onClick: onFocus,
-            "aria-label": `Bring ${project.title} into focus`,
-          }
-        : { "aria-hidden": spent || undefined })}
-      className={`absolute left-0 flex overflow-hidden text-left transition-[top,height,filter,opacity] ${SETTLE} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]`}
+    <div
+      aria-hidden={spent || undefined}
+      onClick={focused ? openCaseStudy : undefined}
+      className={`absolute left-0 flex ${focused ? "cursor-pointer" : ""} overflow-hidden text-left transition-[top,height,filter,opacity] ${SETTLE} has-[>button:focus-visible]:outline has-[>button:focus-visible]:outline-2 has-[>button:focus-visible]:outline-offset-4 has-[>button:focus-visible]:outline-[var(--main-red)]`}
       style={{
         top: u(Math.sign(depth) * CENTRE[distance] + AXIS - height / 2),
         height: u(height),
@@ -67,7 +75,8 @@ export default function ProjectBlurb({ project, depth, onFocus }) {
         opacity: spent ? 0 : 1,
       }}
     >
-      <div className="shrink-0" style={{ width: u(310) }}>
+      {/* The row leaves the page as its three parts; see leave.js. */}
+      <div data-exit className="shrink-0" style={{ width: u(310) }}>
         <p
           className={`m-0 italic transition-[font-size,color] ${SETTLE}`}
           style={{ fontSize: u(title), lineHeight: LEADING, color: red(ink) }}
@@ -91,11 +100,12 @@ export default function ProjectBlurb({ project, depth, onFocus }) {
       </div>
 
       <div
+        data-exit
         className={`h-full shrink-0 transition-colors ${SETTLE}`}
         style={{ width: u(6), backgroundColor: red(ink) }}
       />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div data-exit className="flex min-w-0 flex-1 flex-col">
         <div
           className={`italic transition-[font-size,color] ${SETTLE}`}
           style={{ fontSize: u(body), lineHeight: LEADING, color: red(ink) }}
@@ -108,21 +118,29 @@ export default function ProjectBlurb({ project, depth, onFocus }) {
           ))}
         </div>
 
-        {focused ? (
-          <Link
-            href={`/after-hours/project/${project.id}`}
-            aria-label={`${project.title} — case study`}
-            className={`${eyebrow} mt-auto hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]`}
-            style={eyebrowStyle}
-          >
-            {"CASE STUDY  ↗"}
-          </Link>
-        ) : (
-          <p className={`${eyebrow} mt-auto`} style={eyebrowStyle}>
-            {"CASE STUDY  ↗"}
-          </p>
-        )}
+        {/* Always the link, so its colour transitions with the row; out of
+            focus it sits under the row's control and out of the tab order. */}
+        <Link
+          href={href}
+          aria-label={`${project.title} — case study`}
+          aria-hidden={!focused || undefined}
+          tabIndex={focused ? undefined : -1}
+          onClick={onLinkClick}
+          className={`${eyebrow} mt-auto hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]`}
+          style={eyebrowStyle}
+        >
+          {"CASE STUDY  ↗"}
+        </Link>
       </div>
-    </Row>
+
+      {clickable && (
+        <button
+          type="button"
+          onClick={onFocus}
+          aria-label={`Bring ${project.title} into focus`}
+          className="absolute inset-0 focus-visible:outline-none"
+        />
+      )}
+    </div>
   );
 }

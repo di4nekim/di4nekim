@@ -28,6 +28,7 @@ export default function PortfolioLanding() {
   return (
     <section
       ref={ref}
+      data-soft-snap
       className="relative h-screen min-h-[600px] w-full overflow-hidden bg-[var(--main-red)] text-[var(--main-beige)] [container-type:size] [font-family:var(--font-family-primary)]"
     >
       <div

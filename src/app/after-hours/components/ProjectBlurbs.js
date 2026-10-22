@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import ProjectBlurb from "./ProjectBlurb.js";
+import { returningFrom, usePullIn } from "./leave.js";
 import TimelineTicker from "./TimelineTicker.js";
 import { box, u } from "./frame.js";
 import blurbBloom from "../../assets/after-hours/blurb-bloom.svg";
@@ -16,13 +17,15 @@ import { PROJECTS, TIMELINE } from "@/lib/content";
 // The screen is one control: a column of project blurbs with the one in focus
 // sharp and the rest falling out of focus either side of it, and a rail on the
 // right that indexes the same projects against everything else that happened
-// around them. Scrolling over the section moves the focus rather than the
-// page — until the focus reaches an end of the list, when the page takes the
-// wheel back so the footer stays reachable.
+// around them. Two zones take the wheel and move the focus: the blurb column,
+// and the rail's clock and stops (which turns the clock's quarter). Anywhere
+// else on the section — below the rail, in the margins — the wheel scrolls the
+// page.
 //
-// The column wraps and the rail does not. The column is a depth of field with
-// no ends to show, and the design fills every slot either side of the focus;
-// the rail is a chronology, so at the ends of it the window stops sliding.
+// The list has no ends: scrolling past the last project comes round to the
+// first. The column wraps seamlessly — it is a depth of field with no ends to
+// show. The rail is a chronology, so it can't: its window jumps from one end
+// to the other, and the clock shuffles instead of flipping to mark the jump.
 
 // Rows past ±2 are the buffer the column animates through; see ProjectBlurb.
 const BUFFER = 3;
@@ -36,35 +39,48 @@ const COOLDOWN = 320;
 const wrap = (slot) =>
   ((slot % PROJECTS.length) + PROJECTS.length) % PROJECTS.length;
 
+// Which pass through the list a slot is on.
+const lap = (slot) => Math.floor(slot / PROJECTS.length);
+
 export default function ProjectBlurbs() {
-  const [focus, setFocus] = useState(0);
+  // An unbounded slot, not an index: the focused project is `wrap(focus)`.
+  // Back from a case study, that project is the one in focus.
+  const [focus, setFocus] = useState(() =>
+    Math.max(
+      0,
+      PROJECTS.findIndex((p) => p.id === returningFrom()),
+    ),
+  );
+  // How many times the focus has crossed between the ends of the list.
+  const [wraps, setWraps] = useState(0);
   const sectionRef = useRef(null);
+  const columnRef = useRef(null);
+  const tickerRef = useRef(null);
   // The wheel listener is attached once, so it reads the focus from a ref.
   const focusRef = useRef(focus);
   const travel = useRef(0);
   const settledAt = useRef(0);
 
+  usePullIn(sectionRef);
+
   const last = PROJECTS.length - 1;
 
-  const moveTo = useCallback(
-    (next) => {
-      const clamped = Math.max(0, Math.min(last, next));
-      focusRef.current = clamped;
-      setFocus(clamped);
-    },
-    [last],
-  );
+  const moveTo = useCallback((next) => {
+    if (lap(next) !== lap(focusRef.current)) setWraps((n) => n + 1);
+    focusRef.current = next;
+    setFocus(next);
+  }, []);
+
+  // Moves to a project within the current pass, so it never counts as a wrap.
+  const moveToIndex = (index) =>
+    moveTo(focusRef.current - wrap(focusRef.current) + index);
 
   useEffect(() => {
-    const section = sectionRef.current;
+    const zones = [columnRef.current, tickerRef.current];
 
     const onWheel = (event) => {
       const direction = Math.sign(event.deltaY);
-      const atEnd =
-        (direction > 0 && focusRef.current === last) ||
-        (direction < 0 && focusRef.current === 0);
-      // At either end the wheel belongs to the page again.
-      if (!direction || atEnd) return;
+      if (!direction) return;
 
       event.preventDefault();
 
@@ -79,9 +95,13 @@ export default function ProjectBlurbs() {
       moveTo(focusRef.current + direction);
     };
 
-    section.addEventListener("wheel", onWheel, { passive: false });
-    return () => section.removeEventListener("wheel", onWheel);
-  }, [last, moveTo]);
+    for (const zone of zones) {
+      zone.addEventListener("wheel", onWheel, { passive: false });
+    }
+    return () => {
+      for (const zone of zones) zone.removeEventListener("wheel", onWheel);
+    };
+  }, [moveTo]);
 
   const onKeyDown = (event) => {
     const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[
@@ -92,14 +112,14 @@ export default function ProjectBlurbs() {
       moveTo(focusRef.current + step);
     } else if (event.key === "Home") {
       event.preventDefault();
-      moveTo(0);
+      moveToIndex(0);
     } else if (event.key === "End") {
       event.preventDefault();
-      moveTo(last);
+      moveToIndex(last);
     }
   };
 
-  const project = PROJECTS[focus];
+  const project = PROJECTS[wrap(focus)];
 
   // The column keeps its slots filled by wrapping: a slot is a position in the
   // column, and the project it carries runs off one end of the list and back
@@ -111,7 +131,8 @@ export default function ProjectBlurbs() {
   }
 
   // The rail is one chronological list, so its window is clamped rather than
-  // wrapped: at either end it stays five stops long and stops sliding.
+  // wrapped: at either end it stays five stops long and stops sliding, and a
+  // wrap jumps it to the other end.
   const stopIndex = TIMELINE.findIndex((stop) => stop.projectId === project.id);
   const start = Math.max(
     0,
@@ -123,6 +144,7 @@ export default function ProjectBlurbs() {
       ref={sectionRef}
       tabIndex={0}
       onKeyDown={onKeyDown}
+      data-soft-snap
       aria-label="Projects"
       className="relative h-screen min-h-[600px] w-full overflow-hidden bg-[var(--main-beige)] [container-type:size] [font-family:var(--font-family-primary)] focus-visible:outline-none"
     >
@@ -132,24 +154,29 @@ export default function ProjectBlurbs() {
       >
         {/* Two blooms, each an ellipse carrying its own 73.75px blur, so the
             SVG overhangs the node box it is placed in. */}
-        <div className="absolute" style={box(18, 416, 952, 245)}>
+        <div data-exit className="absolute" style={box(18, 416, 952, 245)}>
           <div className="absolute inset-[-60.2%_-15.49%]">
             <Image src={blurbBloom} alt="" className="block size-full" />
           </div>
         </div>
-        <div className="absolute" style={box(1012, -295, 820, 744)}>
+        <div data-exit className="absolute" style={box(1012, -295, 820, 744)}>
           <div className="absolute inset-[-19.83%_-17.99%]">
             <Image src={tickerBloom} alt="" className="block size-full" />
           </div>
         </div>
 
-        <div className="absolute overflow-hidden" style={box(96, 68, 886, 953)}>
+        <div
+          ref={columnRef}
+          data-exit-unclip
+          className="absolute overflow-hidden"
+          style={box(96, 68, 886, 953)}
+        >
           {slots.map((slot) => (
             <ProjectBlurb
               key={slot}
               project={PROJECTS[wrap(slot)]}
               depth={slot - focus}
-              onFocus={() => moveTo(wrap(slot))}
+              onFocus={() => moveTo(slot)}
             />
           ))}
         </div>
@@ -158,8 +185,12 @@ export default function ProjectBlurbs() {
           <TimelineTicker
             stops={TIMELINE.slice(start, start + WINDOW)}
             quarter={project.quarter}
+            wraps={wraps}
             focusedId={project.id}
-            onFocus={(id) => moveTo(PROJECTS.findIndex((p) => p.id === id))}
+            onFocus={(id) =>
+              moveToIndex(PROJECTS.findIndex((p) => p.id === id))
+            }
+            zoneRef={tickerRef}
           />
         </div>
       </div>

@@ -16,3 +16,7 @@ export const red = (alpha) => `rgba(203, 0, 0, ${alpha})`;
 // Shared easing for the depth-of-field moves. Matches DiagonalReveal's EASE.
 export const SETTLE =
   "duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none";
+
+// The same move for framer-motion, for what CSS can't transition: elements
+// entering, leaving and changing place.
+export const SETTLE_MOTION = { duration: 0.5, ease: [0.22, 1, 0.36, 1] };
