@@ -38,3 +38,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# resume and other PDFs (keep out of the repo)
+*.pdf
