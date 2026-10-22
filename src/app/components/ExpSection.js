@@ -85,7 +85,8 @@ const Blurb = ({ job }) => {
         <div className="flex flex-row gap-x-5" key={index}>
           <Image
             src={Arrow}
-            alt="arrow"
+            alt=""
+            aria-hidden="true"
             className="mt-[2px] h-[16px] w-[16px]"
           />
           <p className="leading-tight">{paragraph}</p>
