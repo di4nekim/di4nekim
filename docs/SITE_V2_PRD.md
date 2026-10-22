@@ -55,7 +55,7 @@ Chronological archive of non-work projects and phases. Design is further along t
 
 **Structure**
 
-- [ ] Rename page + route (`/after-hours`?), redirect `/portfolio`, update Header + sitemap.
+- [x] Rename route to `/after-hours`, redirect `/portfolio`, update sitemap. (Header has no link to it — nothing to update.)
 - [ ] Header link, or something quieter?
 - [ ] Entry kinds, per v7: **project** (has a blurb, heavier tick) vs **milestone** (rail-only, lighter tick, optional subline). Plus **bounded vs ongoing** from the data-model note — bounded items are segments and flip with the clock, ongoing ones run off the edge and never flip.
 - [ ] Schema in `content/site.md` replacing `# Projects`: `Start:` / `End:` as quarter codes (`24Q3`, or `ongoing`), kind, description, optional media/links. Sort by date in `src/lib/content.js`, not file order.

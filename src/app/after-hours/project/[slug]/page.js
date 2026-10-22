@@ -28,7 +28,7 @@ export default function ProjectPage() {
   }, [params.slug]);
 
   const handleBack = () => {
-    router.push("/portfolio");
+    router.push("/after-hours");
   };
 
   if (!project) {

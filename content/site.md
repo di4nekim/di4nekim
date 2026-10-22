@@ -316,12 +316,16 @@ Project Details
 
 <!--
   One "##" per project, in menu order. Year is the two-digit year ("24"
-  shows as ('24)). Project URLs are /portfolio/project/0, /1, ... by position.
+  shows as ('24)). Quarter is YYQX and ties the project to a stop under
+  "# Timeline" — it drives the flip clock and the (Oct - Dec) tag on the
+  blurb, so Q1 is Jan - Mar, Q2 Apr - Jun, Q3 Jul - Sep, Q4 Oct - Dec.
+  Project URLs are /after-hours/project/0, /1, ... by position.
 -->
 
 ## Dead Sweet Potato
 
 Year: 24
+Quarter: 24Q4
 
 ### Description
 
@@ -331,9 +335,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
 
-## Hilltop Initiative
+## Hilltop Microfinance Initiative
 
 Year: 24
+Quarter: 24Q1
 
 ### Description
 
@@ -346,6 +351,7 @@ This is where you can add more detailed information about the project, including
 ## Pavilion
 
 Year: 24
+Quarter: 25Q4
 
 ### Description
 
@@ -358,6 +364,7 @@ This is where you can add more detailed information about the project, including
 ## Digital Canvas
 
 Year: 24
+Quarter: 25Q2
 
 ### Description
 
@@ -370,6 +377,7 @@ This is where you can add more detailed information about the project, including
 ## Urban Collective
 
 Year: 24
+Quarter: 25Q3
 
 ### Description
 
@@ -378,3 +386,68 @@ Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium dolor
 ### Details
 
 This is where you can add more detailed information about the project, including technologies used, challenges faced, and solutions implemented.
+
+# Timeline
+
+<!--
+  The rail on the right of the After Hours blurbs, oldest at the top. One
+  "##" per stop, in order — the rail shows a five-stop window centred on the
+  stop of whichever project is in focus, so order is what matters here, not
+  the quarter.
+
+  Quarter is YYQX. A stop with "Project: <name>" is that project's stop: it
+  gets the heavy tick, links to the project's page, and the name must match a
+  "##" under "# Projects" exactly. Everything else is a milestone. "Note: ..."
+  is the smaller second line under the label.
+-->
+
+## Hilltop Microfinance Initiative
+
+Quarter: 24Q1
+Project: Hilltop Microfinance Initiative
+
+## retired from fencing
+
+Quarter: 24Q2
+Note: T64 in D1 Women's Epee
+
+## gap year begins
+
+Quarter: 24Q3
+
+## Dead Sweet Potato
+
+Quarter: 24Q4
+Project: Dead Sweet Potato
+
+## florist @ The Metropolitan Plant Center
+
+Quarter: 25Q1
+Note: 2 months
+
+## EMT certification
+
+Quarter: 25Q1
+
+## Digital Canvas
+
+Quarter: 25Q2
+Project: Digital Canvas
+
+## culinary school, graduated
+
+Quarter: 25Q2
+
+## back on campus, YR3
+
+Quarter: 25Q3
+
+## Urban Collective
+
+Quarter: 25Q3
+Project: Urban Collective
+
+## Pavilion
+
+Quarter: 25Q4
+Project: Pavilion

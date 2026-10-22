@@ -15,6 +15,17 @@ const nextConfig = {
     config.module.rules.push({ test: /\.md$/, type: "asset/source" });
     return config;
   },
+  // /portfolio became After Hours; keep old links and project URLs working.
+  async redirects() {
+    return [
+      { source: "/portfolio", destination: "/after-hours", permanent: true },
+      {
+        source: "/portfolio/:path*",
+        destination: "/after-hours/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

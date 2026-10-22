@@ -64,7 +64,7 @@ export default function PortfolioMenu({ projects: propProjects = null }) {
       // Short delay to let the slide-out animation start before route change.
       setTimeout(() => {
         router.push(
-          `/portfolio/project/${project.id ?? project.title.toLowerCase().replace(/\s+/g, "-")}`,
+          `/after-hours/project/${project.id ?? project.title.toLowerCase().replace(/\s+/g, "-")}`,
         );
       }, 300);
     },
