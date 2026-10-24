@@ -317,9 +317,12 @@ By overseeing development and collaborating with stakeholders, I delivered a sca
   content/case-studies/.
 -->
 
-## Back link
+## Back links
 
-Portfolio
+<!-- The case study's back link, named for the page it goes back to. -->
+
+/after-hours: After Hours
+/projects: Projects
 
 ## Not found
 

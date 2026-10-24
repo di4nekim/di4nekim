@@ -211,7 +211,13 @@ assertUnique(
 
 const afterHours = section(doc, "After Hours");
 export const AFTER_HOURS = {
-  backLink: text(section(afterHours, "Back link")),
+  // Keyed by the path of the page a case study was opened from.
+  backLinks: Object.fromEntries(
+    fields(section(afterHours, "Back links")).map(({ label, value }) => [
+      label,
+      value,
+    ]),
+  ),
   notFound: text(section(afterHours, "Not found")),
   clockLabel: text(section(afterHours, "Clock label")),
 };
