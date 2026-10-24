@@ -42,6 +42,13 @@ let trip = null;
 // Which project the page is coming back from, or null.
 export const returningFrom = () => trip?.from ?? null;
 
+// The projects screen a case study was opened from (After Hours or
+// /projects), for its back link. Also in memory only: a case study opened
+// fresh goes back to After Hours.
+let origin = null;
+
+export const backTo = () => origin ?? "/after-hours";
+
 // On-screen `data-exit` elements in `root`, top of the screen first. Hidden
 // rows (the blurb column's buffer) have nothing to show moving; only hiding
 // within `root` counts, as the exit's overlay is itself aria-hidden.
@@ -96,7 +103,11 @@ function stage(scene) {
 
   overlay.append(copy);
   document.body.append(overlay);
+  // Opacity as well as visibility: a descendant that sets its own visibility
+  // (the /projects rows do) would otherwise stay on screen, still, under the
+  // copy until the page is gone.
   scene.style.visibility = "hidden";
+  scene.style.opacity = "0";
   for (const glow of document.querySelectorAll("[data-exit-glow]")) {
     glow.style.visibility = "hidden";
   }
@@ -115,6 +126,7 @@ export function useLeaveTo() {
       if (leaving.current) return;
       leaving.current = true;
       trip = from === undefined ? null : { from };
+      if (from === undefined) origin = window.location.pathname;
       // Coming back, the projects screen sets its own scroll.
       const go = () => router.push(href, { scroll: from === undefined });
 
@@ -174,13 +186,15 @@ export function useLeaveTo() {
 // paint, the page is scrolled to `target` — the projects section, not the
 // landing above it — and its on-screen `data-exit` elements are set off to the
 // left, then pulled in one at a time, top first. Returns whether this mount is
-// a return, for the page to skip what only a first visit needs.
-export function usePullIn(target) {
+// a return, for the page to skip what only a first visit needs. A page whose
+// elements mount a render late (the /projects rows wait to measure the
+// window) passes `ready` once they're in.
+export function usePullIn(target, ready = true) {
   // Read once, so a re-render mid-arrival doesn't lose it.
   const returning = useRef(trip !== null).current;
 
   useLayoutEffect(() => {
-    if (!returning) return;
+    if (!returning || !ready) return;
     trip = null;
     const section = target.current;
     if (!section) return;
@@ -213,7 +227,7 @@ export function usePullIn(target) {
       for (const el of arrivers) el.style.transform = "";
       restore();
     };
-  }, [returning, target]);
+  }, [returning, ready, target]);
 
   return returning;
 }

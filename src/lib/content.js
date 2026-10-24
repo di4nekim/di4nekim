@@ -124,6 +124,7 @@ export const SITE = {
 const header = section(doc, "Header");
 export const HEADER = {
   name: text(section(header, "Name")),
+  afterHoursName: text(section(header, "After-hours name")),
   links: fields(section(header, "Links")).map(({ label, value }) => ({
     label,
     href: value,
@@ -210,7 +211,13 @@ assertUnique(
 
 const afterHours = section(doc, "After Hours");
 export const AFTER_HOURS = {
-  backLink: text(section(afterHours, "Back link")),
+  // Keyed by the path of the page a case study was opened from.
+  backLinks: Object.fromEntries(
+    fields(section(afterHours, "Back links")).map(({ label, value }) => [
+      label,
+      value,
+    ]),
+  ),
   notFound: text(section(afterHours, "Not found")),
   clockLabel: text(section(afterHours, "Clock label")),
 };
@@ -235,6 +242,7 @@ export const TIMELINE = section(doc, "Timeline").children.map((stop) => {
     quarter: quarter(stop),
     note: field(stop, "Note", { required: false }),
     projectId: project?.id ?? null,
+    hasCaseStudy: Boolean(project?.caseStudy),
   };
 });
 

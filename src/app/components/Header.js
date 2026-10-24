@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { HEADER } from "@/lib/content";
 import { Reveal } from "./DiagonalReveal.js";
+import AfterHoursName from "./AfterHoursName.js";
+import HomeLink from "./HomeLink.js";
 
 // Site-relative links are pages ("/projects") unless they name a file
 // ("/resume.pdf"), which downloads. "#" placeholders stay in place.
@@ -23,15 +25,20 @@ const NavLink = ({ href, ...props }) =>
   );
 
 const Header = ({ variant = "main" }) => {
-  const links =
-    variant === "after-hours" ? HEADER.afterHoursLinks : HEADER.links;
+  const afterHours = variant === "after-hours";
+  const links = afterHours ? HEADER.afterHoursLinks : HEADER.links;
   return (
     <header className="fixed top-0 z-[1000] flex h-[50px] w-full items-center justify-center bg-[var(--main-red)] px-0 py-[10px] text-[15px] [font-family:var(--font-family-primary)] [font-weight:var(--font-weight-semibold)] sm:h-[65px] sm:justify-between sm:text-[20px]">
-      <Reveal exitOnScroll={false} className="pr-[20px] sm:pl-[30px]">
-        <Link className="text-[#F5EFE8]" href="/">
-          {HEADER.name}
-        </Link>
-      </Reveal>
+      {afterHours ? (
+        // Already in place on arrival rather than sliding in with the rest.
+        <div className="pr-[20px] sm:pl-[30px]">
+          <AfterHoursName />
+        </div>
+      ) : (
+        <Reveal exitOnScroll={false} className="pr-[20px] sm:pl-[30px]">
+          <HomeLink className="text-[#F5EFE8]">{HEADER.name}</HomeLink>
+        </Reveal>
+      )}
       <nav className="sm:pr-[20px]">
         <ul className="m-0 flex list-none justify-end p-0">
           {links.map(({ label, href, hoverText }) => (

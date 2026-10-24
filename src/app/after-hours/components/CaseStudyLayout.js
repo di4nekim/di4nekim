@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { AFTER_HOURS } from "@/lib/content";
-import { FADE_UP } from "./CaseStudyMarkdown.js";
+import { PULL_IN } from "./CaseStudyMarkdown.js";
 import { SETTLE } from "./frame.js";
+import { backTo } from "./leave.js";
 
 // The case study's column, shared with its loading skeleton so the two line
 // up. The top padding clears the fixed header (50px, 65px from sm), the back
@@ -14,28 +15,31 @@ export const MAIN =
 
 // Pinned under the header in the top left. At rest it's only the arrow; on
 // hover (or keyboard focus) the label slides out to its right. The link is
-// only as big as what's showing, so nothing around it is clickable.
+// only as big as what's showing, so nothing around it is clickable. It goes
+// back to whichever projects screen the case study was opened from, and the
+// label names that screen.
 export function BackLink({ onClick }) {
+  const href = backTo();
   return (
     <motion.div
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className="fixed left-6 top-[74px] z-[999] sm:left-8 sm:top-[97px]"
     >
       <Link
-        href="/after-hours"
+        href={href}
         onClick={onClick}
-        className="group flex items-center text-lg leading-7 text-[#CB0000] outline-none focus-visible:underline focus-visible:underline-offset-4"
+        className="group flex items-center text-xl leading-7 text-[#CB0000] outline-none focus-visible:underline focus-visible:underline-offset-4"
       >
-        <span aria-hidden="true">←</span>
+        <span aria-hidden="true" className="text-2xl leading-7">←</span>
         <span
           className={`grid grid-cols-[0fr] transition-[grid-template-columns] group-hover:grid-cols-[1fr] group-focus-visible:grid-cols-[1fr] ${SETTLE}`}
         >
           <span className="overflow-hidden whitespace-nowrap">
             <span
-              className={`inline-block -translate-x-full pl-1 opacity-0 transition-[transform,opacity] group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${SETTLE}`}
+              className={`inline-block -translate-x-full pl-2 opacity-0 transition-[transform,opacity] group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${SETTLE}`}
             >
-              {AFTER_HOURS.backLink}
+              {AFTER_HOURS.backLinks[href]}
             </span>
           </span>
         </span>

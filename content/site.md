@@ -29,7 +29,13 @@ All Rights Reserved. Designed + built by Diane Kim.
 
 ## Name
 
-DIANE KIM
+DI4NEKIM
+
+## After-hours name
+
+<!-- Follows the name, after a comma, in the header on /after-hours. Links to the After Hours landing page. -->
+
+AFTER HOURS
 
 ## Links
 
@@ -311,9 +317,12 @@ By overseeing development and collaborating with stakeholders, I delivered a sca
   content/case-studies/.
 -->
 
-## Back link
+## Back links
 
-Portfolio
+<!-- The case study's back link, named for the page it goes back to. -->
+
+/after-hours: After Hours
+/projects: Projects
 
 ## Not found
 
@@ -323,7 +332,7 @@ Project not found
 
 <!-- Above the flip clock on /projects. -->
 
-PROJECTS
+PROJECTS, THE BEST OF
 
 # Timeline
 

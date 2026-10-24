@@ -30,25 +30,25 @@ function Stop({ stop, focused, onFocus }) {
 
   const label = project ? (
     <p
-      className="m-0 font-medium"
+      className="m-0 flex items-baseline font-medium"
       style={{ fontSize: u(18), lineHeight: LEADING, color: red(1) }}
     >
-      {stop.label}
-      {/* Only the stop that leaves the page carries the arrow; the other
-          project stops in the window move the focus here instead. */}
-      {focused && (
-        <motion.span
-          style={{ fontSize: u(16) }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
+      {/* A long title truncates rather than wraps, and the arrow stays
+          outside the truncation so it is never the part that gets cut. */}
+      <span className="min-w-0 truncate" title={stop.label}>
+        {stop.label}
+      </span>
+      {/* Every project with a case study carries the arrow. */}
+      {stop.hasCaseStudy && (
+        <span className="shrink-0 whitespace-pre" style={{ fontSize: u(16) }}>
           {" ↗"}
-        </motion.span>
+        </span>
       )}
     </p>
   ) : (
     <p
-      className="m-0 font-medium"
+      className="m-0 truncate font-medium"
+      title={stop.label}
       style={{ fontSize: u(15), lineHeight: LEADING, color: red(0.7) }}
     >
       {stop.label}
@@ -77,21 +77,22 @@ function Stop({ stop, focused, onFocus }) {
         style={{ paddingLeft: u(18), gap: u(3) }}
       >
         {/* The project in focus links to its page; any other project stop in
-            the window brings it into focus instead. */}
-        {project && focused ? (
+            the window brings it into focus instead. A project without a case
+            study has no blurb to focus or page to open, so its stop is inert. */}
+        {stop.hasCaseStudy && focused ? (
           <Link
             href={`/after-hours/project/${stop.projectId}`}
             onClick={onLinkClick}
-            className="decoration-[var(--main-red)] decoration-1 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
+            className="max-w-full decoration-[var(--main-red)] decoration-1 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
           >
             {label}
           </Link>
-        ) : project ? (
+        ) : stop.hasCaseStudy ? (
           <button
             type="button"
             onClick={onFocus}
             aria-label={`Bring ${stop.label} into focus`}
-            className="text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
+            className="max-w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--main-red)]"
           >
             {label}
           </button>

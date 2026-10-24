@@ -18,7 +18,7 @@
       }
     },
     "items": {
-      "description": "Display order on /after-hours and /projects is the order of this array. Each project also needs a stop under # Timeline in content/site.md.",
+      "description": "Display order on /after-hours, /projects and /portfolio is the order of this array. Every item also needs a stop under # Timeline in content/site.md.",
       "type": "array",
       "items": { "$ref": "#/$defs/item" }
     }
@@ -78,7 +78,7 @@
           "minLength": 1
         },
         "caseStudy": {
-          "description": "Path to the case study's Markdown file, relative to content/ (convention: case-studies/<slug>.md). Rendered on /after-hours/project/<slug>. Required for kind \"project\".",
+          "description": "Path to the case study's Markdown file, relative to content/ (convention: case-studies/<slug>.md). Rendered on /after-hours/project/<slug>. Optional for either kind: with one, the item is a blurb on /after-hours and on its kind's page (/projects or /portfolio); without one, it shows only as its stop under # Timeline in content/site.md.",
           "type": "string",
           "pattern": "^case-studies/[a-z0-9]+(-[a-z0-9]+)*\\.md$"
         },
@@ -114,7 +114,6 @@
         {
           "if": { "properties": { "kind": { "const": "project" } } },
           "then": {
-            "required": ["caseStudy"],
             "properties": {
               "category": { "enum": ["personal", "extracurricular", "work"] }
             }

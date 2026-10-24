@@ -3,16 +3,17 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-// Everything on the case study arrives the same way: a short fade upwards,
-// one element after the next, under a parent that staggers its children.
-// Each is also marked `data-exit`, so leaving for the projects screen slides
-// it off to the right (see leave.js).
-export const FADE_UP = {
-  out: { opacity: 0, y: 16 },
+// Everything on the case study arrives the same way: pulled in from the right,
+// one element after the next, under a parent that staggers its children, the
+// other half of the projects screen's exit to the left (see leave.js). Each is
+// also marked `data-exit`, so leaving for the projects screen slides it off to
+// the right again.
+export const PULL_IN = {
+  out: { x: "100vw" },
   in: {
-    opacity: 1,
-    y: 0,
+    x: 0,
     transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
 };
@@ -26,16 +27,45 @@ const domProps = (props) => {
   return rest;
 };
 
-// A block-level markdown element that fades up with the rest.
+// Keeps the classes markdown adds (a task list's "contains-task-list", a code
+// fence's "language-js") alongside ours instead of replacing them.
+const withClass = (className, props) => ({
+  ...domProps(props),
+  className: [className, props.className].filter(Boolean).join(" "),
+});
+
+// A block-level markdown element that pulls in with the rest.
 const block = (tag, className) =>
   function Block(props) {
     const Tag = motion[tag];
     return (
+      <Tag data-exit variants={PULL_IN} {...withClass(className, props)} />
+    );
+  };
+
+// Wide tables scroll sideways instead of widening the page.
+function Table(props) {
+  return (
+    <motion.div data-exit variants={PULL_IN} className="overflow-x-auto">
+      <table
+        {...withClass(
+          "w-full border-collapse text-left text-base sm:text-lg",
+          props,
+        )}
+      />
+    </motion.div>
+  );
+}
+
+const cell = (tag, className) =>
+  function Cell(props) {
+    const Tag = tag;
+    return (
       <Tag
-        data-exit
-        variants={FADE_UP}
-        className={className}
-        {...domProps(props)}
+        {...withClass(
+          `border-b border-[#CB0000]/30 px-3 py-2 ${className}`,
+          props,
+        )}
       />
     );
   };
@@ -58,7 +88,7 @@ function Paragraph({ node, children, ...props }) {
   return (
     <motion.p
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className="text-base leading-relaxed sm:text-lg"
       {...props}
     >
@@ -83,7 +113,7 @@ function ProjectImage({ src, alt = "" }) {
     return (
       <motion.span
         data-exit
-        variants={FADE_UP}
+        variants={PULL_IN}
         className="flex h-64 items-center justify-center rounded-lg bg-gray-200 text-base text-gray-500"
       >
         {alt}
@@ -94,7 +124,7 @@ function ProjectImage({ src, alt = "" }) {
   return (
     <motion.span
       data-exit
-      variants={FADE_UP}
+      variants={PULL_IN}
       className={`relative block min-h-64 overflow-hidden rounded-lg bg-gray-200 ${loaded ? "" : "animate-pulse motion-reduce:animate-none"}`}
     >
       {/* Markdown images have no known size, so next/image can't lay them out. */}
@@ -131,9 +161,10 @@ const COMPONENTS = {
   p: Paragraph,
   img: ProjectImage,
   a: Anchor,
+  // A "- [ ]" task list drops the bullets; its checkboxes stand in for them.
   ul: block(
     "ul",
-    "list-disc space-y-2 pl-6 text-base leading-relaxed sm:text-lg",
+    "list-disc space-y-2 pl-6 text-base leading-relaxed sm:text-lg [&.contains-task-list]:list-none [&.contains-task-list]:pl-0",
   ),
   ol: block(
     "ol",
@@ -144,19 +175,29 @@ const COMPONENTS = {
     "border-l-2 border-[#CB0000] pl-4 text-lg leading-relaxed sm:text-xl",
   ),
   hr: block("hr", "border-[#CB0000]/30"),
+  // Inline code gets a tint; inside a fenced block the <pre> already has one.
   code: (props) => (
     <code
-      className="rounded bg-[#CB0000]/10 px-1 font-mono text-[0.9em]"
-      {...domProps(props)}
+      {...withClass(
+        "rounded bg-[#CB0000]/10 px-1 font-mono text-[0.9em] [pre_&]:bg-transparent [pre_&]:p-0",
+        props,
+      )}
     />
   ),
   pre: block("pre", "overflow-x-auto rounded-lg bg-[#CB0000]/10 p-4 text-sm"),
+  // GitHub-flavored extras, via remark-gfm.
+  table: Table,
+  th: cell("th", "font-bold"),
+  td: cell("td", ""),
+  input: (props) => <input {...withClass("mr-2 accent-[#CB0000]", props)} />,
 };
 
 export default function CaseStudyMarkdown({ source }) {
   return (
     <motion.div variants={STAGGER} className="flex flex-col gap-6">
-      <Markdown components={COMPONENTS}>{source}</Markdown>
+      <Markdown components={COMPONENTS} remarkPlugins={[remarkGfm]}>
+        {source}
+      </Markdown>
     </motion.div>
   );
 }
